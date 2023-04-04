@@ -5,14 +5,14 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-
-	c "github.com/microservice/post_service/genproto/comment"
-	p "github.com/microservice/post_service/genproto/post"
-	u "github.com/microservice/post_service/genproto/user"
-	"github.com/microservice/post_service/pkg/logger"
-	grpcclient "github.com/microservice/post_service/service/grpc_client"
-	"github.com/microservice/post_service/storage"
-
+	
+	c "najottalim/6_part_microservice/service/post_service/genproto/comment"
+	p "najottalim/6_part_microservice/service/post_service/genproto/post"
+	u "najottalim/6_part_microservice/service/post_service/genproto/user"
+	"najottalim/6_part_microservice/service/post_service/pkg/logger"
+	"najottalim/6_part_microservice/service/post_service/storage"
+	grpcclient "najottalim/6_part_microservice/service/post_service/service/grpc_client"
+	
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 

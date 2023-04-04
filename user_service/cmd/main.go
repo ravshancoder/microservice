@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/project/user_service/config"
-	u "github.com/project/user_service/genproto/user"
-	"github.com/project/user_service/pkg/db"
-	"github.com/project/user_service/pkg/logger"
-	"github.com/project/user_service/service"
-	grpcclient "github.com/project/user_service/service/grpc_client"
-
+	"najottalim/6_part_microservice/service/user_service/config"
+	u "najottalim/6_part_microservice/service/user_service/genproto/user"
+	"najottalim/6_part_microservice/service/user_service/pkg/db"
+	"najottalim/6_part_microservice/service/user_service/pkg/logger"
+	"najottalim/6_part_microservice/service/user_service/service"
+	grpcclient "najottalim/6_part_microservice/service/user_service/service/grpc_client"
+	
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

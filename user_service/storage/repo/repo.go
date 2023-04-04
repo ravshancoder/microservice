@@ -1,7 +1,7 @@
 package repo
 
 import (
-	u "github.com/project/user_service/genproto/user"
+	u "najottalim/6_part_microservice/service/user_service/genproto/user"
 )
 
 type UserStoreI interface {

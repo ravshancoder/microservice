@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/microservice/comment_service/config"
-	c "github.com/microservice/comment_service/genproto/comment"
-	"github.com/microservice/comment_service/pkg/db"
-	"github.com/microservice/comment_service/pkg/logger"
-	"github.com/microservice/comment_service/service"
-	grpcclient "github.com/microservice/comment_service/service/grpc_client"
+	"github.com/project/comment_service/config"
+	c "github.com/project/comment_service/genproto/comment"
+	"github.com/project/comment_service/pkg/db"
+	"github.com/project/comment_service/pkg/logger"
+	"github.com/project/comment_service/service"
+	grpcclient "github.com/project/comment_service/service/grpc_client"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

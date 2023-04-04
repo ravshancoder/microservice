@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "posts" (
+CREATE TABLE IF NOT EXISTS "comments" (
     "id" SERIAL PRIMARY KEY,
     "title" VARCHAR(60),
     "description" VARCHAR(60),

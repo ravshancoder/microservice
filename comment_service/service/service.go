@@ -6,12 +6,12 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	c "github.com/microservice/comment_service/genproto/comment"
-	p "github.com/microservice/comment_service/genproto/post"
-	u "github.com/microservice/comment_service/genproto/user"
-	"github.com/microservice/comment_service/pkg/logger"
-	grpcclient "github.com/microservice/comment_service/service/grpc_client"
-	"github.com/microservice/comment_service/storage"
+	c "github.com/project/comment_service/genproto/comment"
+	p "github.com/project/comment_service/genproto/post"
+	u "github.com/project/comment_service/genproto/user"
+	"github.com/project/comment_service/pkg/logger"
+	grpcclient "github.com/project/comment_service/service/grpc_client"
+	"github.com/project/comment_service/storage"
 )
 
 type CommentService struct {

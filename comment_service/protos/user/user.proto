@@ -1,0 +1,75 @@
+syntax="proto3";
+
+package user;
+
+import "google/protobuf/empty.proto";
+
+service UserService{
+    rpc CreateUser(UserRequest) returns (UserResponse){}
+    rpc GetUserById(IdRequest) returns (UserResponse){}
+    rpc GetUserForClient(IdRequest) returns (UserResponse){}
+    rpc GetAllUsers(AllUsersRequest) returns (Users) {}
+    rpc SearchUsersByName(SearchUsers) returns (Users){}
+    rpc UpdateUser(UpdateUserRequest) returns (google.protobuf.Empty){}
+    rpc DeleteUser(IdRequest) returns (UserResponse){}
+}
+
+message UserRequest{
+    string first_name = 1;
+    string last_name = 2;
+    string email = 3;
+}
+
+message UpdateUserRequest {
+    string first_name = 1;
+    string last_name = 2;
+    string email = 3;
+    int64 id = 4;
+}
+
+message SearchUsers {
+    string first_name = 1;
+}
+
+message UserResponse{
+    int64 id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string email = 4;
+    repeated Post posts = 5;
+    string created_at = 6;
+    string updated_at = 7;
+}
+
+message Post {
+    int64 id = 1;
+    string title = 2;
+    string description = 3;
+    int64 likes = 4;
+    repeated Comment comments = 5;
+    string created_at = 6;
+    string updated_at = 7;
+}
+
+message Comment {
+    int64 post_id = 1;
+    string post_title = 2;
+    int64 user_id = 3;
+    string user_name = 4;
+    string post_user_name = 5;
+    string text = 6;
+    string created_at = 7;
+}
+
+message IdRequest{
+    int64 id = 1;
+}
+
+message AllUsersRequest{
+    int64 page = 1;
+    int64 limit = 2;
+}
+
+message Users {
+    repeated UserResponse users = 1;
+}

@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	u "github.com/project/user_service/genproto/user"
+	u "najottalim/6_part_microservice/service/user_service/genproto/user"
 )
 
 func (r *UserRepo) CreateUser(user *u.UserRequest) (*u.UserResponse, error) {
@@ -34,7 +34,7 @@ func (r *UserRepo) GetUserById(user *u.IdRequest) (*u.UserResponse, error) {
 		from 
 			users 
 		where id = $1 and deleted_at is null`, user.Id).Scan(&res.Id, &res.FirstName, &res.LastName, &res.Email, &res.CreatedAt, &res.UpdatedAt)
-
+	
 	if err != nil {
 		log.Println("failed to get user")
 		return &u.UserResponse{}, err
@@ -51,7 +51,7 @@ func (r *UserRepo) GetUserForClient(user_id *u.IdRequest) (*u.UserResponse, erro
 		from 
 			users 
 		where id = $1`, user_id.Id).Scan(&res.Id, &res.FirstName, &res.LastName, &res.Email, &res.CreatedAt, &res.UpdatedAt)
-
+	
 	if err != nil {
 		log.Println("failed to get user for client")
 		return &u.UserResponse{}, err
@@ -71,7 +71,7 @@ func (r *UserRepo) GetAllUsers(req *u.AllUsersRequest) (*u.Users, error) {
 		where 
 			deleted_at is null 
 		limit $1 offset $2`, req.Limit, offset)
-
+	
 	if err != nil {
 		log.Println("failed to get all users")
 		return &u.Users{}, err
@@ -102,7 +102,7 @@ func (r *UserRepo) GetAllUsers(req *u.AllUsersRequest) (*u.Users, error) {
 func (r *UserRepo) SearchUsersByName(req *u.SearchUsers) (*u.Users, error) {
 	var res u.Users
 	query := fmt.Sprint("select id, first_name, last_name, email, created_at, updated_at from users where first_name ilike '%" + req.FirstName + "%' and deleted_at is null")
-
+	
 	rows, err := r.db.Query(query)
 	if err != nil {
 		log.Println("failed to searching user")
@@ -139,7 +139,7 @@ func (r *UserRepo) UpdateUser(user *u.UpdateUserRequest) error {
 			first_name = $1, last_name = $2, email = $3, updated_at = $4
 		where 
 			id = $5`, user.FirstName, user.LastName, user.Email, time.Now(), user.Id)
-
+	
 	if err != nil {
 		log.Println("failed to update user")
 		return err
@@ -160,7 +160,7 @@ func (r *UserRepo) DeleteUser(user *u.IdRequest) (*u.UserResponse, error) {
 			id = $2 
 		returning 
 			id, first_name, last_name, email, created_at, updated_at`, time.Now(), user.Id).Scan(&temp.Id, &temp.FirstName, &temp.LastName, &temp.Email, &temp.CreatedAt, &temp.UpdatedAt)
-
+	
 	if err != nil {
 		log.Println("failed to delete user")
 		return &u.UserResponse{}, err

@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	c "github.com/microservice/comment_service/genproto/comment"
+	c "github.com/project/comment_service/genproto/comment"
 )
 
 func (r *CommentRepo) WriteComment(comment *c.CommentRequest) (*c.CommentResponse, error) {

@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	p "github.com/microservice/post_service/genproto/post"
+	p "najottalim/6_part_microservice/service/post_service/genproto/post"
 )
 
 func (r *PostRepo) CreatePost(post *p.PostRequest) (*p.GetPostResponse, error) {
@@ -143,7 +143,7 @@ func (r *PostRepo) GetPostForComment(post *p.IdRequest) (*p.GetPostResponse, err
 func (r *PostRepo) SearchByTitle(title *p.Title) (*p.Posts, error) {
 	res := p.Posts{}
 	query := fmt.Sprint("select id, title, description, likes, user_id, created_at, updated_at from posts where title ilike '%" + title.Title + "%' and deleted_at is null")
-
+	
 	rows, err := r.db.Query(query)
 	if err != nil {
 		log.Println("failed to search post")
@@ -197,7 +197,7 @@ func (r *PostRepo) LikePost(l *p.LikeRequest) (*p.GetPostResponse, error) {
 				posts 
 			where 
 				id = $1`, l.PostId).Scan(&res.Id, &res.Title, &res.Description, &res.Likes, &res.UserId, &res.CreatedAt, &res.UpdatedAt)
-
+				
 		if err != nil {
 			log.Println("failed to like post")
 			return &p.GetPostResponse{}, err

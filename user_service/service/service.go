@@ -6,12 +6,12 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	c "github.com/project/user_service/genproto/comment"
-	p "github.com/project/user_service/genproto/post"
-	u "github.com/project/user_service/genproto/user"
-	"github.com/project/user_service/pkg/logger"
-	grpcclient "github.com/project/user_service/service/grpc_client"
-	"github.com/project/user_service/storage"
+	c "najottalim/6_part_microservice/service/user_service/genproto/comment"
+	p "najottalim/6_part_microservice/service/user_service/genproto/post"
+	u "najottalim/6_part_microservice/service/user_service/genproto/user"
+	"najottalim/6_part_microservice/service/user_service/pkg/logger"
+	grpcclient "najottalim/6_part_microservice/service/user_service/service/grpc_client"
+	"najottalim/6_part_microservice/service/user_service/storage"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -52,6 +52,7 @@ func (s *UserService) GetUserById(ctx context.Context, req *u.IdRequest) (*u.Use
 		log.Println("failed to getting post for get user: ", err)
 		return &u.UserResponse{}, err
 	}
+	
 
 	for _, pt := range post.Posts {
 		comments, err := s.Client.Comment().GetCommentsForPost(ctx, &c.GetAllCommentsRequest{PostId: pt.Id})

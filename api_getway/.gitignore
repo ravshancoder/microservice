@@ -1,8 +1,0 @@
-# ide configuration
-.idea
-
-# all vendored dependencies
-vendor
-
-# build binaries
-bin
