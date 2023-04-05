@@ -13,6 +13,8 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
+// @Security ApiKeyAuth
+// @Router /users [post]
 // @Summary Create a user
 // @Description Create a user
 // @Tags user
@@ -21,7 +23,6 @@ import (
 // @Param user body models.UserRequest true "User"
 // @Success 201 {object} models.User
 // @Failure 500 {object} models.ErrorResponse
-// @Router /v1/users [POST]
 func (h *handlerV1) CreateUser(c *gin.Context) {
 	var (
 		body        models.UserRequest
@@ -50,6 +51,16 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
+// @Security ApiKeyAuth
+// @Router /users/me [get]
+// @Summary Get user
+// @Description Get user 
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param user body models.IdUserRequest true "User"
+// @Success 200 {object} models.User
+// @Failure 500 {object} models.ErrorResponse
 // route /v1/users/{id} [GET]
 func (h *handlerV1) GetUser(c *gin.Context) {
 	var jspbMarshal protojson.MarshalOptions

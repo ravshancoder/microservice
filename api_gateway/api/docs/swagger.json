@@ -1,16 +1,20 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is exam server api server",
-        "title": "exam api",
-        "termsOfService": "2 term exam",
+        "description": "This is a user service api.",
+        "title": "Swagger for user api",
         "contact": {},
-        "version": "2.0"
+        "version": "1.0"
     },
-    "host": "localhost:8080",
+    "basePath": "/v1",
     "paths": {
-        "/v1/users": {
+        "/users": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create a user",
                 "consumes": [
                     "application/json"
@@ -48,6 +52,51 @@
                     }
                 }
             }
+        },
+        "/users/me": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get user",
+                "parameters": [
+                    {
+                        "description": "User",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.IdUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -56,6 +105,14 @@
             "properties": {
                 "error": {
                     "type": "string"
+                }
+            }
+        },
+        "models.IdUserRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
                 }
             }
         },
@@ -98,7 +155,7 @@
         }
     },
     "securityDefinitions": {
-        "BearerAuth": {
+        "ApiKeyAuth": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"

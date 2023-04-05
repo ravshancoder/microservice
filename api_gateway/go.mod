@@ -3,7 +3,6 @@ module github.com/project/api_gateway
 go 1.18
 
 require (
-	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.0
 	github.com/golang/protobuf v1.5.3
 	github.com/spf13/cast v1.5.0

@@ -5,6 +5,9 @@ APP_CMD_DIR=./cmd
 run:
 	go run cmd/main.go
 
+rungo:
+	go run main.go
+
 proto-gen:
 	./scripts/gen-proto.sh
 

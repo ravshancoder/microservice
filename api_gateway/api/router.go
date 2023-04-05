@@ -7,7 +7,7 @@ import (
 	"github.com/project/api_gateway/services"
 
 	//"github.com/gin-contrib/cors"
-	_ "github.com/project/api_gateway/api/handlers/v1"
+	_ "github.com/project/api_gateway/api/docs"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
@@ -20,16 +20,14 @@ type Option struct {
 	ServiceManager services.IServiceManager
 }
 
-// New ...
-// @title           exam api
-// @version         2.0
-// @description     This is exam server api server
-// @termsOfService  2 term exam
-// @host    	   localhost:8080
-// @securityDefinitions.apikey BearerAuth
+// @title           Swagger for user api
+// @version         1.0
+// @description     This is a user service api.
+// @BasePath  /v1
+// @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
-// @BasePath /v1
+// @Security ApiKeyAuth
 func New(option Option) *gin.Engine {
 	router := gin.New()
 
