@@ -18,6 +18,11 @@ type Option struct {
 	ServiceManager services.IServiceManager
 }
 
+
+// @title user
+// @version v1
+// @description user service
+// @host localhost:8080
 func New(option Option) *gin.Engine {
 	router := gin.New()
 

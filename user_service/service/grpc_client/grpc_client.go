@@ -2,10 +2,10 @@ package grpcclient
 
 import (
 	"fmt"
-	
-	"najottalim/6_part_microservice/service/user_service/config"
-	cu "najottalim/6_part_microservice/service/user_service/genproto/post"
-	cc "najottalim/6_part_microservice/service/user_service/genproto/comment"
+
+	"github.com/project/user_service/config"
+	cc "github.com/project/user_service/genproto/comment"
+	cu "github.com/project/user_service/genproto/post"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -17,8 +17,8 @@ type Clients interface {
 }
 
 type ServiceManager struct {
-	Config config.Config
-	postService cu.PostServiceClient
+	Config         config.Config
+	postService    cu.PostServiceClient
 	commentService cc.CommentServiceClient
 }
 
@@ -38,8 +38,8 @@ func New(cfg config.Config) (*ServiceManager, error) {
 	}
 
 	return &ServiceManager{
-		Config: cfg,
-		postService: cu.NewPostServiceClient(connPost),
+		Config:         cfg,
+		postService:    cu.NewPostServiceClient(connPost),
 		commentService: cc.NewCommentServiceClient(connComment),
 	}, nil
 }

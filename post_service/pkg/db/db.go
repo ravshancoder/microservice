@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 
-	"najottalim/6_part_microservice/service/post_service/config"
+	"github.com/project/post_service/config"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" //postgres drivers

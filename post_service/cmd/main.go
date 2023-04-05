@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"net"
 
-	"najottalim/6_part_microservice/service/post_service/config"
-	p "najottalim/6_part_microservice/service/post_service/genproto/post"
-	"najottalim/6_part_microservice/service/post_service/pkg/db"
-	"najottalim/6_part_microservice/service/post_service/pkg/logger"
-	"najottalim/6_part_microservice/service/post_service/service"
-	grpcclient "najottalim/6_part_microservice/service/post_service/service/grpc_client"
+	"github.com/project/post_service/config"
+	p "github.com/project/post_service/genproto/post"
+	"github.com/project/post_service/pkg/db"
+	"github.com/project/post_service/pkg/logger"
+	"github.com/project/post_service/service"
+	grpcclient "github.com/project/post_service/service/grpc_client"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
