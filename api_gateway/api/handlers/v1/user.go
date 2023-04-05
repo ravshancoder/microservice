@@ -8,15 +8,23 @@ import (
 	pu "github.com/project/api_gateway/genproto/user"
 	l "github.com/project/api_gateway/pkg/logger"
 	"github.com/project/api_gateway/pkg/utils"
-
+	"github.com/project/api_gateway/api/handlers/models"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// route /v1/users [POST]
+// @Summary Create a user
+// @Description Create a user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param user body models.UserRequest true "User"
+// @Success 201 {object} models.User
+// @Failure 500 {object} models.ErrorResponse
+// @Router /v1/users [POST]
 func (h *handlerV1) CreateUser(c *gin.Context) {
 	var (
-		body        pu.UserRequest
+		body        models.UserRequest
 		jspbMarshal protojson.MarshalOptions
 	)
 	jspbMarshal.UseProtoNames = true
@@ -30,7 +38,7 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 		return
 	}
 
-	response, err := h.serviceManager.UserService().CreateUser(context.Background(), &body)
+	response, err := h.serviceManager.UserService().CreateUser(context.Background(), &pu.UserRequest{FirstName: body.FirstName, LastName: body.LastName, Email: body.Email})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),

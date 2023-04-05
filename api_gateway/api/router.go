@@ -6,6 +6,8 @@ import (
 	"github.com/project/api_gateway/pkg/logger"
 	"github.com/project/api_gateway/services"
 
+	//"github.com/gin-contrib/cors"
+	_ "github.com/project/api_gateway/api/handlers/v1"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
@@ -18,11 +20,16 @@ type Option struct {
 	ServiceManager services.IServiceManager
 }
 
-
-// @title user
-// @version v1
-// @description user service
-// @host localhost:8080
+// New ...
+// @title           exam api
+// @version         2.0
+// @description     This is exam server api server
+// @termsOfService  2 term exam
+// @host    	   localhost:8080
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @BasePath /v1
 func New(option Option) *gin.Engine {
 	router := gin.New()
 
@@ -56,9 +63,8 @@ func New(option Option) *gin.Engine {
 	api.GET("/comments/:id", handlerV1.GetComments)
 	api.DELETE("/comment/:id", handlerV1.DeleteComment)
 
-	// swagger
 	url := ginSwagger.URL("swagger/doc.json")
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
-
+	api.GET("swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+	
 	return router
 }
