@@ -6,6 +6,6 @@ type Error struct {
 }
 
 // StandardErrorModel ...
-type StandardErrorModel struct {
-	Error Error `json:"error"`
+type StandartErrorModel struct {
+	Error error `json:"error"`
 }

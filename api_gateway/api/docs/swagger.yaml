@@ -1,14 +1,26 @@
 basePath: /v1
 definitions:
-  models.ErrorResponse:
+  models.GetAllUsersRequest:
     properties:
-      error:
-        type: string
+      limit:
+        type: integer
+      page:
+        type: integer
     type: object
-  models.IdUserRequest:
+  models.StandartErrorModel:
     properties:
+      error: {}
+    type: object
+  models.UpdateUserRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
       id:
         type: integer
+      last_name:
+        type: string
     type: object
   models.User:
     properties:
@@ -34,6 +46,13 @@ definitions:
       last_name:
         type: string
     type: object
+  models.Users:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/models.User'
+        type: array
+    type: object
 info:
   contact: {}
   description: This is a user service api.
@@ -44,42 +63,14 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create a user
+      description: This api creates a user
       parameters:
-      - description: User
+      - description: Create User
         in: body
-        name: user
+        name: body
         required: true
         schema:
           $ref: '#/definitions/models.UserRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/models.User'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: Create a user
-      tags:
-      - user
-  /users/me:
-    get:
-      consumes:
-      - application/json
-      description: Get user
-      parameters:
-      - description: User
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/models.IdUserRequest'
       produces:
       - application/json
       responses:
@@ -87,18 +78,171 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: Get user
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: create user
       tags:
-      - user
-securityDefinitions:
-  ApiKeyAuth:
-    in: header
-    name: Authorization
-    type: apiKey
+      - User
+  /v1/users:
+    get:
+      consumes:
+      - application/json
+      description: This api gets all users
+      parameters:
+      - description: Get All User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.GetAllUsersRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: get all users
+      tags:
+      - User
+  /v1/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: This api deletes a user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: delete user
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      description: This api gets a user by id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: get user by id
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: This api updates a user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: update user
+      tags:
+      - User
+  /v1/users/search:
+    get:
+      consumes:
+      - application/json
+      description: This api searches for users by first name
+      parameters:
+      - description: First name
+        in: query
+        name: first_name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Users'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: search users by name
+      tags:
+      - User
 swagger: "2.0"

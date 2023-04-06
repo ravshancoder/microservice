@@ -24,3 +24,13 @@ type GetAllUsersRequest struct {
 	Page  int64 `json:"page"`
 }
 
+type UpdateUserRequest struct {
+	Id           int64  `json:"id"`
+	FirstName    string `json:"first_name"`
+	LastName     string `json:"last_name"`
+	Email        string `json:"email"`
+}
+
+type Users struct {
+	Users []User `json:"users"`
+}

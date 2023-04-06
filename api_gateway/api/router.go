@@ -24,10 +24,7 @@ type Option struct {
 // @version         1.0
 // @description     This is a user service api.
 // @BasePath  /v1
-// @securityDefinitions.apikey ApiKeyAuth
 // @in header
-// @name Authorization
-// @Security ApiKeyAuth
 func New(option Option) *gin.Engine {
 	router := gin.New()
 
@@ -43,8 +40,8 @@ func New(option Option) *gin.Engine {
 	api := router.Group("/v1")
 
 	// users
-	api.POST("/user", handlerV1.CreateUser)
-	api.GET("/user/:id", handlerV1.GetUser)
+	api.POST("/users", handlerV1.CreateUser)
+	api.GET("/user/:id", handlerV1.GetUserById)
 	api.GET("/users", handlerV1.GetAllUsers)
 	api.PUT("/user/:id", handlerV1.UpdateUser)
 	api.DELETE("/user/:id", handlerV1.DeleteUser)

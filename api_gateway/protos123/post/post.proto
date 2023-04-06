@@ -1,6 +1,5 @@
 syntax="proto3";
 
-import "google/protobuf/empty.proto";
 
 package post;
 
@@ -12,7 +11,7 @@ service PostService {
     rpc GetPostForComment(IdRequest) returns (GetPostResponse) {}
     rpc SearchByTitle(Title) returns (Posts) {}
     rpc LikePost(LikeRequest) returns (GetPostResponse) {}
-    rpc UpdatePost(UpdatePostRequest) returns (google.protobuf.Empty) {}
+    rpc UpdatePost(UpdatePostRequest) returns (GetPostResponse) {}
     rpc DeletePost(IdRequest) returns (GetPostResponse) {}
 }
 

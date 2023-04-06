@@ -2,7 +2,6 @@ syntax="proto3";
 
 package user;
 
-import "google/protobuf/empty.proto";
 
 service UserService{
     rpc CreateUser(UserRequest) returns (UserResponse){}
@@ -10,7 +9,7 @@ service UserService{
     rpc GetUserForClient(IdRequest) returns (UserResponse){}
     rpc GetAllUsers(AllUsersRequest) returns (Users) {}
     rpc SearchUsersByName(SearchUsers) returns (Users){}
-    rpc UpdateUser(UpdateUserRequest) returns (google.protobuf.Empty){}
+    rpc UpdateUser(UpdateUserRequest) returns (UserResponse){}
     rpc DeleteUser(IdRequest) returns (UserResponse){}
 }
 
