@@ -12,8 +12,6 @@ import (
 	"github.com/project/user_service/pkg/logger"
 	grpcclient "github.com/project/user_service/service/grpc_client"
 	"github.com/project/user_service/storage"
-
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type UserService struct {
@@ -213,14 +211,14 @@ func (s *UserService) SearchUsersByName(ctx context.Context, req *u.SearchUsers)
 	return res, nil
 }
 
-func (s *UserService) UpdateUser(ctx context.Context, req *u.UpdateUserRequest) (*emptypb.Empty, error) {
+func (s *UserService) UpdateUser(ctx context.Context, req *u.UpdateUserRequest) (*u.UserResponse, error) {
 	err := s.storage.User().UpdateUser(req)
 	if err != nil {
 		log.Println("failed to updating user: ", err)
-		return &emptypb.Empty{}, err
+		return &u.UserResponse{}, err
 	}
 
-	return &emptypb.Empty{}, nil
+	return &u.UserResponse{}, nil
 }
 
 func (s *UserService) DeleteUser(ctx context.Context, req *u.IdRequest) (*u.UserResponse, error) {

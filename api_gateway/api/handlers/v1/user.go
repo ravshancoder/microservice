@@ -1,209 +1,14 @@
-// package v1
-
-// import (
-// 	"context"
-// 	"net/http"
-// 	"strconv"
-// 	"time"
-
-// 	"github.com/gin-gonic/gin"
-// 	"github.com/project/api_gateway/api/handlers/models"
-// 	pu "github.com/project/api_gateway/genproto/user"
-// 	l "github.com/project/api_gateway/pkg/logger"
-// 	"github.com/project/api_gateway/pkg/utils"
-// 	"google.golang.org/protobuf/encoding/protojson"
-// )
-
-// // @Summary Create a user
-// // @Description Create a user
-// // @Tags User
-// // @Accept json
-// // @Produce json
-// // @Param body body models.UserRequest true "Create User"
-// // @Success 200 {object} models.User
-// // @Failure 400 {object} models.StandartErrorModel
-// // @Failure 500 {object} models.StandartErrorModel
-// // @Router /v1/users [post]
-// func (h *handlerV1) CreateUser(c *gin.Context) {
-// 	var (
-// 		body        models.UserRequest
-// 		jspbMarshal protojson.MarshalOptions
-// 	)
-// 	jspbMarshal.UseProtoNames = true
-
-// 	err := c.ShouldBindJSON(&body)
-// 	if err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to bind json", l.Error(err))
-// 		return
-// 	}
-
-// 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
-// 	defer cancel()
-
-// 	response, err := h.serviceManager.UserService().CreateUser(ctx, &pu.UserRequest{
-// 		FirstName: body.FirstName,
-// 		LastName:  body.LastName,
-// 		Email:     body.Email,
-// 	})
-
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to create user", l.Error(err))
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, &models.User{
-// 		Id:        response.Id,
-// 		FirstName: response.FirstName,
-// 		LastName:  response.LastName,
-// 		Email:     response.Email,
-// 	})
-// }
-
-// // @Summary get user by id
-// // @Description This api gets a user by id
-// // @Tags User
-// // @Accept json
-// // @Produce json
-// // @Param id path int true "User ID"
-// // @Success 200 {object} models.User
-// // @Failure 400 {object} models.StandartErrorModel
-// // @Failure 500 {object} models.StandartErrorModel
-// // @Router /v1/users/{id} [get]
-// func (h *handlerV1) GetUser(c *gin.Context) {
-// 	var jspbMarshal protojson.MarshalOptions
-// 	jspbMarshal.UseProtoNames = true
-
-// 	id := c.Param("id")
-// 	intId, err := strconv.Atoi(id)
-// 	if err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to convert id to int", l.Error(err))
-// 		return
-// 	}
-
-// 	response, err := h.serviceManager.UserService().GetUserById(context.Background(), &pu.IdRequest{Id: int64(intId)})
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to get user by id", l.Error(err))
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, response)
-// }
-
-// // route /v1/users [GET]
-// func (h *handlerV1) GetAllUsers(c *gin.Context) {
-// 	queryParams := c.Request.URL.Query()
-
-// 	params, errStr := utils.ParseQueryParams(queryParams)
-// 	if errStr != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{
-// 			"error": errStr[0],
-// 		})
-// 		h.log.Error("failed to parse query params to json: " + errStr[0])
-// 		return
-// 	}
-
-// 	var jspbMarshal protojson.MarshalOptions
-// 	jspbMarshal.UseProtoNames = true
-
-// 	response, err := h.serviceManager.UserService().GetAllUsers(context.Background(), &pu.AllUsersRequest{Limit: params.Limit, Page: params.Page})
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to get all users", l.Error(err))
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, response)
-// }
-
-// // route /v1/users/{id} [PUT]
-// func (h *handlerV1) UpdateUser(c *gin.Context) {
-// 	var (
-// 		body        pu.UpdateUserRequest
-// 		jspbMarshal protojson.MarshalOptions
-// 	)
-// 	jspbMarshal.UseProtoNames = true
-
-// 	err := c.ShouldBindJSON(&body)
-// 	if err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to bind JSON", l.Error(err))
-// 		return
-// 	}
-
-// 	newID, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to convert id to int", l.Error(err))
-// 	}
-// 	body.Id = int64(newID)
-
-// 	response, err := h.serviceManager.UserService().UpdateUser(context.Background(), &body)
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to update user", l.Error(err))
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, response)
-// }
-
-// // route /v1/users/{id} [DELETE]
-// func (h *handlerV1) DeleteUser(c *gin.Context) {
-// 	jspbMarshal := protojson.MarshalOptions{}
-// 	jspbMarshal.UseProtoNames = true
-
-// 	newID, err := strconv.Atoi(c.Param("id"))
-// 	if err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to convert id to int: ", l.Error(err))
-// 		return
-// 	}
-
-// 	response, err := h.serviceManager.UserService().DeleteUser(context.Background(), &pu.IdRequest{Id: int64(newID)})
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to delete user", l.Error(err))
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, response)
-// }
-
 package v1
 
 import (
 	"context"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/project/api_gateway/api/handlers/models"
 	pu "github.com/project/api_gateway/genproto/user"
 	l "github.com/project/api_gateway/pkg/logger"
+	"github.com/project/api_gateway/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc/codes"
@@ -238,7 +43,6 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 		return
 	}
 
-
 	response, err := h.serviceManager.UserService().CreateUser(context.Background(), &pu.UserRequest{
 		FirstName: body.FirstName,
 		LastName:  body.LastName,
@@ -253,12 +57,7 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, &models.User{
-		Id:        response.Id,
-		FirstName: response.FirstName,
-		LastName:  response.LastName,
-		Email:     response.Email,
-	})
+	c.JSON(http.StatusOK, response)
 }
 
 // @Summary update user
@@ -266,13 +65,12 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
-// @Param id path int true "User ID"
 // @Param body body models.UpdateUserRequest true "Update User"
 // @Success 200 {object} models.User
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 404 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /v1/users/{id} [put]
+// @Router /user/{id} [put]
 func (h *handlerV1) UpdateUser(c *gin.Context) {
 	var (
 		body        models.UpdateUserRequest
@@ -281,17 +79,7 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 
 	jspbMarshal.UseProtoNames = true
 
-	// Get user ID from URL path
-	userId, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "invalid user ID",
-		})
-		h.log.Error("Failed to parse user ID: ", l.Error(err))
-		return
-	}
-
-	err = c.ShouldBindJSON(&body)
+	err := c.ShouldBindJSON(&body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -300,11 +88,8 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
-	defer cancel()
-
-	response, err := h.serviceManager.UserService().UpdateUser(ctx, &pu.UpdateUserRequest{
-		Id:        userId,
+	response, err := h.serviceManager.UserService().UpdateUser(context.Background(), &pu.UpdateUserRequest{
+		Id:        body.Id,
 		FirstName: body.FirstName,
 		LastName:  body.LastName,
 		Email:     body.Email,
@@ -339,25 +124,22 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
-// @Param id path int true "User ID"
+// @Param id path string true "Id"
 // @Success 200 {object} models.User
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /v1/users/{id} [get]
+// @Router /user/{id} [get]
 func (h *handlerV1) GetUserById(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid user ID",
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
 		})
-		h.log.Error("Invalid user ID: ", l.Error(err))
+		h.log.Error("Failed to get user by id: ", l.Error(err))
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
-	defer cancel()
-
-	response, err := h.serviceManager.UserService().GetUserById(ctx, &pu.IdRequest{Id: id})
+	response, err := h.serviceManager.UserService().GetUserById(context.Background(), &pu.IdRequest{Id: int64(id)})
 	if err != nil {
 		statusCode := http.StatusInternalServerError
 		if status.Code(err) == codes.NotFound {
@@ -370,12 +152,7 @@ func (h *handlerV1) GetUserById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, &models.User{
-		Id:        response.Id,
-		FirstName: response.FirstName,
-		LastName:  response.LastName,
-		Email:     response.Email,
-	})
+	c.JSON(http.StatusOK, response)
 }
 
 // @Summary get all users
@@ -383,19 +160,26 @@ func (h *handlerV1) GetUserById(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
-// @Param body body models.GetAllUsersRequest true "Get All User"
+// @Param limit query int true "Limit"
+// @Param page query int true "Page"
 // @Success 200 {object} []models.User
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /v1/users [get]
+// @Router /users [get]
 func (h *handlerV1) GetAllUsers(c *gin.Context) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
-	defer cancel()
+	queryParams := c.Request.URL.Query()
+	params, errstr := utils.ParseQueryParams(queryParams)
+	if errstr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": errstr[0],
+		})
+		h.log.Error("Failed to get all users: " + errstr[0])
+		return
+	}
 
-	var userreq models.GetAllUsersRequest
-	response, err := h.serviceManager.UserService().GetAllUsers(ctx, &pu.AllUsersRequest{
-		Page:  userreq.Page,
-		Limit: userreq.Limit,
+	response, err := h.serviceManager.UserService().GetAllUsers(context.Background(), &pu.AllUsersRequest{
+		Limit: params.Limit,
+		Page:  params.Page,
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -405,17 +189,7 @@ func (h *handlerV1) GetAllUsers(c *gin.Context) {
 		return
 	}
 
-	var users []models.User
-	for _, user := range response.Users {
-		users = append(users, models.User{
-			Id:        user.Id,
-			FirstName: user.FirstName,
-			LastName:  user.LastName,
-			Email:     user.Email,
-		})
-	}
-
-	c.JSON(http.StatusOK, users)
+	c.JSON(http.StatusOK, response)
 }
 
 // @Summary delete user
@@ -423,11 +197,11 @@ func (h *handlerV1) GetAllUsers(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
-// @Param id path int true "User ID"
+// @Param id path int true "Id"
 // @Success 200 {object} models.User
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /v1/users/{id} [delete]
+// @Router /user/{id} [delete]
 func (h *handlerV1) DeleteUser(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -438,10 +212,7 @@ func (h *handlerV1) DeleteUser(c *gin.Context) {
 		return
 	}
 
-	
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
-	defer cancel()
-	response, err := h.serviceManager.UserService().DeleteUser(ctx, &pu.IdRequest{
+	response, err := h.serviceManager.UserService().DeleteUser(context.Background(), &pu.IdRequest{
 		Id: id,
 	})
 
@@ -466,28 +237,27 @@ func (h *handlerV1) DeleteUser(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
-// @Param first_name query string true "First name"
+// @Param first_name query string true "FirstName"
 // @Success 200 {object}  models.Users
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /v1/users/search [get]
+// @Router /users/search [get]
 func (h *handlerV1) SearchUsers(c *gin.Context) {
-	var (
-		searchQuery pu.SearchUsers
-	)
+	
+	queryParams := c.Request.URL.Query()
+	params, strerr := utils.ParseQueryParams(queryParams)
 
-	if searchQuery.FirstName = c.Query("first_name"); searchQuery.FirstName == "" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "missing required parameter 'first_name'",
+	if strerr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": strerr[0],
 		})
-		h.log.Error("Missing required parameter 'first_name'")
+		h.log.Error("Failed to get all users: " + strerr[0])
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
-	defer cancel()
-
-	response, err := h.serviceManager.UserService().SearchUsersByName(ctx, &searchQuery)
+	response, err := h.serviceManager.UserService().SearchUsersByName(context.Background(), &pu.SearchUsers{
+		Search: params.Search,
+	})
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -496,17 +266,6 @@ func (h *handlerV1) SearchUsers(c *gin.Context) {
 		h.log.Error("Failed to search users: ", l.Error(err))
 		return
 	}
-	var users []models.User
-	for _, response := range response.Users {
-		user := models.User{
-			Id:        response.Id,
-			FirstName: response.FirstName,
-			LastName:  response.LastName,
-			Email:     response.Email,
-		}
-		users = append(users, user)
-	}
-	c.JSON(http.StatusOK, &models.Users{
-		Users: users,
-	})
+	
+	c.JSON(http.StatusOK, response)
 }

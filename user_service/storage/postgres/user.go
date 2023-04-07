@@ -101,7 +101,7 @@ func (r *UserRepo) GetAllUsers(req *u.AllUsersRequest) (*u.Users, error) {
 
 func (r *UserRepo) SearchUsersByName(req *u.SearchUsers) (*u.Users, error) {
 	var res u.Users
-	query := fmt.Sprint("select id, first_name, last_name, email, created_at, updated_at from users where first_name ilike '%" + req.FirstName + "%' and deleted_at is null")
+	query := fmt.Sprint("select id, first_name, last_name, email, created_at, updated_at from users where first_name ilike '%" + req.Search + "%' and deleted_at is null")
 
 	rows, err := r.db.Query(query)
 	if err != nil {

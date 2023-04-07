@@ -5,19 +5,33 @@ import (
 	"net/http"
 	"strconv"
 
-	pp "github.com/project/api_gateway/genproto/post"
+	"github.com/project/api_gateway/api/handlers/models"
+	pu "github.com/project/api_gateway/genproto/post"
 	l "github.com/project/api_gateway/pkg/logger"
+	"github.com/project/api_gateway/pkg/utils"
 
 	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-// route /v1/post [POST]
+// @Summary create post
+// @Description This api creates a post
+// @Tags Post
+// @Accept json
+// @Produce json
+// @Param body body models.PostRequest true "Create Post"
+// @Success 200 {object} models.Post
+// @Failure 400 {object} models.StandartErrorModel
+// @Failure 500 {object} models.StandartErrorModel
+// @Router /post [post]
 func (h *handlerV1) CreatePost(c *gin.Context) {
 	var (
-		body        pp.PostRequest
+		body        models.PostRequest
 		jspbMarshal protojson.MarshalOptions
 	)
+
 	jspbMarshal.UseProtoNames = true
 
 	err := c.ShouldBindJSON(&body)
@@ -25,82 +39,44 @@ func (h *handlerV1) CreatePost(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to bind JSON", l.Error(err))
+		h.log.Error("Failed to bind json: ", l.Error(err))
 		return
 	}
 
-	response, err := h.serviceManager.PostService().CreatePost(context.Background(), &body)
+	response, err := h.serviceManager.PostService().CreatePost(context.Background(), &pu.PostRequest{
+		Title:       body.Title,
+		Description: body.Description,
+		UserId:      body.UserId,
+	})
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to create post", l.Error(err))
-		return
-	}
-
-	c.JSON(http.StatusCreated, response)
-}
-
-// route /v1/post/{id} [GET]
-func (h *handlerV1) GetPost(c *gin.Context) {
-	var jspbMarshal protojson.MarshalOptions
-	jspbMarshal.UseProtoNames = true
-
-	id := c.Param("id")
-	intID, err := strconv.Atoi(id)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		h.log.Error("failed to convert id to int", l.Error(err))
-		return
-	}
-
-	response, err := h.serviceManager.PostService().GetPostById(context.Background(), &pp.IdRequest{Id: int64(intID)})
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		h.log.Error("failed to get post by id", l.Error(err))
+		h.log.Error("failed to create user", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusOK, response)
 }
 
-// route /v1/posts/{id} [GET]
-func (h *handlerV1) GetAllPosts(c *gin.Context) {
-	var jspbMarshal protojson.MarshalOptions
-	jspbMarshal.UseProtoNames = true
-
-	id := c.Param("id")
-	intId, err := strconv.Atoi(id)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		h.log.Error("failed to convert id to int", l.Error(err))
-		return
-	}
-
-	response, err := h.serviceManager.PostService().GetPostByUserId(context.Background(), &pp.IdRequest{Id: int64(intId)})
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		h.log.Error("failed to get posts by user id", l.Error(err))
-		return
-	}
-
-	c.JSON(http.StatusOK, response)
-}
-
-// route /v1/post/{id} [PUT]
+// @Summary update post
+// @Description This api updates a post
+// @Tags Post
+// @Accept json
+// @Produce json
+// @Param body body models.UpdatePostRequest true "Update Post"
+// @Success 200 {object} models.Post
+// @Failure 400 {object} models.StandartErrorModel
+// @Failure 404 {object} models.StandartErrorModel
+// @Failure 500 {object} models.StandartErrorModel
+// @Router /post/{id} [put]
 func (h *handlerV1) UpdatePost(c *gin.Context) {
 	var (
-		body        pp.UpdatePostRequest
+		body        models.UpdatePostRequest
 		jspbMarshal protojson.MarshalOptions
 	)
+
 	jspbMarshal.UseProtoNames = true
 
 	err := c.ShouldBindJSON(&body)
@@ -108,51 +84,177 @@ func (h *handlerV1) UpdatePost(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to bind JSON", l.Error(err))
+		h.log.Error("Failed to bind json: ", l.Error(err))
 		return
 	}
 
-	newID, err := strconv.Atoi(c.Param("id"))
+	response, err := h.serviceManager.PostService().UpdatePost(context.Background(), &pu.UpdatePostRequest{
+		Id:          body.Id,
+		Title:       body.Title,
+		Description: body.Description,
+	})
+
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		if status.Code(err) == codes.NotFound {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error": "Post not found",
+			})
+			h.log.Error("Post not found", l.Error(err))
+			return
+		}
+
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to convert id to int", l.Error(err))
+		h.log.Error("failed to update Post", l.Error(err))
+		return
 	}
-	body.Id = int64(newID)
 
-	response, err := h.serviceManager.PostService().UpdatePost(context.Background(), &body)
+	c.JSON(http.StatusOK, &models.Post{
+		Id:          response.Id,
+		Title:       response.Title,
+		Description: response.Description,
+	})
+}
+
+// @Summary get post by id
+// @Description This api gets a post by id
+// @Tags Post
+// @Accept json
+// @Produce json
+// @Param id path string true "Id"
+// @Success 200 {object} models.Post
+// @Failure 400 {object} models.StandartErrorModel
+// @Failure 500 {object} models.StandartErrorModel
+// @Router /post/{id} [get]
+func (h *handlerV1) GetPostById(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("failed to update post", l.Error(err))
+		h.log.Error("Failed to get post by id: ", l.Error(err))
+		return
+	}
+
+	response, err := h.serviceManager.PostService().GetPostById(context.Background(), &pu.IdRequest{Id: int64(id)})
+	if err != nil {
+		statusCode := http.StatusInternalServerError
+		if status.Code(err) == codes.NotFound {
+			statusCode = http.StatusNotFound
+		}
+		c.JSON(statusCode, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to get post by id: ", l.Error(err))
 		return
 	}
 
 	c.JSON(http.StatusOK, response)
 }
 
-// route /v1/post/{id} [DELETE]
-func (h *handlerV1) DeletePost(c *gin.Context) {
-	jspbMarshal := protojson.MarshalOptions{}
-	jspbMarshal.UseProtoNames = true
+// // @Summary get all users
+// // @Description This api gets all users
+// // @Tags User
+// // @Accept json
+// // @Produce json
+// // @Param limit query int true "Limit"
+// // @Param page query int true "Page"
+// // @Success 200 {object} []models.User
+// // @Failure 400 {object} models.StandartErrorModel
+// // @Failure 500 {object} models.StandartErrorModel
+// // @Router /users [get]
+// func (h *handlerV1) GetAllUsers(c *gin.Context) {
+// 	queryParams := c.Request.URL.Query()
+// 	params, errstr := utils.ParseQueryParams(queryParams)
+// 	if errstr != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{
+// 			"error": errstr[0],
+// 		})
+// 		h.log.Error("Failed to get all users: " + errstr[0])
+// 		return
+// 	}
+// 	response, err := h.serviceManager.UserService().GetAllUsers(context.Background(), &pu.AllUsersRequest{
+// 		Limit: params.Limit,
+// 		Page:  params.Page,
+// 	})
+// 	if err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{
+// 			"error": err.Error(),
+// 		})
+// 		h.log.Error("Failed to get all users: ", l.Error(err))
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, response)
+// }
 
-	newID, err := strconv.Atoi(c.Param("id"))
+// @Summary delete post
+// @Description This api deletes a post
+// @Tags Post
+// @Accept json
+// @Produce json
+// @Param id path int true "Id"
+// @Success 200 {object} models.Post
+// @Failure 400 {object} models.StandartErrorModel
+// @Failure 500 {object} models.StandartErrorModel
+// @Router /post/{id} [delete]
+func (h *handlerV1) DeletePost(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+			"error": "Invalid user ID",
 		})
-		h.log.Error("failed to convert id to int: ", l.Error(err))
+		h.log.Error("Failed to parse user ID: ", l.Error(err))
 		return
 	}
 
-	response, err := h.serviceManager.PostService().DeletePost(context.Background(), &pp.IdRequest{Id: int64(newID)})
+	response, err := h.serviceManager.PostService().DeletePost(context.Background(), &pu.IdRequest{
+		Id: id,
+	})
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
 		h.log.Error("failed to delete post", l.Error(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+// @Summary search users by name
+// @Description This api searches for users by first name
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param first_name query string true "FirstName"
+// @Success 200 {object}  models.Users
+// @Failure 400 {object} models.StandartErrorModel
+// @Failure 500 {object} models.StandartErrorModel
+// @Router /users/search [get]
+func (h *handlerV1) SearchPost(c *gin.Context) {
+
+	queryParams := c.Request.URL.Query()
+	params, strerr := utils.ParseQueryParams(queryParams)
+
+	if strerr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": strerr[0],
+		})
+		h.log.Error("Failed to get all users: " + strerr[0])
+		return
+	}
+
+	response, err := h.serviceManager.PostService().SearchByTitle(context.Background(), &pu.Title{
+		Title: params.Search,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("Failed to search users: ", l.Error(err))
 		return
 	}
 

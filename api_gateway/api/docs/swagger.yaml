@@ -1,15 +1,67 @@
 basePath: /v1
 definitions:
-  models.GetAllUsersRequest:
+  models.Comment:
     properties:
-      limit:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
         type: integer
-      page:
+      last_name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.CommentRequest:
+    properties:
+      post_id:
+        type: integer
+      text:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.Post:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.PostRequest:
+    properties:
+      description:
+        type: string
+      title:
+        type: string
+      user_id:
         type: integer
     type: object
   models.StandartErrorModel:
     properties:
       error: {}
+    type: object
+  models.UpdatePostRequest:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      user_id:
+        type: integer
     type: object
   models.UpdateUserRequest:
     properties:
@@ -59,7 +111,339 @@ info:
   title: Swagger for user api
   version: "1.0"
 paths:
+  /comment:
+    post:
+      consumes:
+      - application/json
+      description: This api write comment
+      parameters:
+      - description: Write Comment
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.CommentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Comment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: Write comment
+      tags:
+      - Comment
+  /comment/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: This api deletes a comment
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Comment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: delete comment
+      tags:
+      - Comment
+    get:
+      consumes:
+      - application/json
+      description: This api gets a comment by id
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Comment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: get comment by id
+      tags:
+      - Comment
+  /post:
+    post:
+      consumes:
+      - application/json
+      description: This api creates a post
+      parameters:
+      - description: Create Post
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.PostRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Post'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: create post
+      tags:
+      - Post
+  /post/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: This api deletes a post
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Post'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: delete post
+      tags:
+      - Post
+    get:
+      consumes:
+      - application/json
+      description: This api gets a post by id
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Post'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: get post by id
+      tags:
+      - Post
+    put:
+      consumes:
+      - application/json
+      description: This api updates a post
+      parameters:
+      - description: Update Post
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdatePostRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Post'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: update post
+      tags:
+      - Post
+  /user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: This api deletes a user
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: delete user
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      description: This api gets a user by id
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: get user by id
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: This api updates a user
+      parameters:
+      - description: Update User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: update user
+      tags:
+      - User
   /users:
+    get:
+      consumes:
+      - application/json
+      description: This api gets all users
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: Page
+        in: query
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      summary: get all users
+      tags:
+      - User
     post:
       consumes:
       - application/json
@@ -89,140 +473,13 @@ paths:
       summary: create user
       tags:
       - User
-  /v1/users:
-    get:
-      consumes:
-      - application/json
-      description: This api gets all users
-      parameters:
-      - description: Get All User
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/models.GetAllUsersRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.User'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-      summary: get all users
-      tags:
-      - User
-  /v1/users/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: This api deletes a user
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.User'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-      summary: delete user
-      tags:
-      - User
-    get:
-      consumes:
-      - application/json
-      description: This api gets a user by id
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.User'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-      summary: get user by id
-      tags:
-      - User
-    put:
-      consumes:
-      - application/json
-      description: This api updates a user
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Update User
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/models.UpdateUserRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.User'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-      summary: update user
-      tags:
-      - User
-  /v1/users/search:
+  /users/search:
     get:
       consumes:
       - application/json
       description: This api searches for users by first name
       parameters:
-      - description: First name
+      - description: FirstName
         in: query
         name: first_name
         required: true

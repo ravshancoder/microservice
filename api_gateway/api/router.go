@@ -43,23 +43,25 @@ func New(option Option) *gin.Engine {
 	api.POST("/users", handlerV1.CreateUser)
 	api.GET("/user/:id", handlerV1.GetUserById)
 	api.GET("/users", handlerV1.GetAllUsers)
+	api.GET("/users/search", handlerV1.SearchUsers)
 	api.PUT("/user/:id", handlerV1.UpdateUser)
 	api.DELETE("/user/:id", handlerV1.DeleteUser)
 
 	// posts
 	api.POST("/post", handlerV1.CreatePost)
-	api.GET("/post/:id", handlerV1.GetPost)
-	api.GET("/posts/:id", handlerV1.GetAllPosts)
+	api.GET("/post/:id", handlerV1.GetPostById)
+	// api.GET("/posts/:id", handlerV1.GetAllPosts)
+	api.GET("/post/search", handlerV1.SearchPost)
 	api.PUT("/post/:id", handlerV1.UpdatePost)
 	api.DELETE("/post/:id", handlerV1.DeletePost)
 
 	// comment
 	api.POST("/comment", handlerV1.WriteComment)
-	api.GET("/comments/:id", handlerV1.GetComments)
+	api.GET("/comments/:id", handlerV1.GetCommentsForPost)
 	api.DELETE("/comment/:id", handlerV1.DeleteComment)
 
 	url := ginSwagger.URL("swagger/doc.json")
 	api.GET("swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
-	
+
 	return router
 }
