@@ -1,8 +1,8 @@
 package models
 
 // Error ...
-type Error struct {
-	Message string `json:"message"`
+type ResponseError struct {
+	Error interface{} `json:"error"`
 }
 
 // StandardErrorModel ...

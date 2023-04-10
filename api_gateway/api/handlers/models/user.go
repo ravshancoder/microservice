@@ -25,12 +25,19 @@ type GetAllUsersRequest struct {
 }
 
 type UpdateUserRequest struct {
-	Id           int64  `json:"id"`
-	FirstName    string `json:"first_name"`
-	LastName     string `json:"last_name"`
-	Email        string `json:"email"`
+	Id        int64  `json:"id"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
 }
 
 type Users struct {
 	Users []User `json:"users"`
+}
+
+type RegisterModel struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
 }
