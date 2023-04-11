@@ -12,4 +12,5 @@ type UserStoreI interface {
 	SearchUsersByName(*u.SearchUsers) (*u.Users, error)
 	UpdateUser(*u.UpdateUserRequest) error
 	DeleteUser(*u.IdRequest) (*u.UserResponse, error)
+	CheckFiedld(*u.CheckFieldReq)(*u.CheckFieldRes, error)
 }

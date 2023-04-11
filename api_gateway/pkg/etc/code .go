@@ -10,7 +10,6 @@ var (
 )
 
 func GenerateCode(max int) string {
-	
 	b := make([]byte, max)
 	n, err := io.ReadAtLeast(rand.Reader, b, max)
 	if n != max {

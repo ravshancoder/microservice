@@ -3,10 +3,10 @@ package services
 import (
 	"fmt"
 
-	"github.com/project/api_gateway/config"
-	pc "github.com/project/api_gateway/genproto/comment"
-	pp "github.com/project/api_gateway/genproto/post"
-	pu "github.com/project/api_gateway/genproto/user"
+	"github.com/microservice/api_gateway/config"
+	pc "github.com/microservice/api_gateway/genproto/comment"
+	pp "github.com/microservice/api_gateway/genproto/post"
+	pu "github.com/microservice/api_gateway/genproto/user"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

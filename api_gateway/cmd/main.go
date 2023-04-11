@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/project/api_gateway/api"
-	"github.com/project/api_gateway/config"
-	"github.com/project/api_gateway/pkg/logger"
-	"github.com/project/api_gateway/services"
+	"github.com/microservice/api_gateway/api"
+	"github.com/microservice/api_gateway/config"
+	"github.com/microservice/api_gateway/pkg/logger"
+	"github.com/microservice/api_gateway/services"
 )
 
 func main() {

@@ -11,6 +11,8 @@ service UserService{
     rpc SearchUsersByName(SearchUsers) returns (Users){}
     rpc UpdateUser(UpdateUserRequest) returns (UserResponse){}
     rpc DeleteUser(IdRequest) returns (UserResponse){}
+    rpc CheckField(CheckFieldReq) returns (CheckFieldRes) {}
+
 }
 
 message UserRequest{
@@ -25,6 +27,8 @@ message UpdateUserRequest {
     string email = 3;
     int64 id = 4;
 }
+
+message Empty{}
 
 message SearchUsers {
     string search = 1;
@@ -72,3 +76,13 @@ message AllUsersRequest{
 message Users {
     repeated UserResponse users = 1;
 }
+
+message CheckFieldReq {
+    string field = 1;
+    string value = 2;
+}
+
+message CheckFieldRes {
+    bool exists = 1;
+}
+

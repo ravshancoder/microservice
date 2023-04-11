@@ -168,3 +168,21 @@ func (r *UserRepo) DeleteUser(user *u.IdRequest) (*u.UserResponse, error) {
 
 	return &temp, nil
 }
+
+
+func (r *UserRepo) CheckFiedld(req *u.CheckFieldReq) (*u.CheckFieldRes, error) {
+	query := fmt.Sprintf("SELECT 1 FROM users WHERE %s=$1", req.Field)
+	res := &u.CheckFieldRes{}
+	temp := -1
+	err := r.db.QueryRow(query, req.Value).Scan(&temp)
+	if err != nil {
+		res.Exists = false
+		return res, nil
+	}
+	if temp == 0 {
+		res.Exists = true
+	} else {
+		res.Exists = false
+	}
+	return res, nil
+}

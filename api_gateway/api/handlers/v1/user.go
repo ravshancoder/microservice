@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/project/api_gateway/api/handlers/models"
-	pu "github.com/project/api_gateway/genproto/user"
-	l "github.com/project/api_gateway/pkg/logger"
-	"github.com/project/api_gateway/pkg/utils"
+	"github.com/microservice/api_gateway/api/handlers/models"
+	pu "github.com/microservice/api_gateway/genproto/user"
+	l "github.com/microservice/api_gateway/pkg/logger"
+	"github.com/microservice/api_gateway/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc/codes"
@@ -243,7 +243,7 @@ func (h *handlerV1) DeleteUser(c *gin.Context) {
 // @Failure 500 {object} models.StandartErrorModel
 // @Router /users/search [get]
 func (h *handlerV1) SearchUsers(c *gin.Context) {
-	
+
 	queryParams := c.Request.URL.Query()
 	params, strerr := utils.ParseQueryParams(queryParams)
 
@@ -266,6 +266,6 @@ func (h *handlerV1) SearchUsers(c *gin.Context) {
 		h.log.Error("Failed to search users: ", l.Error(err))
 		return
 	}
-	
+
 	c.JSON(http.StatusOK, response)
 }

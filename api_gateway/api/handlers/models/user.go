@@ -40,4 +40,5 @@ type RegisterModel struct {
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
 	Password  string `json:"password"`
+	Code      string `json:"code"`
 }

@@ -8,19 +8,24 @@ import (
 
 type Config struct {
 	Environment string // develop, staging, production
-	
+
 	// context timeout in seconds
 	CtxTimeout int
 
 	LogLevel string
 	HTTPPort string
+
+	UserServiceHost    string
+	UserServicePort    string
 	
-	UserServiceHost string
-	UserServicePort string
-	PostServiceHost  string
-	PostServicePort  string
+	PostServiceHost    string
+	PostServicePort    string
+
 	CommentServiceHost string
 	CommentServicePort string
+
+	RedisHost          string
+	RedisPort          string
 }
 
 func Load() Config {
@@ -30,7 +35,7 @@ func Load() Config {
 
 	c.LogLevel = cast.ToString(getOrReturnDefault("LOG_LEVEL", "debug"))
 	c.HTTPPort = cast.ToString(getOrReturnDefault("HTTP_PORT", ":8080"))
-	
+
 	c.UserServiceHost = cast.ToString(getOrReturnDefault("USER_SERVICE_HOST", "localhost"))
 	c.UserServicePort = cast.ToString(getOrReturnDefault("USER_SERVICE_PORT", "8000"))
 
@@ -40,6 +45,10 @@ func Load() Config {
 	c.CommentServiceHost = cast.ToString(getOrReturnDefault("COMMENT_SERVICE_HOST", "localhost"))
 	c.CommentServicePort = cast.ToString(getOrReturnDefault("COMMENT_SERVICE_PORT", "8020"))
 
+	c.RedisHost = cast.ToString(getOrReturnDefault("REDIS_HOST", "localhost"))
+	c.RedisPort = cast.ToString(getOrReturnDefault("REDIS_PORT", "6379"))
+
+	c.CtxTimeout = cast.ToInt(getOrReturnDefault("CTX_TIMEOUT",7))
 
 	return c
 }

@@ -1,3 +1,3 @@
 [submodule "api_gateway/protos"]
 	path = api_gateway/protos
-	url = git@gitlab.com:black-progrommers/protos.git
+	url = git@github.com:ravshancoder/protos.git

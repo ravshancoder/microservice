@@ -9,3 +9,7 @@ type ResponseError struct {
 type StandartErrorModel struct {
 	Error error `json:"error"`
 }
+
+type ErrorMessage struct {
+	Message string  `json:"message"`
+}

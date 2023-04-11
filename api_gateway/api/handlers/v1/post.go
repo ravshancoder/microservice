@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/project/api_gateway/api/handlers/models"
-	pu "github.com/project/api_gateway/genproto/post"
-	l "github.com/project/api_gateway/pkg/logger"
-	"github.com/project/api_gateway/pkg/utils"
+	"github.com/microservice/api_gateway/api/handlers/models"
+	pu "github.com/microservice/api_gateway/genproto/post"
+	l "github.com/microservice/api_gateway/pkg/logger"
+	"github.com/microservice/api_gateway/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc/codes"

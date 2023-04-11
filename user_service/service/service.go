@@ -5,6 +5,8 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	c "github.com/project/user_service/genproto/comment"
 	p "github.com/project/user_service/genproto/post"
@@ -271,5 +273,14 @@ func (s *UserService) DeleteUser(ctx context.Context, req *u.IdRequest) (*u.User
 		res.Posts = append(res.Posts, &pst)
 	}
 
+	return res, nil
+}
+
+func (s *UserService) CheckField(ctx context.Context, req *u.CheckFieldReq) (*u.CheckFieldRes, error) {
+	res, err := s.storage.User().CheckFiedld(req)
+	if err != nil {
+		s.Logger.Error("error delete", logger.Any("Error delete users", err))
+		return &u.CheckFieldRes{}, status.Error(codes.Internal, "something went wrong, please check user info")
+	}
 	return res, nil
 }
