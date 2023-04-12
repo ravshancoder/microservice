@@ -8,8 +8,8 @@ import (
 	p "github.com/project/post_service/genproto/post"
 )
 
-func (r *PostRepo) CreatePost(post *p.PostRequest) (*p.GetPostResponse, error) {
-	var res p.GetPostResponse
+func (r *PostRepo) CreatePost(post *p.PostRequest) (*p.PostResponse, error) {
+	var res p.PostResponse
 	err := r.db.QueryRow(`
 		insert into 
 			posts(title, description, user_id) 
@@ -20,14 +20,14 @@ func (r *PostRepo) CreatePost(post *p.PostRequest) (*p.GetPostResponse, error) {
 
 	if err != nil {
 		log.Println("failed to create post")
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 
 	return &res, nil
 }
 
-func (r *PostRepo) GetPostById(post *p.IdRequest) (*p.GetPostResponse, error) {
-	res := p.GetPostResponse{}
+func (r *PostRepo) GetPostById(post *p.IdRequest) (*p.PostResponse, error) {
+	res := p.PostResponse{}
 	err := r.db.QueryRow(`
 		select 
 			id, title, description, likes, user_id, created_at, updated_at 
@@ -38,7 +38,7 @@ func (r *PostRepo) GetPostById(post *p.IdRequest) (*p.GetPostResponse, error) {
 
 	if err != nil {
 		log.Println("failed to get post")
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 
 	return &res, nil
@@ -60,7 +60,7 @@ func (r *PostRepo) GetPostByUserId(id *p.IdRequest) (*p.Posts, error) {
 	}
 
 	for rows.Next() {
-		post := p.GetPostResponse{}
+		post := p.PostResponse{}
 
 		err = rows.Scan(
 			&post.Id,
@@ -99,7 +99,7 @@ func (r *PostRepo) GetPostForUser(id *p.IdRequest) (*p.Posts, error) {
 	}
 
 	for rows.Next() {
-		post := p.GetPostResponse{}
+		post := p.PostResponse{}
 
 		err = rows.Scan(
 			&post.Id,
@@ -122,8 +122,8 @@ func (r *PostRepo) GetPostForUser(id *p.IdRequest) (*p.Posts, error) {
 	return &res, nil
 }
 
-func (r *PostRepo) GetPostForComment(post *p.IdRequest) (*p.GetPostResponse, error) {
-	res := p.GetPostResponse{}
+func (r *PostRepo) GetPostForComment(post *p.IdRequest) (*p.PostResponse, error) {
+	res := p.PostResponse{}
 	err := r.db.QueryRow(`
 		select 
 			id, title, description, likes, user_id, created_at, updated_at 
@@ -134,7 +134,7 @@ func (r *PostRepo) GetPostForComment(post *p.IdRequest) (*p.GetPostResponse, err
 
 	if err != nil {
 		log.Println("failed to get post")
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 
 	return &res, nil
@@ -151,7 +151,7 @@ func (r *PostRepo) SearchByTitle(title *p.Title) (*p.Posts, error) {
 	}
 
 	for rows.Next() {
-		post := p.GetPostResponse{}
+		post := p.PostResponse{}
 
 		err = rows.Scan(
 			&post.Id,
@@ -173,8 +173,8 @@ func (r *PostRepo) SearchByTitle(title *p.Title) (*p.Posts, error) {
 	return &res, nil
 }
 
-func (r *PostRepo) LikePost(l *p.LikeRequest) (*p.GetPostResponse, error) {
-	res := p.GetPostResponse{}
+func (r *PostRepo) LikePost(l *p.LikeRequest) (*p.PostResponse, error) {
+	res := p.PostResponse{}
 	if l.IsLiked {
 		err := r.db.QueryRow(`
 			update 
@@ -187,7 +187,7 @@ func (r *PostRepo) LikePost(l *p.LikeRequest) (*p.GetPostResponse, error) {
 				id, title, description, likes, user_id, created_at, updated_at`, l.PostId).Scan(&res.Id, &res.Title, &res.Description, &res.Likes, &res.UserId, &res.CreatedAt, &res.UpdatedAt)
 		if err != nil {
 			log.Println("failed to like post")
-			return &p.GetPostResponse{}, err
+			return &p.PostResponse{}, err
 		}
 	} else {
 		err := r.db.QueryRow(`
@@ -200,7 +200,7 @@ func (r *PostRepo) LikePost(l *p.LikeRequest) (*p.GetPostResponse, error) {
 
 		if err != nil {
 			log.Println("failed to like post")
-			return &p.GetPostResponse{}, err
+			return &p.PostResponse{}, err
 		}
 	}
 
@@ -225,8 +225,8 @@ func (r *PostRepo) UpdatePost(post *p.UpdatePostRequest) error {
 	return nil
 }
 
-func (r *PostRepo) DeletePost(id *p.IdRequest) (*p.GetPostResponse, error) {
-	post := p.GetPostResponse{}
+func (r *PostRepo) DeletePost(id *p.IdRequest) (*p.PostResponse, error) {
+	post := p.PostResponse{}
 	err := r.db.QueryRow(`
 		update 
 			posts 
@@ -239,7 +239,7 @@ func (r *PostRepo) DeletePost(id *p.IdRequest) (*p.GetPostResponse, error) {
 
 	if err != nil {
 		log.Println("failed to delete post")
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 
 	return &post, nil

@@ -4,3 +4,6 @@
 [submodule "comment_service/protos"]
 	path = comment_service/protos
 	url = git@github.com:ravshancoder/protos.git
+[submodule "post_service/protos"]
+	path = post_service/protos
+	url = git@github.com:ravshancoder/protos.git

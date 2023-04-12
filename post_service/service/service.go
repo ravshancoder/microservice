@@ -12,8 +12,6 @@ import (
 	"github.com/project/post_service/pkg/logger"
 	grpcclient "github.com/project/post_service/service/grpc_client"
 	"github.com/project/post_service/storage"
-
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type PostService struct {
@@ -30,17 +28,17 @@ func NewPostService(db *sqlx.DB, log logger.Logger, client grpcclient.Clients) *
 	}
 }
 
-func (s *PostService) CreatePost(ctx context.Context, req *p.PostRequest) (*p.GetPostResponse, error) {
+func (s *PostService) CreatePost(ctx context.Context, req *p.PostRequest) (*p.PostResponse, error) {
 	res, err := s.storage.Post().CreatePost(req)
 	if err != nil {
 		log.Println("failed to create post: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 
 	user, err := s.Client.User().GetUserForClient(ctx, &u.IdRequest{Id: res.UserId})
 	if err != nil {
 		log.Println("failed to getting user for create post: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 	res.UserName = user.FirstName + " " + user.LastName
 	res.UserEmail = user.Email
@@ -48,17 +46,17 @@ func (s *PostService) CreatePost(ctx context.Context, req *p.PostRequest) (*p.Ge
 	return res, nil
 }
 
-func (s *PostService) GetPostById(ctx context.Context, req *p.IdRequest) (*p.GetPostResponse, error) {
+func (s *PostService) GetPostById(ctx context.Context, req *p.IdRequest) (*p.PostResponse, error) {
 	res, err := s.storage.Post().GetPostById(req)
 	if err != nil {
 		log.Println("failed to get post by id: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 
 	postUser, err := s.Client.User().GetUserForClient(ctx, &u.IdRequest{Id: res.UserId})
 	if err != nil {
 		log.Println("failed to getting user for get post by id: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 	res.UserName = postUser.FirstName + " " + postUser.LastName
 	res.UserEmail = postUser.Email
@@ -66,14 +64,14 @@ func (s *PostService) GetPostById(ctx context.Context, req *p.IdRequest) (*p.Get
 	comments, err := s.Client.Comment().GetCommentsForPost(ctx, &c.GetAllCommentsRequest{PostId: res.Id})
 	if err != nil {
 		log.Println("failed to getting comments for get post by id: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 
 	for _, comment := range comments.Comments {
 		comUser, err := s.Client.User().GetUserForClient(ctx, &u.IdRequest{Id: comment.UserId})
 		if err != nil {
 			log.Println("failed to get user for comment: ", err)
-			return &p.GetPostResponse{}, err
+			return &p.PostResponse{}, err
 		}
 
 		com := p.Comment{}
@@ -149,11 +147,11 @@ func (s *PostService) GetPostForUser(ctx context.Context, req *p.IdRequest) (*p.
 	return res, nil
 }
 
-func (s *PostService) GetPostForComment(ctx context.Context, req *p.IdRequest) (*p.GetPostResponse, error) {
+func (s *PostService) GetPostForComment(ctx context.Context, req *p.IdRequest) (*p.PostResponse, error) {
 	res, err := s.storage.Post().GetPostForComment(req)
 	if err != nil {
 		log.Println("failed to get post for comment: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 
 	return res, nil
@@ -205,11 +203,11 @@ func (s *PostService) SearchByTitle(ctx context.Context, req *p.Title) (*p.Posts
 	return res, nil
 }
 
-func (s *PostService) LikePost(ctx context.Context, req *p.LikeRequest) (*p.GetPostResponse, error) {
+func (s *PostService) LikePost(ctx context.Context, req *p.LikeRequest) (*p.PostResponse, error) {
 	res, err := s.storage.Post().LikePost(req)
 	if err != nil {
 		log.Println("failed to like post: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 	if !req.IsLiked {
 		res.Likes -= 1
@@ -218,7 +216,7 @@ func (s *PostService) LikePost(ctx context.Context, req *p.LikeRequest) (*p.GetP
 	postUser, err := s.Client.User().GetUserForClient(ctx, &u.IdRequest{Id: res.UserId})
 	if err != nil {
 		log.Println("failed to getting user for like post: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 	res.UserName = postUser.FirstName + " " + postUser.LastName
 	res.UserEmail = postUser.Email
@@ -226,14 +224,14 @@ func (s *PostService) LikePost(ctx context.Context, req *p.LikeRequest) (*p.GetP
 	comments, err := s.Client.Comment().GetCommentsForPost(ctx, &c.GetAllCommentsRequest{PostId: res.Id})
 	if err != nil {
 		log.Println("failed to getting comments for like post: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 
 	for _, comment := range comments.Comments {
 		comUser, err := s.Client.User().GetUserForClient(ctx, &u.IdRequest{Id: comment.UserId})
 		if err != nil {
 			log.Println("failed to get user for comment: ", err)
-			return &p.GetPostResponse{}, err
+			return &p.PostResponse{}, err
 		}
 
 		com := p.Comment{}
@@ -251,27 +249,27 @@ func (s *PostService) LikePost(ctx context.Context, req *p.LikeRequest) (*p.GetP
 	return res, nil
 }
 
-func (s *PostService) UpdatePost(ctx context.Context, req *p.UpdatePostRequest) (*emptypb.Empty, error) {
+func (s *PostService) UpdatePost(ctx context.Context, req *p.UpdatePostRequest) (*p.PostResponse, error) {
 	err := s.storage.Post().UpdatePost(req)
 	if err != nil {
 		log.Println("failed to update post: ", err)
-		return &emptypb.Empty{}, err
+		return &p.PostResponse{}, err
 	}
 
-	return &emptypb.Empty{}, nil
+	return &p.PostResponse{}, nil
 }
 
-func (s *PostService) DeletePost(ctx context.Context, req *p.IdRequest) (*p.GetPostResponse, error) {
+func (s *PostService) DeletePost(ctx context.Context, req *p.IdRequest) (*p.PostResponse, error) {
 	res, err := s.storage.Post().DeletePost(req)
 	if err != nil {
 		log.Println("failed to delete post: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 
 	postUser, err := s.Client.User().GetUserForClient(ctx, &u.IdRequest{Id: res.UserId})
 	if err != nil {
 		log.Println("failed to getting user for delete post: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 	res.UserName = postUser.FirstName + " " + postUser.LastName
 	res.UserEmail = postUser.Email
@@ -279,14 +277,14 @@ func (s *PostService) DeletePost(ctx context.Context, req *p.IdRequest) (*p.GetP
 	comments, err := s.Client.Comment().GetCommentsForPost(ctx, &c.GetAllCommentsRequest{PostId: res.Id})
 	if err != nil {
 		log.Println("failed to getting comments for delete post: ", err)
-		return &p.GetPostResponse{}, err
+		return &p.PostResponse{}, err
 	}
 
 	for _, comment := range comments.Comments {
 		comUser, err := s.Client.User().GetUserForClient(ctx, &u.IdRequest{Id: comment.UserId})
 		if err != nil {
 			log.Println("failed to get user for comment: ", err)
-			return &p.GetPostResponse{}, err
+			return &p.PostResponse{}, err
 		}
 
 		com := p.Comment{}
