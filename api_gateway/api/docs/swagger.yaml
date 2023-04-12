@@ -24,6 +24,11 @@ definitions:
       user_id:
         type: integer
     type: object
+  models.Error:
+    properties:
+      message:
+        type: string
+    type: object
   models.Post:
     properties:
       created_at:
@@ -50,8 +55,6 @@ definitions:
     type: object
   models.RegisterModel:
     properties:
-      code:
-        type: string
       email:
         type: string
       first_name:
@@ -63,7 +66,8 @@ definitions:
     type: object
   models.StandartErrorModel:
     properties:
-      error: {}
+      error:
+        $ref: '#/definitions/models.Error'
     type: object
   models.UpdatePostRequest:
     properties:
@@ -537,4 +541,26 @@ paths:
       summary: search users by name
       tags:
       - User
+  /verify/{email}/{code}:
+    get:
+      consumes:
+      - application/json
+      description: this api verifies
+      parameters:
+      - description: email
+        in: path
+        name: email
+        required: true
+        type: string
+      - description: code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: verify user api
+      tags:
+      - Register
 swagger: "2.0"

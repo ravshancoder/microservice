@@ -3,6 +3,7 @@ module github.com/microservice/api_gateway
 go 1.18
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.0
 	github.com/golang/protobuf v1.5.3
 	github.com/gomodule/redigo v1.8.9

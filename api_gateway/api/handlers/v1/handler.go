@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/microservice/api_gateway/api/handlers/token"
 	"github.com/microservice/api_gateway/config"
 	"github.com/microservice/api_gateway/pkg/logger"
 	"github.com/microservice/api_gateway/services"
@@ -12,6 +13,7 @@ type handlerV1 struct {
 	serviceManager services.IServiceManager
 	cfg            config.Config
 	redis          repo.RedisRepo
+	jwtHandler     token.JWTHandler
 }
 
 type HandlerV1Config struct {
@@ -19,7 +21,7 @@ type HandlerV1Config struct {
 	ServiceManager services.IServiceManager
 	Cfg            config.Config
 	Redis          repo.RedisRepo
-
+	JwtHandler     token.JWTHandler
 }
 
 func New(c *HandlerV1Config) *handlerV1 {
@@ -28,6 +30,6 @@ func New(c *HandlerV1Config) *handlerV1 {
 		serviceManager: c.ServiceManager,
 		cfg:            c.Cfg,
 		redis:          c.Redis,
+		jwtHandler:     c.JwtHandler,
 	}
 }
-

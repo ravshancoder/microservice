@@ -12,12 +12,14 @@ type Config struct {
 	// context timeout in seconds
 	CtxTimeout int
 
+	SigninKey string
+
 	LogLevel string
 	HTTPPort string
 
 	UserServiceHost    string
 	UserServicePort    string
-	
+
 	PostServiceHost    string
 	PostServicePort    string
 
@@ -32,6 +34,9 @@ func Load() Config {
 	c := Config{}
 
 	c.Environment = cast.ToString(getOrReturnDefault("ENVIRONMENT", "develop"))
+
+	c.SigninKey = cast.ToString(getOrReturnDefault("SIGNIN_KEY", "ravshanSignIn"))
+
 
 	c.LogLevel = cast.ToString(getOrReturnDefault("LOG_LEVEL", "debug"))
 	c.HTTPPort = cast.ToString(getOrReturnDefault("HTTP_PORT", ":8080"))

@@ -19,7 +19,7 @@ type Option struct {
 	Conf           config.Config
 	Logger         logger.Logger
 	ServiceManager services.IServiceManager
-	InMemoryStorage repo.RedisRepo
+	RedisRepo      repo.RedisRepo
 }
 
 // @title           Swagger for user api
@@ -37,7 +37,7 @@ func New(option Option) *gin.Engine {
 		Logger:         option.Logger,
 		ServiceManager: option.ServiceManager,
 		Cfg:            option.Conf,
-		Redis: option.InMemoryStorage,
+		Redis:          option.RedisRepo,
 	})
 
 	api := router.Group("/v1")
@@ -52,7 +52,7 @@ func New(option Option) *gin.Engine {
 
 	// register
 	api.POST("/users/register", handlerV1.Register)
-
+	api.GET("/verify/:email/:code", handlerV1.Verify)
 
 	// posts
 	api.POST("/post", handlerV1.CreatePost)

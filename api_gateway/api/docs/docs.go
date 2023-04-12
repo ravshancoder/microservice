@@ -641,6 +641,38 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/verify/{email}/{code}": {
+            "get": {
+                "description": "this api verifies",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Register"
+                ],
+                "summary": "verify user api",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
         }
     },
     "definitions": {
@@ -678,6 +710,14 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.Error": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
                 }
             }
         },
@@ -721,9 +761,6 @@ const docTemplate = `{
         "models.RegisterModel": {
             "type": "object",
             "properties": {
-                "code": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
                 },
@@ -741,7 +778,9 @@ const docTemplate = `{
         "models.StandartErrorModel": {
             "type": "object",
             "properties": {
-                "error": {}
+                "error": {
+                    "$ref": "#/definitions/models.Error"
+                }
             }
         },
         "models.UpdatePostRequest": {

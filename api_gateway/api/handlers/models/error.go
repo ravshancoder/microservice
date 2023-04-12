@@ -5,9 +5,13 @@ type ResponseError struct {
 	Error interface{} `json:"error"`
 }
 
+type Error struct{
+	Message string `json:"message"`
+}
+
 // StandardErrorModel ...
 type StandartErrorModel struct {
-	Error error `json:"error"`
+	Error Error `json:"error"`
 }
 
 type ErrorMessage struct {
