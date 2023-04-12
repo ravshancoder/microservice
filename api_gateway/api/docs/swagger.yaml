@@ -511,7 +511,7 @@ paths:
             $ref: '#/definitions/models.StandartErrorModel'
       summary: register user api
       tags:
-      - User
+      - Register
   /users/search:
     get:
       consumes:

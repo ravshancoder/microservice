@@ -21,7 +21,7 @@ import (
 // Register register user
 // @Summary register user api
 // @Description this api registers
-// @Tags User
+// @Tags Register
 // @Accept json
 // @Produce json
 // @Param request body models.RegisterModel true "register user"

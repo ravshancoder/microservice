@@ -49,3 +49,13 @@ type UserRegister struct{
 	Password  string `json:"password"`
 	Code      string `json:"code"`
 }
+
+type LoginUser struct {
+	Id            string `json:"id"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email         string `json:"email"`
+	Password      string `json:"password"`
+	Refreshtoken  string `json:"refresh_token"`
+	Accessestoken string `json:"access_token"`
+}

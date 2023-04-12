@@ -229,6 +229,8 @@ func (h *handlerV1) DeleteUser(c *gin.Context) {
 		FirstName: response.FirstName,
 		LastName:  response.LastName,
 		Email:     response.Email,
+		CreatedAt: response.CreatedAt,
+		UpdatedAt: response.UpdatedAt,
 	})
 }
 
