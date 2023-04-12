@@ -1,3 +1,6 @@
 [submodule "api_gateway/protos"]
 	path = api_gateway/protos
 	url = git@github.com:ravshancoder/protos.git
+[submodule "comment_service/protos"]
+	path = comment_service/protos
+	url = git@github.com:ravshancoder/protos.git
