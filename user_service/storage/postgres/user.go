@@ -12,9 +12,9 @@ func (r *UserRepo) CreateUser(user *u.UserRequest) (*u.UserResponse, error) {
 	var res u.UserResponse
 	err := r.db.QueryRow(`
 		insert into 
-			users(first_name, last_name, email) 
+			users(first_name, last_name, email, password) 
 		values
-			($1, $2, $3) 
+			($1, $2, $3, $4) 
 		returning 
 			id, first_name, last_name, email, created_at, updated_at`, user.FirstName, user.LastName, user.Email).Scan(&res.Id, &res.FirstName, &res.LastName, &res.Email, &res.CreatedAt, &res.UpdatedAt)
 
