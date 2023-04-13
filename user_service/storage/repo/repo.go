@@ -13,4 +13,6 @@ type UserStoreI interface {
 	UpdateUser(*u.UpdateUserRequest) error
 	DeleteUser(*u.IdRequest) (*u.UserResponse, error)
 	CheckFiedld(*u.CheckFieldReq)(*u.CheckFieldRes, error)
+	GetByEmail(*u.EmailReq) (*u.LoginResponse, error)
+	UpdateToken(*u.RequestForTokens)(*u.LoginResponse, error)
 }

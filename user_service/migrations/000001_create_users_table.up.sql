@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS users (
     last_name TEXT,
     email TEXT,
     password varchar,
-    created_at TIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIME DEFAULT CURRENT_TIMESTAMP,
+    acces_token text,
+    refresh_token text.
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     deleted_at TIME
 );

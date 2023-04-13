@@ -2,7 +2,9 @@ package service
 
 import (
 	"context"
+	"database/sql"
 	"log"
+	"strings"
 
 	"github.com/jmoiron/sqlx"
 	"google.golang.org/grpc/codes"
@@ -14,6 +16,7 @@ import (
 	"github.com/project/user_service/pkg/logger"
 	grpcclient "github.com/project/user_service/service/grpc_client"
 	"github.com/project/user_service/storage"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserService struct {
@@ -283,4 +286,44 @@ func (s *UserService) CheckField(ctx context.Context, req *u.CheckFieldReq) (*u.
 		return &u.CheckFieldRes{}, status.Error(codes.Internal, "something went wrong, please check user info")
 	}
 	return res, nil
+}
+
+func (s *UserService) Login(ctx context.Context, req *u.LoginRequest) (*u.LoginResponse, error) {
+	req.Email = strings.ToLower(req.Email)
+	req.Email = strings.TrimSpace(req.Email)
+
+	user, err := s.storage.User().GetByEmail(&u.EmailReq{Email: req.Email})
+	if err == sql.ErrNoRows {
+		s.Logger.Error("error while getting user by email Not found", logger.Any("req", req))
+		return nil, status.Error(codes.NotFound, "Not found")
+	} else if err != nil {
+		s.Logger.Error("error while getting user by email", logger.Error(err), logger.Any("req", req))
+		return nil, status.Error(codes.Internal, "Internal server error")
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
+	if err != nil {
+		s.Logger.Error("Error while comparing hashed password, Invalid credentials", logger.Any("req", req))
+		return nil, status.Error(codes.InvalidArgument, "invalid credentials")
+	}
+	return user, nil
+}
+
+func (s *UserService) GetByEmail(ctx context.Context, req *u.EmailReq) (*u.LoginResponse, error) {
+	customer, err := s.storage.User().GetByEmail(req)
+	if err != nil {
+		s.Logger.Error("Error while getting customer info by email", logger.Error(err))
+		return nil, status.Error(codes.InvalidArgument, "Something went wrong")
+	}
+	return customer, nil
+}
+
+func (s *UserService) UpdateToken(ctx context.Context, req *u.RequestForTokens)(*u.LoginResponse, error){
+	res, err := s.storage.User().UpdateToken(req)
+	if err != nil {
+		log.Println("failed to updating user: ", err)
+		return &u.LoginResponse{}, err
+	}
+	
+	return res, err
 }
