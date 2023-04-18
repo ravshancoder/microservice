@@ -1,15 +1,17 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a user service api.",
         "title": "Swagger for user api",
-        "contact": {},
-        "version": "1.0"
+        "contact": {}
     },
-    "basePath": "/v1",
     "paths": {
-        "/comment": {
+        "/v1/comment": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api write comment",
                 "consumes": [
                     "application/json"
@@ -54,9 +56,14 @@
                 }
             }
         },
-        "/comment/{id}": {
+        "/v1/comment/{id}": {
             "get": {
-                "description": "This api gets a comment by id",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "This api gets a comment for post",
                 "consumes": [
                     "application/json"
                 ],
@@ -66,7 +73,7 @@
                 "tags": [
                     "Comment"
                 ],
-                "summary": "get comment by id",
+                "summary": "get comments for post",
                 "parameters": [
                     {
                         "type": "string",
@@ -98,6 +105,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api deletes a comment",
                 "consumes": [
                     "application/json"
@@ -140,8 +152,50 @@
                 }
             }
         },
-        "/post": {
+        "/v1/login/{email}/{password}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "this api login user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Register"
+                ],
+                "summary": "login user api",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "password",
+                        "name": "password",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/post": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api creates a post",
                 "consumes": [
                     "application/json"
@@ -186,8 +240,13 @@
                 }
             }
         },
-        "/post/{id}": {
+        "/v1/post/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api gets a post by id",
                 "consumes": [
                     "application/json"
@@ -230,6 +289,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api updates a post",
                 "consumes": [
                     "application/json"
@@ -280,6 +344,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api deletes a post",
                 "consumes": [
                     "application/json"
@@ -322,8 +391,13 @@
                 }
             }
         },
-        "/user/{id}": {
+        "/v1/user/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api gets a user by id",
                 "consumes": [
                     "application/json"
@@ -366,6 +440,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api updates a user",
                 "consumes": [
                     "application/json"
@@ -416,6 +495,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api deletes a user",
                 "consumes": [
                     "application/json"
@@ -458,8 +542,13 @@
                 }
             }
         },
-        "/users": {
+        "/v1/users": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api gets all users",
                 "consumes": [
                     "application/json"
@@ -512,6 +601,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api creates a user",
                 "consumes": [
                     "application/json"
@@ -556,8 +650,13 @@
                 }
             }
         },
-        "/users/register": {
+        "/v1/users/register": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "this api registers",
                 "consumes": [
                     "application/json"
@@ -590,8 +689,13 @@
                 }
             }
         },
-        "/users/search": {
+        "/v1/users/search": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api searches for users by first name",
                 "consumes": [
                     "application/json"
@@ -634,8 +738,62 @@
                 }
             }
         },
-        "/verify/{email}/{code}": {
+        "/v1/users/{search}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "This api searches for users by first name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "search users by name",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "FirstName",
+                        "name": "first_name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Users"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StandartErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StandartErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/verify/{email}/{code}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "this api verifies",
                 "consumes": [
                     "application/json"
@@ -856,6 +1014,14 @@
                     }
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "description": "This is a user service api.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

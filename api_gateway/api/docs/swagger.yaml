@@ -1,4 +1,3 @@
-basePath: /v1
 definitions:
   models.Comment:
     properties:
@@ -124,11 +123,9 @@ definitions:
     type: object
 info:
   contact: {}
-  description: This is a user service api.
   title: Swagger for user api
-  version: "1.0"
 paths:
-  /comment:
+  /v1/comment:
     post:
       consumes:
       - application/json
@@ -155,10 +152,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: Write comment
       tags:
       - Comment
-  /comment/{id}:
+  /v1/comment/{id}:
     delete:
       consumes:
       - application/json
@@ -184,13 +183,15 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: delete comment
       tags:
       - Comment
     get:
       consumes:
       - application/json
-      description: This api gets a comment by id
+      description: This api gets a comment for post
       parameters:
       - description: Id
         in: path
@@ -212,10 +213,36 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
-      summary: get comment by id
+      security:
+      - ApiKeyAuth: []
+      summary: get comments for post
       tags:
       - Comment
-  /post:
+  /v1/login/{email}/{password}:
+    get:
+      consumes:
+      - application/json
+      description: this api login user
+      parameters:
+      - description: email
+        in: path
+        name: email
+        required: true
+        type: string
+      - description: password
+        in: path
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: login user api
+      tags:
+      - Register
+  /v1/post:
     post:
       consumes:
       - application/json
@@ -242,10 +269,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: create post
       tags:
       - Post
-  /post/{id}:
+  /v1/post/{id}:
     delete:
       consumes:
       - application/json
@@ -271,6 +300,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: delete post
       tags:
       - Post
@@ -299,6 +330,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: get post by id
       tags:
       - Post
@@ -332,10 +365,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: update post
       tags:
       - Post
-  /user/{id}:
+  /v1/user/{id}:
     delete:
       consumes:
       - application/json
@@ -361,6 +396,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: delete user
       tags:
       - User
@@ -389,6 +426,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: get user by id
       tags:
       - User
@@ -422,10 +461,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: update user
       tags:
       - User
-  /users:
+  /v1/users:
     get:
       consumes:
       - application/json
@@ -458,6 +499,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: get all users
       tags:
       - User
@@ -487,32 +530,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: create user
       tags:
       - User
-  /users/register:
-    post:
-      consumes:
-      - application/json
-      description: this api registers
-      parameters:
-      - description: register user
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/models.RegisterModel'
-      produces:
-      - application/json
-      responses:
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-      summary: register user api
-      tags:
-      - Register
-  /users/search:
+  /v1/users/{search}:
     get:
       consumes:
       - application/json
@@ -538,10 +561,67 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
       summary: search users by name
       tags:
       - User
-  /verify/{email}/{code}:
+  /v1/users/register:
+    post:
+      consumes:
+      - application/json
+      description: this api registers
+      parameters:
+      - description: register user
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterModel'
+      produces:
+      - application/json
+      responses:
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
+      summary: register user api
+      tags:
+      - Register
+  /v1/users/search:
+    get:
+      consumes:
+      - application/json
+      description: This api searches for users by first name
+      parameters:
+      - description: FirstName
+        in: query
+        name: first_name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Users'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
+      summary: search users by name
+      tags:
+      - User
+  /v1/verify/{email}/{code}:
     get:
       consumes:
       - application/json
@@ -560,7 +640,15 @@ paths:
       produces:
       - application/json
       responses: {}
+      security:
+      - ApiKeyAuth: []
       summary: verify user api
       tags:
       - Register
+securityDefinitions:
+  ApiKeyAuth:
+    description: This is a user service api.
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

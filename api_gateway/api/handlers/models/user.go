@@ -42,7 +42,7 @@ type RegisterModel struct {
 	Password  string `json:"password"`
 }
 
-type UserRegister struct{
+type UserRegister struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
@@ -51,11 +51,11 @@ type UserRegister struct{
 }
 
 type LoginUser struct {
-	Id            string `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Email         string `json:"email"`
-	Password      string `json:"password"`
-	Refreshtoken  string `json:"refresh_token"`
-	Accessestoken string `json:"access_token"`
+	Id           string `json:"id"`
+	FirstName    string `json:"first_name"`
+	LastName     string `json:"last_name"`
+	Email        string `json:"email"`
+	Password     string `json:"password"`
+	AccesToken   string `json:"acces_token"`
+	Refreshtoken string `json:"refresh_token"`
 }

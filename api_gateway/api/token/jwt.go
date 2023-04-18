@@ -1,6 +1,7 @@
 package token
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/microservice/api_gateway/pkg/logger"
@@ -20,7 +21,17 @@ type JWTHandler struct {
 	Token     string
 }
 
-func (jwtHandler *JWTHandler) GenerateAuthJWT() (acces, refresh string, err error) {
+type CustomClaims struct {
+	*jwt.Token
+	Sub  string   `json:"sub"`
+	Iss  string   `json:"iss"`
+	Exp  float64  `json:"exp"`
+	Iat  float64  `json:"iat"`
+	Aud  []string `json:"aud"`
+	Role string   `json:"role"`
+}
+
+func (jwtHandler *JWTHandler) GenerateAuthJWT() ([]string, error) {
 	var (
 		accesToken   *jwt.Token
 		refreshToken *jwt.Token
@@ -38,19 +49,19 @@ func (jwtHandler *JWTHandler) GenerateAuthJWT() (acces, refresh string, err erro
 	claims["role"] = jwtHandler.Role
 	claims["aud"] = jwtHandler.Aud
 
-	acces, err = accesToken.SignedString([]byte(jwtHandler.SigninKEY))
+	access, err := accesToken.SignedString([]byte(jwtHandler.SigninKEY))
 	if err != nil {
-		jwtHandler.Log.Error("error generating acces token", logger.Error(err))
-		return
+		jwtHandler.Log.Error("error while generating access token", logger.Error(err))
+		return []string{access, ""}, err
 	}
 
-	refresh, err = refreshToken.SignedString([]byte(jwtHandler.SigninKEY))
+	refresh, err := refreshToken.SignedString([]byte(jwtHandler.SigninKEY))
 	if err != nil {
 		jwtHandler.Log.Error("error generating refresh token", logger.Error(err))
-		return
+		return []string{refresh, ""}, err
 	}
 
-	return acces, refresh, nil
+	return []string{access, refresh}, nil
 }
 
 func (jwtHandler *JWTHandler) ExtractClaims() (jwt.MapClaims, error) {
@@ -62,7 +73,7 @@ func (jwtHandler *JWTHandler) ExtractClaims() (jwt.MapClaims, error) {
 	token, err = jwt.Parse(jwtHandler.Token, func(t *jwt.Token) (interface{}, error) {
 		return []byte(jwtHandler.SigninKEY), nil
 	})
-
+	fmt.Println("token/jwt.go/76 Error: ", err)
 	if err != nil {
 		return nil, err
 	}
@@ -70,6 +81,7 @@ func (jwtHandler *JWTHandler) ExtractClaims() (jwt.MapClaims, error) {
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !(ok && token.Valid) {
 		jwtHandler.Log.Error("invalid jwt token")
+		return nil, err
 	}
 
 	return claims, nil

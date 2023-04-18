@@ -26,11 +26,60 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+type EmailReq struct {
+	Email                string   `protobuf:"bytes,1,opt,name=email,proto3" json:"email"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EmailReq) Reset()         { *m = EmailReq{} }
+func (m *EmailReq) String() string { return proto.CompactTextString(m) }
+func (*EmailReq) ProtoMessage()    {}
+func (*EmailReq) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ed89022014131a74, []int{0}
+}
+func (m *EmailReq) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *EmailReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_EmailReq.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *EmailReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EmailReq.Merge(m, src)
+}
+func (m *EmailReq) XXX_Size() int {
+	return m.Size()
+}
+func (m *EmailReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_EmailReq.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EmailReq proto.InternalMessageInfo
+
+func (m *EmailReq) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
 type UserRequest struct {
 	FirstName            string   `protobuf:"bytes,1,opt,name=first_name,json=firstName,proto3" json:"first_name"`
 	LastName             string   `protobuf:"bytes,2,opt,name=last_name,json=lastName,proto3" json:"last_name"`
 	Email                string   `protobuf:"bytes,3,opt,name=email,proto3" json:"email"`
 	Password             string   `protobuf:"bytes,4,opt,name=password,proto3" json:"password"`
+	AccesToken           string   `protobuf:"bytes,5,opt,name=acces_token,json=accesToken,proto3" json:"acces_token"`
+	RefreshToken         string   `protobuf:"bytes,6,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -40,7 +89,7 @@ func (m *UserRequest) Reset()         { *m = UserRequest{} }
 func (m *UserRequest) String() string { return proto.CompactTextString(m) }
 func (*UserRequest) ProtoMessage()    {}
 func (*UserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{0}
+	return fileDescriptor_ed89022014131a74, []int{1}
 }
 func (m *UserRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -97,6 +146,20 @@ func (m *UserRequest) GetPassword() string {
 	return ""
 }
 
+func (m *UserRequest) GetAccesToken() string {
+	if m != nil {
+		return m.AccesToken
+	}
+	return ""
+}
+
+func (m *UserRequest) GetRefreshToken() string {
+	if m != nil {
+		return m.RefreshToken
+	}
+	return ""
+}
+
 type UpdateUserRequest struct {
 	FirstName            string   `protobuf:"bytes,1,opt,name=first_name,json=firstName,proto3" json:"first_name"`
 	LastName             string   `protobuf:"bytes,2,opt,name=last_name,json=lastName,proto3" json:"last_name"`
@@ -112,7 +175,7 @@ func (m *UpdateUserRequest) Reset()         { *m = UpdateUserRequest{} }
 func (m *UpdateUserRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateUserRequest) ProtoMessage()    {}
 func (*UpdateUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{1}
+	return fileDescriptor_ed89022014131a74, []int{2}
 }
 func (m *UpdateUserRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -187,7 +250,7 @@ func (m *SearchUsers) Reset()         { *m = SearchUsers{} }
 func (m *SearchUsers) String() string { return proto.CompactTextString(m) }
 func (*SearchUsers) ProtoMessage()    {}
 func (*SearchUsers) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{2}
+	return fileDescriptor_ed89022014131a74, []int{3}
 }
 func (m *SearchUsers) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -229,8 +292,10 @@ type UserResponse struct {
 	LastName             string   `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name"`
 	Email                string   `protobuf:"bytes,4,opt,name=email,proto3" json:"email"`
 	Posts                []*Post  `protobuf:"bytes,5,rep,name=posts,proto3" json:"posts"`
-	CreatedAt            string   `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at"`
-	UpdatedAt            string   `protobuf:"bytes,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at"`
+	AccesToken           string   `protobuf:"bytes,6,opt,name=acces_token,json=accesToken,proto3" json:"acces_token"`
+	RefreshToken         string   `protobuf:"bytes,7,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token"`
+	CreatedAt            string   `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at"`
+	UpdatedAt            string   `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -240,7 +305,7 @@ func (m *UserResponse) Reset()         { *m = UserResponse{} }
 func (m *UserResponse) String() string { return proto.CompactTextString(m) }
 func (*UserResponse) ProtoMessage()    {}
 func (*UserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{3}
+	return fileDescriptor_ed89022014131a74, []int{4}
 }
 func (m *UserResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -304,6 +369,20 @@ func (m *UserResponse) GetPosts() []*Post {
 	return nil
 }
 
+func (m *UserResponse) GetAccesToken() string {
+	if m != nil {
+		return m.AccesToken
+	}
+	return ""
+}
+
+func (m *UserResponse) GetRefreshToken() string {
+	if m != nil {
+		return m.RefreshToken
+	}
+	return ""
+}
+
 func (m *UserResponse) GetCreatedAt() string {
 	if m != nil {
 		return m.CreatedAt
@@ -335,7 +414,7 @@ func (m *Post) Reset()         { *m = Post{} }
 func (m *Post) String() string { return proto.CompactTextString(m) }
 func (*Post) ProtoMessage()    {}
 func (*Post) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{4}
+	return fileDescriptor_ed89022014131a74, []int{5}
 }
 func (m *Post) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -430,7 +509,7 @@ func (m *Comment) Reset()         { *m = Comment{} }
 func (m *Comment) String() string { return proto.CompactTextString(m) }
 func (*Comment) ProtoMessage()    {}
 func (*Comment) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{5}
+	return fileDescriptor_ed89022014131a74, []int{6}
 }
 func (m *Comment) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -519,7 +598,7 @@ func (m *IdRequest) Reset()         { *m = IdRequest{} }
 func (m *IdRequest) String() string { return proto.CompactTextString(m) }
 func (*IdRequest) ProtoMessage()    {}
 func (*IdRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{6}
+	return fileDescriptor_ed89022014131a74, []int{7}
 }
 func (m *IdRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -567,7 +646,7 @@ func (m *AllUsersRequest) Reset()         { *m = AllUsersRequest{} }
 func (m *AllUsersRequest) String() string { return proto.CompactTextString(m) }
 func (*AllUsersRequest) ProtoMessage()    {}
 func (*AllUsersRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{7}
+	return fileDescriptor_ed89022014131a74, []int{8}
 }
 func (m *AllUsersRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -621,7 +700,7 @@ func (m *Users) Reset()         { *m = Users{} }
 func (m *Users) String() string { return proto.CompactTextString(m) }
 func (*Users) ProtoMessage()    {}
 func (*Users) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{8}
+	return fileDescriptor_ed89022014131a74, []int{9}
 }
 func (m *Users) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -669,7 +748,7 @@ func (m *CheckFieldReq) Reset()         { *m = CheckFieldReq{} }
 func (m *CheckFieldReq) String() string { return proto.CompactTextString(m) }
 func (*CheckFieldReq) ProtoMessage()    {}
 func (*CheckFieldReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{9}
+	return fileDescriptor_ed89022014131a74, []int{10}
 }
 func (m *CheckFieldReq) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -723,7 +802,7 @@ func (m *CheckFieldRes) Reset()         { *m = CheckFieldRes{} }
 func (m *CheckFieldRes) String() string { return proto.CompactTextString(m) }
 func (*CheckFieldRes) ProtoMessage()    {}
 func (*CheckFieldRes) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{10}
+	return fileDescriptor_ed89022014131a74, []int{11}
 }
 func (m *CheckFieldRes) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -771,7 +850,7 @@ func (m *LoginRequest) Reset()         { *m = LoginRequest{} }
 func (m *LoginRequest) String() string { return proto.CompactTextString(m) }
 func (*LoginRequest) ProtoMessage()    {}
 func (*LoginRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{11}
+	return fileDescriptor_ed89022014131a74, []int{12}
 }
 func (m *LoginRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -822,6 +901,8 @@ type LoginResponse struct {
 	Password             string   `protobuf:"bytes,5,opt,name=password,proto3" json:"password"`
 	AccesToken           string   `protobuf:"bytes,6,opt,name=acces_token,json=accesToken,proto3" json:"acces_token"`
 	RefreshToken         string   `protobuf:"bytes,7,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token"`
+	CreatedAt            string   `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at"`
+	UpdatedAt            string   `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -831,7 +912,7 @@ func (m *LoginResponse) Reset()         { *m = LoginResponse{} }
 func (m *LoginResponse) String() string { return proto.CompactTextString(m) }
 func (*LoginResponse) ProtoMessage()    {}
 func (*LoginResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{12}
+	return fileDescriptor_ed89022014131a74, []int{13}
 }
 func (m *LoginResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -909,10 +990,24 @@ func (m *LoginResponse) GetRefreshToken() string {
 	return ""
 }
 
+func (m *LoginResponse) GetCreatedAt() string {
+	if m != nil {
+		return m.CreatedAt
+	}
+	return ""
+}
+
+func (m *LoginResponse) GetUpdatedAt() string {
+	if m != nil {
+		return m.UpdatedAt
+	}
+	return ""
+}
+
 type RequestForTokens struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
-	AccesToken           string   `protobuf:"bytes,2,opt,name=acces_token,json=accesToken,proto3" json:"acces_token"`
-	RefreshToken         string   `protobuf:"bytes,3,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token"`
+	RefreshToken         string   `protobuf:"bytes,2,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token"`
+	AccesToken           string   `protobuf:"bytes,3,opt,name=acces_token,json=accesToken,proto3" json:"acces_token"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -922,7 +1017,7 @@ func (m *RequestForTokens) Reset()         { *m = RequestForTokens{} }
 func (m *RequestForTokens) String() string { return proto.CompactTextString(m) }
 func (*RequestForTokens) ProtoMessage()    {}
 func (*RequestForTokens) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ed89022014131a74, []int{13}
+	return fileDescriptor_ed89022014131a74, []int{14}
 }
 func (m *RequestForTokens) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -958,13 +1053,6 @@ func (m *RequestForTokens) GetId() string {
 	return ""
 }
 
-func (m *RequestForTokens) GetAccesToken() string {
-	if m != nil {
-		return m.AccesToken
-	}
-	return ""
-}
-
 func (m *RequestForTokens) GetRefreshToken() string {
 	if m != nil {
 		return m.RefreshToken
@@ -972,7 +1060,15 @@ func (m *RequestForTokens) GetRefreshToken() string {
 	return ""
 }
 
+func (m *RequestForTokens) GetAccesToken() string {
+	if m != nil {
+		return m.AccesToken
+	}
+	return ""
+}
+
 func init() {
+	proto.RegisterType((*EmailReq)(nil), "user.EmailReq")
 	proto.RegisterType((*UserRequest)(nil), "user.UserRequest")
 	proto.RegisterType((*UpdateUserRequest)(nil), "user.UpdateUserRequest")
 	proto.RegisterType((*SearchUsers)(nil), "user.SearchUsers")
@@ -992,58 +1088,61 @@ func init() {
 func init() { proto.RegisterFile("user/user.proto", fileDescriptor_ed89022014131a74) }
 
 var fileDescriptor_ed89022014131a74 = []byte{
-	// 811 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x56, 0xdd, 0x6a, 0xdb, 0x48,
-	0x14, 0xb6, 0x6c, 0xcb, 0x3f, 0x47, 0x76, 0x7e, 0x66, 0xb3, 0x89, 0x71, 0x58, 0xaf, 0x99, 0xdd,
-	0x65, 0xbd, 0x37, 0x59, 0x36, 0xd9, 0xc0, 0x2e, 0xe9, 0x45, 0x13, 0x97, 0x14, 0x43, 0x29, 0x45,
-	0x49, 0xae, 0x8d, 0x2a, 0x4d, 0xe2, 0x21, 0xb2, 0xe5, 0x6a, 0xc6, 0x69, 0x42, 0x9f, 0xa2, 0x77,
-	0x7d, 0x9b, 0xde, 0xf6, 0xa6, 0x10, 0xe8, 0x0b, 0x94, 0xf4, 0x45, 0xca, 0x9c, 0x19, 0xd9, 0x8a,
-	0x1c, 0xb7, 0x81, 0x52, 0x7a, 0x63, 0x74, 0xbe, 0xf3, 0x33, 0xe7, 0xd3, 0x39, 0xdf, 0xc8, 0xb0,
-	0x3c, 0x11, 0x2c, 0xfe, 0x5b, 0xfd, 0x6c, 0x8d, 0xe3, 0x48, 0x46, 0xa4, 0xa8, 0x9e, 0xe9, 0x2b,
-	0x70, 0x4e, 0x04, 0x8b, 0x5d, 0xf6, 0x62, 0xc2, 0x84, 0x24, 0xbf, 0x00, 0x9c, 0xf2, 0x58, 0xc8,
-	0xfe, 0xc8, 0x1b, 0xb2, 0x86, 0xd5, 0xb6, 0x3a, 0x55, 0xb7, 0x8a, 0xc8, 0x53, 0x6f, 0xc8, 0xc8,
-	0x26, 0x54, 0x43, 0x2f, 0xf1, 0xe6, 0xd1, 0x5b, 0x51, 0x00, 0x3a, 0xd7, 0xc0, 0x66, 0x43, 0x8f,
-	0x87, 0x8d, 0x02, 0x3a, 0xb4, 0x41, 0x9a, 0x50, 0x19, 0x7b, 0x42, 0xbc, 0x8c, 0xe2, 0xa0, 0x51,
-	0xd4, 0x19, 0x89, 0x4d, 0x5f, 0x5b, 0xb0, 0x7a, 0x32, 0x0e, 0x3c, 0xc9, 0x7e, 0x58, 0x0f, 0x64,
-	0x09, 0xf2, 0x3c, 0x68, 0xd8, 0x6d, 0xab, 0x53, 0x70, 0xf3, 0x3c, 0xa0, 0x7f, 0x80, 0x73, 0xc4,
-	0xbc, 0xd8, 0x1f, 0xa8, 0x96, 0x04, 0x59, 0x87, 0x92, 0x40, 0xd3, 0x34, 0x62, 0x2c, 0x7a, 0x6d,
-	0x41, 0x4d, 0x37, 0x2d, 0xc6, 0xd1, 0x48, 0x30, 0x53, 0xc7, 0x4a, 0xea, 0x64, 0x58, 0xe4, 0xbf,
-	0xc8, 0xa2, 0xb0, 0x88, 0x45, 0x31, 0xcd, 0xa2, 0x0d, 0xf6, 0x38, 0x12, 0x52, 0x34, 0xec, 0x76,
-	0xa1, 0xe3, 0x6c, 0xc3, 0x16, 0x0e, 0xf3, 0x59, 0x24, 0xa4, 0xab, 0x1d, 0xea, 0x4c, 0x3f, 0x66,
-	0x9e, 0x64, 0x41, 0xdf, 0x93, 0x8d, 0x92, 0x3e, 0xd3, 0x20, 0xfb, 0xf8, 0x62, 0x27, 0xf8, 0xb6,
-	0xd1, 0x5d, 0xd6, 0x6e, 0x83, 0xec, 0x4b, 0xfa, 0xde, 0x82, 0xa2, 0xaa, 0x36, 0x47, 0x65, 0x0d,
-	0x6c, 0xc9, 0x65, 0x98, 0xb0, 0xd0, 0x06, 0x69, 0x83, 0x13, 0x30, 0xe1, 0xc7, 0x7c, 0x2c, 0x79,
-	0x34, 0x32, 0x1c, 0xd2, 0x90, 0xca, 0x0b, 0xf9, 0x39, 0x13, 0x48, 0xa3, 0xe0, 0x6a, 0x83, 0xfc,
-	0x05, 0x15, 0x3f, 0x1a, 0x0e, 0xd9, 0x68, 0xca, 0xa4, 0xae, 0x99, 0x74, 0x35, 0xea, 0x4e, 0xdd,
-	0xdf, 0xc8, 0xe7, 0xda, 0x82, 0xb2, 0xa9, 0x49, 0x36, 0xa0, 0xac, 0x5e, 0x51, 0x7f, 0xca, 0xab,
-	0xa4, 0xcc, 0x1e, 0x8e, 0x09, 0x1d, 0x69, 0x82, 0x55, 0x85, 0x1c, 0x23, 0xc9, 0x0d, 0x28, 0xab,
-	0xde, 0x54, 0x5e, 0x41, 0xe7, 0x29, 0xb3, 0x17, 0xa8, 0xf9, 0xa1, 0x03, 0xe7, 0x67, 0x76, 0x4a,
-	0x01, 0x38, 0xbf, 0xdf, 0x61, 0x09, 0x8b, 0xce, 0x22, 0x6c, 0x8c, 0xa8, 0x29, 0xf4, 0x24, 0x89,
-	0x22, 0x50, 0x94, 0xec, 0x32, 0xe1, 0x85, 0xcf, 0x19, 0xc6, 0xe5, 0x0c, 0x63, 0xba, 0x09, 0xd5,
-	0x5e, 0x90, 0xe8, 0x24, 0x33, 0x26, 0xba, 0x07, 0xcb, 0xfb, 0x61, 0x88, 0x6b, 0x9b, 0x84, 0x10,
-	0x28, 0x8e, 0xbd, 0x33, 0x66, 0x82, 0xf0, 0x59, 0x4f, 0x65, 0xc8, 0x25, 0x92, 0xc5, 0xa9, 0x0c,
-	0xb9, 0xa4, 0xff, 0x80, 0xad, 0x17, 0xbe, 0x03, 0xb6, 0x6a, 0x5b, 0x34, 0x2c, 0x9c, 0x0d, 0xd1,
-	0xb3, 0x49, 0xaf, 0xba, 0xab, 0x03, 0xe8, 0x1e, 0xd4, 0xbb, 0x03, 0xe6, 0x9f, 0x1f, 0x72, 0x16,
-	0xaa, 0xa6, 0x54, 0xe5, 0x53, 0xf5, 0x6c, 0xa4, 0xa2, 0x0d, 0x85, 0x5e, 0x78, 0xe1, 0x64, 0xba,
-	0x3d, 0x68, 0xd0, 0x3f, 0x6f, 0x27, 0xa3, 0xd0, 0xd8, 0x25, 0x57, 0xeb, 0xad, 0xb2, 0x2b, 0xae,
-	0xb1, 0xe8, 0x43, 0xa8, 0x3d, 0x89, 0xce, 0xf8, 0x28, 0xa1, 0x34, 0xd5, 0x86, 0xb5, 0x48, 0xe1,
-	0xf9, 0xcc, 0x2d, 0xf3, 0xc1, 0x82, 0xba, 0x29, 0x31, 0xa7, 0xd5, 0xea, 0x77, 0xd2, 0x6a, 0xba,
-	0x1f, 0x3b, 0x73, 0xe3, 0xfc, 0x0a, 0x8e, 0xe7, 0xfb, 0x4c, 0xf4, 0x65, 0x74, 0xce, 0x46, 0x66,
-	0xfc, 0x80, 0xd0, 0xb1, 0x42, 0xc8, 0x6f, 0x50, 0x8f, 0xd9, 0x69, 0xcc, 0xc4, 0xc0, 0x84, 0xe8,
-	0x3d, 0xa8, 0x19, 0x10, 0x83, 0xe8, 0x00, 0x56, 0xcc, 0x2b, 0x39, 0x8c, 0x62, 0x84, 0xc4, 0x1c,
-	0xaf, 0xcc, 0x49, 0xf9, 0xaf, 0x9f, 0x54, 0x98, 0x3f, 0x69, 0xfb, 0x6d, 0x51, 0x7f, 0x23, 0x8e,
-	0x58, 0x7c, 0xc1, 0x7d, 0x46, 0x76, 0x01, 0xba, 0xb8, 0x91, 0x0a, 0x24, 0xab, 0xe9, 0x05, 0xc1,
-	0x7e, 0x9a, 0x77, 0xec, 0x0c, 0xcd, 0x91, 0x7f, 0xc1, 0x79, 0xcc, 0x70, 0xfb, 0x0f, 0xae, 0x7a,
-	0x01, 0x59, 0xd6, 0x41, 0xd3, 0x75, 0x5e, 0x90, 0xf5, 0x3f, 0xac, 0x98, 0xac, 0xc3, 0x28, 0xee,
-	0x86, 0x5c, 0x89, 0xf9, 0x9e, 0xa9, 0x3b, 0x78, 0x60, 0x22, 0x09, 0xf2, 0xb3, 0x0e, 0xca, 0x48,
-	0xa4, 0xe9, 0xcc, 0x72, 0x05, 0xcd, 0x91, 0x5d, 0x58, 0x4d, 0x5d, 0xff, 0x07, 0x57, 0x38, 0x63,
-	0xc3, 0x31, 0xe5, 0xc8, 0xa6, 0xed, 0x01, 0xcc, 0x3e, 0x64, 0x64, 0xc3, 0x38, 0xb3, 0x9f, 0xb6,
-	0x85, 0x8d, 0xc2, 0x23, 0x16, 0x32, 0x93, 0x7c, 0x4f, 0x76, 0xff, 0x01, 0xcc, 0x04, 0x44, 0x7e,
-	0x32, 0x57, 0x68, 0x5a, 0x8f, 0xcd, 0x3b, 0x40, 0xd5, 0xeb, 0x36, 0xd8, 0x28, 0x07, 0x62, 0x0a,
-	0xa7, 0xe5, 0x95, 0xe4, 0xdc, 0xd2, 0x0b, 0xcd, 0x91, 0x07, 0xe0, 0x68, 0x36, 0x7a, 0x6f, 0xd6,
-	0x75, 0x54, 0x76, 0x01, 0x17, 0x64, 0x1f, 0xac, 0xbc, 0xbb, 0x69, 0x59, 0xd7, 0x37, 0x2d, 0xeb,
-	0xe3, 0x4d, 0xcb, 0x7a, 0xf3, 0xa9, 0x95, 0x7b, 0x5e, 0xc2, 0xff, 0x20, 0x3b, 0x9f, 0x03, 0x00,
-	0x00, 0xff, 0xff, 0x84, 0xb6, 0x53, 0x2d, 0x96, 0x08, 0x00, 0x00,
+	// 861 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x56, 0xcd, 0x4e, 0xeb, 0x46,
+	0x14, 0x8e, 0x9d, 0x38, 0x3f, 0xc7, 0x09, 0x3f, 0x53, 0x0a, 0x51, 0x50, 0xd3, 0x68, 0xda, 0xaa,
+	0x74, 0x43, 0x05, 0x14, 0xa9, 0x15, 0x5d, 0x94, 0xa4, 0x05, 0x45, 0xaa, 0xaa, 0xca, 0xc0, 0x3a,
+	0x72, 0xed, 0x81, 0x58, 0x38, 0x71, 0xf0, 0x4c, 0x28, 0x3c, 0x06, 0x9b, 0xaa, 0xaf, 0xd3, 0x5d,
+	0x37, 0x57, 0xe2, 0x11, 0xae, 0xb8, 0x6f, 0x70, 0x9f, 0xe0, 0x6a, 0xce, 0x8c, 0x13, 0xc7, 0x49,
+	0xb8, 0x6c, 0xae, 0xd8, 0x44, 0x73, 0xfe, 0x26, 0xe7, 0x3b, 0xe7, 0x7c, 0x67, 0x0c, 0xab, 0x63,
+	0xce, 0xe2, 0xef, 0xe5, 0xcf, 0xee, 0x28, 0x8e, 0x44, 0x44, 0x0a, 0xf2, 0x4c, 0x5b, 0x50, 0xfe,
+	0x6d, 0xe0, 0x06, 0xa1, 0xc3, 0x6e, 0xc8, 0x06, 0x58, 0x4c, 0x9e, 0xeb, 0x46, 0xcb, 0xd8, 0xa9,
+	0x38, 0x4a, 0xa0, 0xff, 0x19, 0x60, 0x5f, 0x70, 0x16, 0x3b, 0xec, 0x66, 0xcc, 0xb8, 0x20, 0x5f,
+	0x00, 0x5c, 0x06, 0x31, 0x17, 0xbd, 0xa1, 0x3b, 0x60, 0xda, 0xb5, 0x82, 0x9a, 0x3f, 0xdc, 0x01,
+	0x23, 0xdb, 0x50, 0x09, 0xdd, 0xc4, 0x6a, 0xa2, 0xb5, 0x2c, 0x15, 0x68, 0x9c, 0xfc, 0x43, 0x3e,
+	0xf5, 0x0f, 0xa4, 0x01, 0xe5, 0x91, 0xcb, 0xf9, 0xdf, 0x51, 0xec, 0xd7, 0x0b, 0x2a, 0x22, 0x91,
+	0xc9, 0x97, 0x60, 0xbb, 0x9e, 0xc7, 0x78, 0x4f, 0x44, 0xd7, 0x6c, 0x58, 0xb7, 0xd0, 0x0c, 0xa8,
+	0x3a, 0x97, 0x1a, 0xf2, 0x15, 0xd4, 0x62, 0x76, 0x19, 0x33, 0xde, 0xd7, 0x2e, 0x45, 0x74, 0xa9,
+	0x6a, 0x25, 0x3a, 0xd1, 0x07, 0x03, 0xd6, 0x2f, 0x46, 0xbe, 0x2b, 0xd8, 0xeb, 0x21, 0x59, 0x01,
+	0x33, 0xf0, 0x11, 0x40, 0xde, 0x31, 0x03, 0x9f, 0x7e, 0x03, 0xf6, 0x19, 0x73, 0x63, 0xaf, 0x2f,
+	0x53, 0xe2, 0x64, 0x13, 0x8a, 0x1c, 0x45, 0x9d, 0x88, 0x96, 0xe8, 0x3f, 0x26, 0x54, 0x55, 0xd2,
+	0x7c, 0x14, 0x0d, 0x39, 0xd3, 0xf7, 0x18, 0xc9, 0x3d, 0x19, 0x14, 0xe6, 0xb3, 0x28, 0xf2, 0xcb,
+	0x50, 0x14, 0xd2, 0x28, 0x5a, 0x60, 0x8d, 0x22, 0x2e, 0x78, 0xdd, 0x6a, 0xe5, 0x77, 0xec, 0x7d,
+	0xd8, 0xc5, 0xa9, 0xf9, 0x33, 0xe2, 0xc2, 0x51, 0x86, 0x6c, 0x57, 0x8a, 0x1f, 0xef, 0x4a, 0x69,
+	0xbe, 0x2b, 0x32, 0x73, 0x2f, 0x66, 0xae, 0x60, 0x7e, 0xcf, 0x15, 0xf5, 0xb2, 0xca, 0x5c, 0x6b,
+	0x8e, 0xb1, 0x3d, 0x63, 0xec, 0x19, 0x9a, 0x2b, 0xca, 0xac, 0x35, 0xc7, 0x82, 0xbe, 0x31, 0xa0,
+	0x20, 0x73, 0x9a, 0x2b, 0xc8, 0x06, 0x58, 0x22, 0x10, 0x61, 0x52, 0x0b, 0x25, 0x90, 0x16, 0xd8,
+	0x3e, 0xe3, 0x5e, 0x1c, 0x8c, 0x44, 0x10, 0x0d, 0x75, 0x25, 0xd2, 0x2a, 0x19, 0x17, 0x06, 0xd7,
+	0x8c, 0x63, 0x31, 0xf2, 0x8e, 0x12, 0xc8, 0x77, 0x50, 0xf6, 0xa2, 0xc1, 0x80, 0x0d, 0x27, 0xf5,
+	0xa8, 0xa9, 0x7a, 0x74, 0x94, 0xd6, 0x99, 0x98, 0x33, 0x78, 0x8a, 0xcf, 0xe3, 0x29, 0x65, 0xf1,
+	0x3c, 0x1a, 0x50, 0xd2, 0x77, 0x92, 0x2d, 0x28, 0xc9, 0x42, 0xf7, 0x26, 0xb8, 0x8a, 0x52, 0xec,
+	0x62, 0xb3, 0xd1, 0x90, 0x06, 0x58, 0x91, 0x9a, 0x73, 0x04, 0xb9, 0x05, 0x25, 0x99, 0x9b, 0x8c,
+	0xcb, 0xab, 0x38, 0x29, 0x76, 0x7d, 0x39, 0x05, 0x68, 0xc0, 0x29, 0xd0, 0x93, 0x29, 0x15, 0x38,
+	0x05, 0x5f, 0xc3, 0x0a, 0x5e, 0x3a, 0xf5, 0x50, 0x34, 0xab, 0x4a, 0xed, 0x45, 0xe2, 0x45, 0xa0,
+	0x20, 0xd8, 0x5d, 0x82, 0x0b, 0xcf, 0x19, 0xc4, 0xa5, 0x0c, 0x62, 0xba, 0x0d, 0x95, 0xae, 0x9f,
+	0xb0, 0x2d, 0xd3, 0x26, 0x7a, 0x04, 0xab, 0xc7, 0x61, 0x88, 0xc3, 0x9f, 0xb8, 0x10, 0x28, 0x8c,
+	0xdc, 0x2b, 0xa6, 0x9d, 0xf0, 0xac, 0xba, 0x32, 0x08, 0x04, 0x82, 0xc5, 0xae, 0x0c, 0x02, 0x41,
+	0xf7, 0xc0, 0x52, 0xb4, 0xd9, 0x01, 0x4b, 0xa6, 0xcd, 0xeb, 0x06, 0xf6, 0x86, 0xa8, 0xde, 0xa4,
+	0x09, 0xe3, 0x28, 0x07, 0x7a, 0x04, 0xb5, 0x4e, 0x9f, 0x79, 0xd7, 0x27, 0x01, 0x0b, 0x7d, 0xbd,
+	0xee, 0x2e, 0xe5, 0x39, 0x59, 0x77, 0x28, 0x48, 0xed, 0xad, 0x1b, 0x8e, 0x27, 0xd3, 0x83, 0x02,
+	0xfd, 0x76, 0x36, 0x18, 0xe9, 0xca, 0xee, 0x02, 0x49, 0x12, 0x19, 0x5d, 0x76, 0xb4, 0x44, 0x7f,
+	0x81, 0xea, 0xef, 0xd1, 0x55, 0x30, 0x4c, 0x20, 0x2d, 0xdc, 0xa9, 0x33, 0x7b, 0xc2, 0x9c, 0xdd,
+	0x13, 0xf4, 0xc1, 0x84, 0x9a, 0xbe, 0x62, 0x8e, 0xf1, 0x95, 0x4f, 0xc4, 0xf8, 0x74, 0x3e, 0xd6,
+	0xf3, 0x1b, 0xf8, 0x55, 0xb8, 0xde, 0x87, 0x35, 0x5d, 0xd0, 0x93, 0x28, 0xc6, 0x0b, 0xf9, 0x5c,
+	0x55, 0xe6, 0xd2, 0x30, 0x17, 0xa4, 0x91, 0x01, 0x93, 0xcf, 0x82, 0xd9, 0x7f, 0x5f, 0x50, 0xaf,
+	0xdd, 0x19, 0x8b, 0x6f, 0x03, 0x8f, 0x91, 0x43, 0x80, 0x0e, 0x66, 0x29, 0x95, 0x64, 0x3d, 0x3d,
+	0x5e, 0x98, 0x4f, 0x63, 0xc1, 0xc4, 0xd1, 0x1c, 0xf9, 0x01, 0xec, 0x53, 0x86, 0xdc, 0x69, 0xdf,
+	0x77, 0x7d, 0xb2, 0xaa, 0x9c, 0x26, 0x64, 0x58, 0x12, 0xf5, 0x13, 0xac, 0xe9, 0xa8, 0x93, 0x28,
+	0xee, 0x84, 0x81, 0x5c, 0x05, 0x2f, 0x0c, 0x3d, 0xc0, 0x3f, 0x4c, 0x08, 0x45, 0x3e, 0x57, 0x4e,
+	0x19, 0x82, 0x35, 0xec, 0x69, 0x2c, 0xa7, 0x39, 0x72, 0x08, 0xeb, 0xa9, 0x27, 0xa8, 0x7d, 0x8f,
+	0x13, 0xa2, 0x31, 0xa6, 0x0c, 0xd9, 0xb0, 0x23, 0x80, 0xe9, 0x63, 0x4a, 0xb6, 0xb4, 0x31, 0xfb,
+	0xbc, 0x2e, 0x4d, 0x14, 0x7e, 0x65, 0x21, 0xd3, 0xc1, 0x2f, 0x44, 0xf7, 0x23, 0xc0, 0x94, 0x7e,
+	0xe4, 0x33, 0xbd, 0x80, 0xd3, 0x6c, 0x6e, 0x2c, 0x50, 0xca, 0x5c, 0xf7, 0xc1, 0x42, 0x32, 0x11,
+	0x7d, 0x71, 0x9a, 0x9c, 0x49, 0xcc, 0x0c, 0xdb, 0x68, 0x8e, 0xfc, 0x0c, 0xb6, 0x42, 0xa3, 0x66,
+	0x66, 0x53, 0x79, 0x65, 0x07, 0x70, 0x59, 0xf4, 0x1e, 0xc0, 0x29, 0x13, 0xed, 0x7b, 0xfc, 0xac,
+	0x22, 0x2b, 0xca, 0x29, 0xf9, 0xc6, 0x5a, 0x18, 0xd4, 0x5e, 0xfb, 0xff, 0xa9, 0x69, 0x3c, 0x3e,
+	0x35, 0x8d, 0xb7, 0x4f, 0x4d, 0xe3, 0xdf, 0x77, 0xcd, 0xdc, 0x5f, 0x45, 0xfc, 0x46, 0x3b, 0xf8,
+	0x10, 0x00, 0x00, 0xff, 0xff, 0x0d, 0x3f, 0xd0, 0xc8, 0xb6, 0x09, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1068,6 +1167,7 @@ type UserServiceClient interface {
 	CheckField(ctx context.Context, in *CheckFieldReq, opts ...grpc.CallOption) (*CheckFieldRes, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	UpdateToken(ctx context.Context, in *RequestForTokens, opts ...grpc.CallOption) (*LoginResponse, error)
+	GetByEmail(ctx context.Context, in *EmailReq, opts ...grpc.CallOption) (*LoginResponse, error)
 }
 
 type userServiceClient struct {
@@ -1168,6 +1268,15 @@ func (c *userServiceClient) UpdateToken(ctx context.Context, in *RequestForToken
 	return out, nil
 }
 
+func (c *userServiceClient) GetByEmail(ctx context.Context, in *EmailReq, opts ...grpc.CallOption) (*LoginResponse, error) {
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, "/user.UserService/GetByEmail", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 type UserServiceServer interface {
 	CreateUser(context.Context, *UserRequest) (*UserResponse, error)
@@ -1180,6 +1289,7 @@ type UserServiceServer interface {
 	CheckField(context.Context, *CheckFieldReq) (*CheckFieldRes, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	UpdateToken(context.Context, *RequestForTokens) (*LoginResponse, error)
+	GetByEmail(context.Context, *EmailReq) (*LoginResponse, error)
 }
 
 // UnimplementedUserServiceServer can be embedded to have forward compatible implementations.
@@ -1215,6 +1325,9 @@ func (*UnimplementedUserServiceServer) Login(ctx context.Context, req *LoginRequ
 }
 func (*UnimplementedUserServiceServer) UpdateToken(ctx context.Context, req *RequestForTokens) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateToken not implemented")
+}
+func (*UnimplementedUserServiceServer) GetByEmail(ctx context.Context, req *EmailReq) (*LoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByEmail not implemented")
 }
 
 func RegisterUserServiceServer(s *grpc.Server, srv UserServiceServer) {
@@ -1401,6 +1514,24 @@ func _UserService_UpdateToken_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_GetByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmailReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetByEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/GetByEmail",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetByEmail(ctx, req.(*EmailReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _UserService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "user.UserService",
 	HandlerType: (*UserServiceServer)(nil),
@@ -1445,9 +1576,47 @@ var _UserService_serviceDesc = grpc.ServiceDesc{
 			MethodName: "UpdateToken",
 			Handler:    _UserService_UpdateToken_Handler,
 		},
+		{
+			MethodName: "GetByEmail",
+			Handler:    _UserService_GetByEmail_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "user/user.proto",
+}
+
+func (m *EmailReq) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EmailReq) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *EmailReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.Email) > 0 {
+		i -= len(m.Email)
+		copy(dAtA[i:], m.Email)
+		i = encodeVarintUser(dAtA, i, uint64(len(m.Email)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *UserRequest) Marshal() (dAtA []byte, err error) {
@@ -1473,6 +1642,20 @@ func (m *UserRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.RefreshToken) > 0 {
+		i -= len(m.RefreshToken)
+		copy(dAtA[i:], m.RefreshToken)
+		i = encodeVarintUser(dAtA, i, uint64(len(m.RefreshToken)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if len(m.AccesToken) > 0 {
+		i -= len(m.AccesToken)
+		copy(dAtA[i:], m.AccesToken)
+		i = encodeVarintUser(dAtA, i, uint64(len(m.AccesToken)))
+		i--
+		dAtA[i] = 0x2a
 	}
 	if len(m.Password) > 0 {
 		i -= len(m.Password)
@@ -1628,12 +1811,26 @@ func (m *UserResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.UpdatedAt)
 		i = encodeVarintUser(dAtA, i, uint64(len(m.UpdatedAt)))
 		i--
-		dAtA[i] = 0x3a
+		dAtA[i] = 0x4a
 	}
 	if len(m.CreatedAt) > 0 {
 		i -= len(m.CreatedAt)
 		copy(dAtA[i:], m.CreatedAt)
 		i = encodeVarintUser(dAtA, i, uint64(len(m.CreatedAt)))
+		i--
+		dAtA[i] = 0x42
+	}
+	if len(m.RefreshToken) > 0 {
+		i -= len(m.RefreshToken)
+		copy(dAtA[i:], m.RefreshToken)
+		i = encodeVarintUser(dAtA, i, uint64(len(m.RefreshToken)))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if len(m.AccesToken) > 0 {
+		i -= len(m.AccesToken)
+		copy(dAtA[i:], m.AccesToken)
+		i = encodeVarintUser(dAtA, i, uint64(len(m.AccesToken)))
 		i--
 		dAtA[i] = 0x32
 	}
@@ -2084,6 +2281,20 @@ func (m *LoginResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
+	if len(m.UpdatedAt) > 0 {
+		i -= len(m.UpdatedAt)
+		copy(dAtA[i:], m.UpdatedAt)
+		i = encodeVarintUser(dAtA, i, uint64(len(m.UpdatedAt)))
+		i--
+		dAtA[i] = 0x4a
+	}
+	if len(m.CreatedAt) > 0 {
+		i -= len(m.CreatedAt)
+		copy(dAtA[i:], m.CreatedAt)
+		i = encodeVarintUser(dAtA, i, uint64(len(m.CreatedAt)))
+		i--
+		dAtA[i] = 0x42
+	}
 	if len(m.RefreshToken) > 0 {
 		i -= len(m.RefreshToken)
 		copy(dAtA[i:], m.RefreshToken)
@@ -2160,17 +2371,17 @@ func (m *RequestForTokens) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
-	if len(m.RefreshToken) > 0 {
-		i -= len(m.RefreshToken)
-		copy(dAtA[i:], m.RefreshToken)
-		i = encodeVarintUser(dAtA, i, uint64(len(m.RefreshToken)))
-		i--
-		dAtA[i] = 0x1a
-	}
 	if len(m.AccesToken) > 0 {
 		i -= len(m.AccesToken)
 		copy(dAtA[i:], m.AccesToken)
 		i = encodeVarintUser(dAtA, i, uint64(len(m.AccesToken)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.RefreshToken) > 0 {
+		i -= len(m.RefreshToken)
+		copy(dAtA[i:], m.RefreshToken)
+		i = encodeVarintUser(dAtA, i, uint64(len(m.RefreshToken)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -2195,6 +2406,22 @@ func encodeVarintUser(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+func (m *EmailReq) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Email)
+	if l > 0 {
+		n += 1 + l + sovUser(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
 func (m *UserRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -2214,6 +2441,14 @@ func (m *UserRequest) Size() (n int) {
 		n += 1 + l + sovUser(uint64(l))
 	}
 	l = len(m.Password)
+	if l > 0 {
+		n += 1 + l + sovUser(uint64(l))
+	}
+	l = len(m.AccesToken)
+	if l > 0 {
+		n += 1 + l + sovUser(uint64(l))
+	}
+	l = len(m.RefreshToken)
 	if l > 0 {
 		n += 1 + l + sovUser(uint64(l))
 	}
@@ -2296,6 +2531,14 @@ func (m *UserResponse) Size() (n int) {
 			l = e.Size()
 			n += 1 + l + sovUser(uint64(l))
 		}
+	}
+	l = len(m.AccesToken)
+	if l > 0 {
+		n += 1 + l + sovUser(uint64(l))
+	}
+	l = len(m.RefreshToken)
+	if l > 0 {
+		n += 1 + l + sovUser(uint64(l))
 	}
 	l = len(m.CreatedAt)
 	if l > 0 {
@@ -2529,6 +2772,14 @@ func (m *LoginResponse) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovUser(uint64(l))
 	}
+	l = len(m.CreatedAt)
+	if l > 0 {
+		n += 1 + l + sovUser(uint64(l))
+	}
+	l = len(m.UpdatedAt)
+	if l > 0 {
+		n += 1 + l + sovUser(uint64(l))
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -2545,11 +2796,11 @@ func (m *RequestForTokens) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovUser(uint64(l))
 	}
-	l = len(m.AccesToken)
+	l = len(m.RefreshToken)
 	if l > 0 {
 		n += 1 + l + sovUser(uint64(l))
 	}
-	l = len(m.RefreshToken)
+	l = len(m.AccesToken)
 	if l > 0 {
 		n += 1 + l + sovUser(uint64(l))
 	}
@@ -2564,6 +2815,89 @@ func sovUser(x uint64) (n int) {
 }
 func sozUser(x uint64) (n int) {
 	return sovUser(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *EmailReq) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowUser
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: EmailReq: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: EmailReq: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Email", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthUser
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Email = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipUser(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthUser
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *UserRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
@@ -2721,6 +3055,70 @@ func (m *UserRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Password = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AccesToken", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthUser
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.AccesToken = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RefreshToken", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthUser
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RefreshToken = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -3205,6 +3603,70 @@ func (m *UserResponse) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AccesToken", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthUser
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.AccesToken = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RefreshToken", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthUser
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RefreshToken = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CreatedAt", wireType)
 			}
 			var stringLen uint64
@@ -3235,7 +3697,7 @@ func (m *UserResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.CreatedAt = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 7:
+		case 9:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field UpdatedAt", wireType)
 			}
@@ -4587,6 +5049,70 @@ func (m *LoginResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.RefreshToken = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CreatedAt", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthUser
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CreatedAt = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UpdatedAt", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthUser
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.UpdatedAt = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipUser(dAtA[iNdEx:])
@@ -4672,38 +5198,6 @@ func (m *RequestForTokens) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AccesToken", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowUser
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthUser
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthUser
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.AccesToken = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field RefreshToken", wireType)
 			}
 			var stringLen uint64
@@ -4733,6 +5227,38 @@ func (m *RequestForTokens) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RefreshToken = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AccesToken", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthUser
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.AccesToken = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

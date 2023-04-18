@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/microservice/api_gateway/api/docs"
 	"github.com/microservice/api_gateway/api/handlers/models"
-	"github.com/microservice/api_gateway/api/handlers/token"
+	"github.com/microservice/api_gateway/api/token"
 	pu "github.com/microservice/api_gateway/genproto/user"
 	l "github.com/microservice/api_gateway/pkg/logger"
 )
@@ -16,19 +16,20 @@ import (
 // @Summary login user api
 // @Description this api login user
 // @Tags Register
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param        email  	path string true "email"
 // @Param        password   path string true "password"
-// @Succes        200		{object}	models.LoginUser
+// @Succes       200		{object}	models.LoginUser
 // Failure       500        {object}  models.Error
 // Failure       400        {object}  models.Error
 // Failure       404        {object}  models.Error
 // @Router /v1/login/{email}/{password} [get]
 func (h *handlerV1) Login(c *gin.Context) {
 	var (
-		password = c.Param("password")
 		email    = c.Param("email")
+		password = c.Param("password")
 	)
 	res, err := h.serviceManager.UserService().Login(
 		context.Background(), &pu.LoginRequest{
@@ -55,7 +56,9 @@ func (h *handlerV1) Login(c *gin.Context) {
 		Log: h.log,
 	}
 
-	accesToken, refreshToken, err := h.jwtHandler.GenerateAuthJWT()
+	tokens, err := h.jwtHandler.GenerateAuthJWT()
+	accessToken := tokens[0]
+	refreshToken := tokens[1]
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -66,12 +69,11 @@ func (h *handlerV1) Login(c *gin.Context) {
 	// keys for update tokens
 	ucReq := &pu.RequestForTokens{
 		Id:           res.Id,
-		AccesToken:   accesToken,
 		RefreshToken: refreshToken,
 	}
 
 	// Update tokens
-	res, err = h.serviceManager.UserService().UpdateToken(context.Background(), &pu.RequestForTokens{Id: ucReq.Id, RefreshToken: ucReq.RefreshToken, AccesToken: ucReq.AccesToken})
+	res, err = h.serviceManager.UserService().UpdateToken(context.Background(), &pu.RequestForTokens{Id: ucReq.Id, RefreshToken: ucReq.RefreshToken})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -87,7 +89,7 @@ func (h *handlerV1) Login(c *gin.Context) {
 		FirstName: res.FirstName,
 		LastName:  res.LastName,
 	}
+	response.AccesToken = accessToken
 	response.Refreshtoken = refreshToken
-	response.Accessestoken = accesToken
 	c.JSON(http.StatusOK, response)
 }

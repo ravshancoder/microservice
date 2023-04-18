@@ -17,16 +17,16 @@ func (r *UserRepo) CreateUser(user *u.UserRequest) (*u.UserResponse, error) {
 			($1, $2, $3, $4, $5, $6) 
 		returning 
 			id, first_name, last_name, email, acces_token, refresh_token, created_at, updated_at`, user.FirstName, user.LastName, user.Email, user.Password, user.AccesToken, user.RefreshToken).
-			Scan(
-				&res.Id, 
-				&res.FirstName, 
-				&res.LastName, 
-				&res.Email, 
-				&res.AccesToken, 
-				&res.RefreshToken, 
-				&res.CreatedAt, 
-				&res.UpdatedAt,
-			)
+		Scan(
+			&res.Id,
+			&res.FirstName,
+			&res.LastName,
+			&res.Email,
+			&res.AccesToken,
+			&res.RefreshToken,
+			&res.CreatedAt,
+			&res.UpdatedAt,
+		)
 
 	if err != nil {
 		log.Println("failed to create user")
@@ -45,11 +45,11 @@ func (r *UserRepo) GetUserById(user *u.IdRequest) (*u.UserResponse, error) {
 			users 
 		where id = $1 and deleted_at is null`, user.Id).
 		Scan(
-			&res.Id, 
-			&res.FirstName, 
-			&res.LastName, 
-			&res.Email, 
-			&res.CreatedAt, 
+			&res.Id,
+			&res.FirstName,
+			&res.LastName,
+			&res.Email,
+			&res.CreatedAt,
 			&res.UpdatedAt,
 		)
 
@@ -83,7 +83,7 @@ func (r *UserRepo) GetAllUsers(req *u.AllUsersRequest) (*u.Users, error) {
 	offset := (req.Page - 1) * req.Limit
 	rows, err := r.db.Query(`
 		select 
-			id, first_name, last_name, email, created_at, updated_at 
+			id, first_name, last_name, email, refresh_token, created_at, updated_at 
 		from 
 			users 
 		where 
@@ -103,6 +103,7 @@ func (r *UserRepo) GetAllUsers(req *u.AllUsersRequest) (*u.Users, error) {
 			&temp.FirstName,
 			&temp.LastName,
 			&temp.Email,
+			&temp.RefreshToken,
 			&temp.CreatedAt,
 			&temp.UpdatedAt,
 		)
@@ -214,24 +215,22 @@ func (r *UserRepo) GetByEmail(req *u.EmailReq) (*u.LoginResponse, error) {
 		email, 
 		password,
 		refresh_token,
-		acces_token,
 		created_at, 
 		updated_at 
 	FROM 
 		users 
 	WHERE 
 		email=$1 AND deleted_at IS NULL`, req.Email).
-	Scan(
-		&res.Id, 
-		&res.FirstName, 
-		&res.LastName, 
-		&res.Email, 
-		&res.Password,
-		&res.RefreshToken, 
-		&res.AccesToken, 
-		&res.CreatedAt, 
-		&res.UpdatedAt,
-	)
+		Scan(
+			&res.Id,
+			&res.FirstName,
+			&res.LastName,
+			&res.Email,
+			&res.Password,
+			&res.RefreshToken,
+			&res.CreatedAt,
+			&res.UpdatedAt,
+		)
 	if err != nil {
 		fmt.Println("error while getting user login")
 		return &u.LoginResponse{}, err
@@ -240,26 +239,25 @@ func (r *UserRepo) GetByEmail(req *u.EmailReq) (*u.LoginResponse, error) {
 	return &res, nil
 }
 
-func (r *UserRepo) UpdateToken(user *u.RequestForTokens)(*u.LoginResponse, error){
+func (r *UserRepo) UpdateToken(user *u.RequestForTokens) (*u.LoginResponse, error) {
 	res := u.LoginResponse{}
 	err := r.db.QueryRow(`
 		update
 			users
 		set
-			refresh_token = $1, acces_token = $2
+			refresh_token = $1
 		where 
-			id = $3
+			id = $2
 		returning 
-			id, first_name, last_name, email, refresh_token, acces_token, updated_at`, user.RefreshToken, user.AccesToken, user.Id).
-			Scan(
-				&res.Id,
-				&res.FirstName,
-				&res.LastName,
-				&res.Email,
-				&res.RefreshToken,
-				&res.AccesToken,
-				&res.UpdatedAt,
-			)
+			id, first_name, last_name, email, refresh_token, updated_at`, user.RefreshToken, user.Id).
+		Scan(
+			&res.Id,
+			&res.FirstName,
+			&res.LastName,
+			&res.Email,
+			&res.RefreshToken,
+			&res.UpdatedAt,
+		)
 
 	if err != nil {
 		log.Println("failed to update user")

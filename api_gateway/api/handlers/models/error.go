@@ -17,3 +17,8 @@ type StandartErrorModel struct {
 type ErrorMessage struct {
 	Message string  `json:"message"`
 }
+
+type ServerError struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
+}

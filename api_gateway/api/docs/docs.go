@@ -16,8 +16,13 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/comment": {
+        "/v1/comment": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api write comment",
                 "consumes": [
                     "application/json"
@@ -62,9 +67,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/comment/{id}": {
+        "/v1/comment/{id}": {
             "get": {
-                "description": "This api gets a comment by id",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "This api gets a comment for post",
                 "consumes": [
                     "application/json"
                 ],
@@ -74,7 +84,7 @@ const docTemplate = `{
                 "tags": [
                     "Comment"
                 ],
-                "summary": "get comment by id",
+                "summary": "get comments for post",
                 "parameters": [
                     {
                         "type": "string",
@@ -106,6 +116,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api deletes a comment",
                 "consumes": [
                     "application/json"
@@ -148,8 +163,50 @@ const docTemplate = `{
                 }
             }
         },
-        "/post": {
+        "/v1/login/{email}/{password}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "this api login user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Register"
+                ],
+                "summary": "login user api",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "password",
+                        "name": "password",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/post": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api creates a post",
                 "consumes": [
                     "application/json"
@@ -194,8 +251,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/post/{id}": {
+        "/v1/post/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api gets a post by id",
                 "consumes": [
                     "application/json"
@@ -238,6 +300,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api updates a post",
                 "consumes": [
                     "application/json"
@@ -288,6 +355,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api deletes a post",
                 "consumes": [
                     "application/json"
@@ -330,8 +402,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/{id}": {
+        "/v1/user/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api gets a user by id",
                 "consumes": [
                     "application/json"
@@ -374,6 +451,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api updates a user",
                 "consumes": [
                     "application/json"
@@ -424,6 +506,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api deletes a user",
                 "consumes": [
                     "application/json"
@@ -466,8 +553,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/users": {
+        "/v1/users": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api gets all users",
                 "consumes": [
                     "application/json"
@@ -520,6 +612,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api creates a user",
                 "consumes": [
                     "application/json"
@@ -564,8 +661,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/register": {
+        "/v1/users/register": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "this api registers",
                 "consumes": [
                     "application/json"
@@ -598,8 +700,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/search": {
+        "/v1/users/search": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This api searches for users by first name",
                 "consumes": [
                     "application/json"
@@ -642,8 +749,62 @@ const docTemplate = `{
                 }
             }
         },
-        "/verify/{email}/{code}": {
+        "/v1/users/{search}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "This api searches for users by first name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "search users by name",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "FirstName",
+                        "name": "first_name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Users"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.StandartErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.StandartErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/verify/{email}/{code}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "this api verifies",
                 "consumes": [
                     "application/json"
@@ -865,17 +1026,25 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "description": "This is a user service api.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
+	Version:          "",
 	Host:             "",
-	BasePath:         "/v1",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Swagger for user api",
-	Description:      "This is a user service api.",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

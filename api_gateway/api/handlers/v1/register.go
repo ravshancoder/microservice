@@ -10,6 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	r "github.com/gomodule/redigo/redis"
+	"github.com/google/uuid"
 	_ "github.com/microservice/api_gateway/api/docs"
 	"github.com/microservice/api_gateway/api/handlers/models"
 	"github.com/microservice/api_gateway/email"
@@ -22,12 +23,13 @@ import (
 // @Summary register user api
 // @Description this api registers
 // @Tags Register
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param request body models.RegisterModel true "register user"
 // @Succes 200 {object}	models.StandartErrorModel
 // @Failure	500 {object} models.StandartErrorModel
-// @Router /users/register [post]
+// @Router /v1/users/register [post]
 func (h *handlerV1) Register(c *gin.Context) {
 
 	var body models.UserRegister
@@ -57,12 +59,14 @@ func (h *handlerV1) Register(c *gin.Context) {
 	}
 
 	if existsEmail.Exists {
+		fmt.Println(err)
 		c.JSON(http.StatusConflict, models.ResponseError{
 			Error: models.ErrorMessage{
 				Message: "mail already exists",
 			},
 		})
 		h.log.Error("this email already exists ", l.Error(err))
+		return
 	}
 
 	code := etc.GenerateCode(6)
@@ -101,19 +105,20 @@ func (h *handlerV1) Register(c *gin.Context) {
 // @Summary verify user api
 // @Description this api verifies
 // @Tags Register
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param email path string true "email"
 // @Param code path string true "code"
 // @Succes 200{object} models.RegisterModel
-// @Router /verify/{email}/{code} [get]
+// @Router /v1/verify/{email}/{code} [get]
 func (h *handlerV1) Verify(c *gin.Context) {
 	var (
-		code  = c.Param("code")
 		email = c.Param("email")
+		code  = c.Param("code")
 		body  = models.UserRegister{}
 	)
-	fmt.Println(email)
+
 	userBody, err := h.redis.Get(email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -146,6 +151,32 @@ func (h *handlerV1) Verify(c *gin.Context) {
 			"error": err.Error(),
 		})
 		h.log.Error("error while checking code ", l.Error(err))
+		return
+	}
+
+	id, err := uuid.NewRandom()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("error while generating UUID", l.Error(err))
+		return
+	}
+	h.jwtHandler.SigninKEY = h.cfg.SigninKey
+	h.jwtHandler.Sub = id.String()
+	h.jwtHandler.Iss = "user"
+	h.jwtHandler.Role = "authorized"
+	h.jwtHandler.Aud = []string{"ucook-frontend"}
+	h.jwtHandler.Log = h.log
+
+	tokens, err := h.jwtHandler.GenerateAuthJWT()
+	accessToken := tokens[0]
+	refreshToken := tokens[1]
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("error while generating tokens", l.Error(err))
 		return
 	}
 
@@ -182,14 +213,12 @@ func (h *handlerV1) Verify(c *gin.Context) {
 	defer cancel()
 	fmt.Println(body)
 	user, err := h.serviceManager.UserService().CreateUser(ctx, &pu.UserRequest{
-		Email:     body.Email,
-		Password:  string(hashePassword),
-		FirstName: body.FirstName,
-		LastName:  body.LastName,
+		Email:        body.Email,
+		Password:     string(hashePassword),
+		FirstName:    body.FirstName,
+		LastName:     body.LastName,
+		RefreshToken: refreshToken,
 	})
-	user.Email = body.Email
-	user.FirstName = body.FirstName
-	user.LastName = body.LastName
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -197,6 +226,9 @@ func (h *handlerV1) Verify(c *gin.Context) {
 		h.log.Error("error while creating user to db", l.Error(err))
 		return
 	}
+	h.jwtHandler.Sub = string(user.Id)
+	user.AccesToken = accessToken
+	user.RefreshToken = refreshToken
 
 	c.JSON(http.StatusCreated, user)
 }

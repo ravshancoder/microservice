@@ -19,13 +19,14 @@ import (
 // @Summary create user
 // @Description This api creates a user
 // @Tags User
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param body body models.UserRequest true "Create User"
 // @Success 200 {object} models.User
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /users [post]
+// @Router /v1/users [post]
 func (h *handlerV1) CreateUser(c *gin.Context) {
 	var (
 		body        models.UserRequest
@@ -63,6 +64,7 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 // @Summary update user
 // @Description This api updates a user
 // @Tags User
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param body body models.UpdateUserRequest true "Update User"
@@ -70,7 +72,7 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 404 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /user/{id} [put]
+// @Router /v1/user/{id} [put]
 func (h *handlerV1) UpdateUser(c *gin.Context) {
 	var (
 		body        models.UpdateUserRequest
@@ -122,13 +124,14 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 // @Summary get user by id
 // @Description This api gets a user by id
 // @Tags User
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Id"
 // @Success 200 {object} models.User
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /user/{id} [get]
+// @Router /v1/user/{id} [get]
 func (h *handlerV1) GetUserById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -158,6 +161,7 @@ func (h *handlerV1) GetUserById(c *gin.Context) {
 // @Summary get all users
 // @Description This api gets all users
 // @Tags User
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param limit query int true "Limit"
@@ -165,7 +169,7 @@ func (h *handlerV1) GetUserById(c *gin.Context) {
 // @Success 200 {object} []models.User
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /users [get]
+// @Router /v1/users [get]
 func (h *handlerV1) GetAllUsers(c *gin.Context) {
 	queryParams := c.Request.URL.Query()
 	params, errstr := utils.ParseQueryParams(queryParams)
@@ -195,13 +199,14 @@ func (h *handlerV1) GetAllUsers(c *gin.Context) {
 // @Summary delete user
 // @Description This api deletes a user
 // @Tags User
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Id"
 // @Success 200 {object} models.User
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /user/{id} [delete]
+// @Router /v1/user/{id} [delete]
 func (h *handlerV1) DeleteUser(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -237,13 +242,14 @@ func (h *handlerV1) DeleteUser(c *gin.Context) {
 // @Summary search users by name
 // @Description This api searches for users by first name
 // @Tags User
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param first_name query string true "FirstName"
 // @Success 200 {object}  models.Users
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /users/search [get]
+// @Router /v1/users/{search} [get]
 func (h *handlerV1) SearchUsers(c *gin.Context) {
 
 	queryParams := c.Request.URL.Query()

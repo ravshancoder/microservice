@@ -2,6 +2,7 @@ package v1
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -19,14 +20,17 @@ import (
 // @Summary create post
 // @Description This api creates a post
 // @Tags Post
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param body body models.PostRequest true "Create Post"
 // @Success 200 {object} models.Post
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /post [post]
+// @Router /v1/post [post]
 func (h *handlerV1) CreatePost(c *gin.Context) {
+
+	fmt.Println(c.GetHeader("Authorization"))
 	var (
 		body        models.PostRequest
 		jspbMarshal protojson.MarshalOptions
@@ -63,6 +67,7 @@ func (h *handlerV1) CreatePost(c *gin.Context) {
 // @Summary update post
 // @Description This api updates a post
 // @Tags Post
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param body body models.UpdatePostRequest true "Update Post"
@@ -70,7 +75,7 @@ func (h *handlerV1) CreatePost(c *gin.Context) {
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 404 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /post/{id} [put]
+// @Router /v1/post/{id} [put]
 func (h *handlerV1) UpdatePost(c *gin.Context) {
 	var (
 		body        models.UpdatePostRequest
@@ -120,13 +125,14 @@ func (h *handlerV1) UpdatePost(c *gin.Context) {
 // @Summary get post by id
 // @Description This api gets a post by id
 // @Tags Post
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Id"
 // @Success 200 {object} models.Post
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /post/{id} [get]
+// @Router /v1/post/{id} [get]
 func (h *handlerV1) GetPostById(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -191,13 +197,14 @@ func (h *handlerV1) GetPostById(c *gin.Context) {
 // @Summary delete post
 // @Description This api deletes a post
 // @Tags Post
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Id"
 // @Success 200 {object} models.Post
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /post/{id} [delete]
+// @Router /v1/post/{id} [delete]
 func (h *handlerV1) DeletePost(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -226,13 +233,14 @@ func (h *handlerV1) DeletePost(c *gin.Context) {
 // @Summary search users by name
 // @Description This api searches for users by first name
 // @Tags User
+// @Security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Param first_name query string true "FirstName"
 // @Success 200 {object}  models.Users
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /users/search [get]
+// @Router /v1/users/search [get]
 func (h *handlerV1) SearchPost(c *gin.Context) {
 
 	queryParams := c.Request.URL.Query()

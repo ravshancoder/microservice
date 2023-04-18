@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS comments (
     user_id INTEGER,
     post_user_name VARCHAR(60),
     text text,
-    created_at TIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIME DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     deleted_at TIME
 );
