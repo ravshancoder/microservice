@@ -335,6 +335,38 @@ paths:
       summary: get post by id
       tags:
       - Post
+  /v1/post/search:
+    get:
+      consumes:
+      - application/json
+      description: This api searches for users by first name
+      parameters:
+      - description: search
+        in: query
+        name: search
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Users'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
+      summary: search users by name
+      tags:
+      - User
+  /v1/posts/{id}:
     put:
       consumes:
       - application/json
@@ -590,37 +622,6 @@ paths:
       summary: register user api
       tags:
       - Register
-  /v1/users/search:
-    get:
-      consumes:
-      - application/json
-      description: This api searches for users by first name
-      parameters:
-      - description: FirstName
-        in: query
-        name: first_name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Users'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-      security:
-      - ApiKeyAuth: []
-      summary: search users by name
-      tags:
-      - User
   /v1/verify/{email}/{code}:
     get:
       consumes:

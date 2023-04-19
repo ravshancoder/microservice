@@ -75,7 +75,7 @@ func (h *handlerV1) CreatePost(c *gin.Context) {
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 404 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /v1/post/{id} [put]
+// @Router /v1/posts/{id} [put]
 func (h *handlerV1) UpdatePost(c *gin.Context) {
 	var (
 		body        models.UpdatePostRequest
@@ -159,7 +159,7 @@ func (h *handlerV1) GetPostById(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// // @Summary get all users
+// // @Summary get all posts
 // // @Description This api gets all users
 // // @Tags User
 // // @Accept json
@@ -236,11 +236,11 @@ func (h *handlerV1) DeletePost(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Accept json
 // @Produce json
-// @Param first_name query string true "FirstName"
+// @Param search query string true "search"
 // @Success 200 {object}  models.Users
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /v1/users/search [get]
+// @Router /v1/post/search [get]
 func (h *handlerV1) SearchPost(c *gin.Context) {
 
 	queryParams := c.Request.URL.Query()
@@ -254,8 +254,8 @@ func (h *handlerV1) SearchPost(c *gin.Context) {
 		return
 	}
 
-	response, err := h.serviceManager.PostService().SearchByTitle(context.Background(), &pu.Title{
-		Title: params.Search,
+	response, err := h.serviceManager.PostService().SearchByTitle(context.Background(), &pu.Search{
+		Search: params.Search,
 	})
 
 	if err != nil {

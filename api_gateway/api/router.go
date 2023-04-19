@@ -50,15 +50,13 @@ func New(option Option) *gin.Engine {
 		CasbinEnforcer: option.CasbinEnforcer,
 	})
 
-	
-
 	jwt := jwthandler.JWTHandler{
-		SigninKEY: option.Conf.SignKey,
-		Log:       option.Logger,
+		SiginKey: option.Conf.SiginKey,
+		Log:      option.Logger,
 	}
 
-	router.Use(middileware.NewAuth(option.CasbinEnforcer, jwt, config.Load()))
-	
+	router.Use(middileware.NewAuth(option.CasbinEnforcer, jwt, option.Conf))
+
 	api := router.Group("/v1")
 	// users
 	api.POST("/users", handlerV1.CreateUser)
@@ -76,9 +74,8 @@ func New(option Option) *gin.Engine {
 	// posts
 	api.POST("/post", handlerV1.CreatePost)
 	api.GET("/post/:id", handlerV1.GetPostById)
-	// api.GET("/posts/:id", handlerV1.GetAllPosts)
 	api.GET("/post/search", handlerV1.SearchPost)
-	api.PUT("/post/:id", handlerV1.UpdatePost)
+	api.PUT("/posts/:id", handlerV1.UpdatePost)
 	api.DELETE("/post/:id", handlerV1.DeletePost)
 
 	// comment

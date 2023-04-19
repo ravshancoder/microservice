@@ -68,9 +68,9 @@ func GetClaims(h *handlerV1, c *gin.Context) jwt.MapClaims {
 
 	authorization.Token = strings.TrimSpace(strings.Trim(authorization.Token, "Barer"))
 
-	fmt.Println(authorization.Token)
-
 	h.jwtHandler.Token = authorization.Token
+
+	fmt.Println(h.jwtHandler.SiginKey, "++++")
 
 	claims, err = h.jwtHandler.ExtractClaims()
 
@@ -84,6 +84,6 @@ func GetClaims(h *handlerV1, c *gin.Context) jwt.MapClaims {
 	return claims
 }
 
-type BaseHandler struct{
+type BaseHandler struct {
 	Config config.Config
 }

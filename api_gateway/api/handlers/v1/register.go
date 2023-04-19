@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -162,13 +163,12 @@ func (h *handlerV1) Verify(c *gin.Context) {
 		h.log.Error("error while generating UUID", l.Error(err))
 		return
 	}
-	h.jwtHandler.SigninKEY = h.cfg.SigninKey
+	h.jwtHandler.SiginKey = h.cfg.SiginKey
 	h.jwtHandler.Sub = id.String()
 	h.jwtHandler.Iss = "user"
 	h.jwtHandler.Role = "authorized"
 	h.jwtHandler.Aud = []string{"ucook-frontend"}
 	h.jwtHandler.Log = h.log
-
 	tokens, err := h.jwtHandler.GenerateAuthJWT()
 	accessToken := tokens[0]
 	refreshToken := tokens[1]
@@ -180,7 +180,7 @@ func (h *handlerV1) Verify(c *gin.Context) {
 		return
 	}
 
-	hashePassword, err := etc.GeneratePasswordHash(body.Password)
+	hashedPassword, err := etc.GeneratePasswordHash(body.Password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -214,7 +214,7 @@ func (h *handlerV1) Verify(c *gin.Context) {
 	fmt.Println(body)
 	user, err := h.serviceManager.UserService().CreateUser(ctx, &pu.UserRequest{
 		Email:        body.Email,
-		Password:     string(hashePassword),
+		Password:     string(hashedPassword),
 		FirstName:    body.FirstName,
 		LastName:     body.LastName,
 		RefreshToken: refreshToken,
@@ -226,7 +226,7 @@ func (h *handlerV1) Verify(c *gin.Context) {
 		h.log.Error("error while creating user to db", l.Error(err))
 		return
 	}
-	h.jwtHandler.Sub = string(user.Id)
+	h.jwtHandler.Sub = strconv.Itoa(int(user.Id))
 	user.AccesToken = accessToken
 	user.RefreshToken = refreshToken
 

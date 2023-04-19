@@ -9,7 +9,7 @@ service PostService {
     rpc GetPostByUserId(IdRequest) returns (Posts) {}
     rpc GetPostForUser(IdRequest) returns (Posts) {}
     rpc GetPostForComment(IdRequest) returns (PostResponse) {}
-    rpc SearchByTitle(Title) returns (Posts) {}
+    rpc SearchByTitle(Search) returns (Posts) {}
     rpc LikePost(LikeRequest) returns (PostResponse) {}
     rpc UpdatePost(UpdatePostRequest) returns (PostResponse) {}
     rpc DeletePost(IdRequest) returns (PostResponse) {}
@@ -58,8 +58,8 @@ message Posts {
     repeated PostResponse posts = 1;
 }
 
-message Title {
-    string title = 1;
+message Search {
+    string search = 1;
 }
 
 message LikeRequest {

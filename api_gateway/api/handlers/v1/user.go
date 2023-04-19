@@ -142,6 +142,8 @@ func (h *handlerV1) GetUserById(c *gin.Context) {
 		return
 	}
 
+	
+
 	response, err := h.serviceManager.UserService().GetUserById(context.Background(), &pu.IdRequest{Id: int64(id)})
 	if err != nil {
 		statusCode := http.StatusInternalServerError

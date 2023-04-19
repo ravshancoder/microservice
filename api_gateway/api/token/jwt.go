@@ -1,7 +1,6 @@
 package token
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/microservice/api_gateway/pkg/logger"
@@ -10,15 +9,15 @@ import (
 )
 
 type JWTHandler struct {
-	Sub       string
-	Iss       string
-	Exp       string
-	Iat       string
-	Aud       []string
-	Role      string
-	SigninKEY string
-	Log       logger.Logger
-	Token     string
+	Sub      string
+	Iss      string
+	Exp      string
+	Iat      string
+	Aud      []string
+	Role     string
+	SiginKey string
+	Log      logger.Logger
+	Token    string
 }
 
 type CustomClaims struct {
@@ -49,13 +48,14 @@ func (jwtHandler *JWTHandler) GenerateAuthJWT() ([]string, error) {
 	claims["role"] = jwtHandler.Role
 	claims["aud"] = jwtHandler.Aud
 
-	access, err := accesToken.SignedString([]byte(jwtHandler.SigninKEY))
+	access, err := accesToken.SignedString([]byte(jwtHandler.SiginKey))
+
 	if err != nil {
 		jwtHandler.Log.Error("error while generating access token", logger.Error(err))
 		return []string{access, ""}, err
 	}
 
-	refresh, err := refreshToken.SignedString([]byte(jwtHandler.SigninKEY))
+	refresh, err := refreshToken.SignedString([]byte(jwtHandler.SiginKey))
 	if err != nil {
 		jwtHandler.Log.Error("error generating refresh token", logger.Error(err))
 		return []string{refresh, ""}, err
@@ -71,9 +71,9 @@ func (jwtHandler *JWTHandler) ExtractClaims() (jwt.MapClaims, error) {
 	)
 
 	token, err = jwt.Parse(jwtHandler.Token, func(t *jwt.Token) (interface{}, error) {
-		return []byte(jwtHandler.SigninKEY), nil
+		return []byte(jwtHandler.SiginKey), nil
 	})
-	fmt.Println("token/jwt.go/76 Error: ", err)
+
 	if err != nil {
 		return nil, err
 	}

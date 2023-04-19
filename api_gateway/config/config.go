@@ -18,26 +18,24 @@ type Config struct {
 	// context timeout in seconds
 	CtxTimeout int
 
-	SignKey string
-
-	SigninKey string
+	SiginKey string
 
 	LogLevel string
 	HTTPPort string
 
-	UserServiceHost    string
-	UserServicePort    string
+	UserServiceHost string
+	UserServicePort string
 
 	AuthConfigPath string
 
-	PostServiceHost    string
-	PostServicePort    string
+	PostServiceHost string
+	PostServicePort string
 
 	CommentServiceHost string
 	CommentServicePort string
 
-	RedisHost          string
-	RedisPort          string
+	RedisHost string
+	RedisPort string
 }
 
 func Load() Config {
@@ -52,7 +50,7 @@ func Load() Config {
 
 	c.Environment = cast.ToString(getOrReturnDefault("ENVIRONMENT", "develop"))
 
-	c.SigninKey = cast.ToString(getOrReturnDefault("SIGNING_KEY", "ravshanSignIn"))
+	c.SiginKey = cast.ToString(getOrReturnDefault("SIGNING_KEY", "ravshanSignIn"))
 
 	c.AuthConfigPath = cast.ToString(getOrReturnDefault("CASBIN_CONFIG_PATH", "./config/rback_model.conf"))
 
@@ -71,7 +69,7 @@ func Load() Config {
 	c.RedisHost = cast.ToString(getOrReturnDefault("REDIS_HOST", "localhost"))
 	c.RedisPort = cast.ToString(getOrReturnDefault("REDIS_PORT", "6379"))
 
-	c.CtxTimeout = cast.ToInt(getOrReturnDefault("CTX_TIMEOUT",7))
+	c.CtxTimeout = cast.ToInt(getOrReturnDefault("CTX_TIMEOUT", 7))
 
 	return c
 }

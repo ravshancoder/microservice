@@ -46,10 +46,10 @@ func (h *handlerV1) Login(c *gin.Context) {
 	}
 
 	h.jwtHandler = token.JWTHandler{
-		SigninKEY: h.cfg.SigninKey,
-		Sub:       res.Id,
-		Iss:       "user",
-		Role:      "authorized",
+		SiginKey: h.cfg.SiginKey,
+		Sub:      res.Id,
+		Iss:      "user",
+		Role:     "authorized",
 		Aud: []string{
 			"ucook_frontend",
 		},
