@@ -6,6 +6,5 @@ CREATE TABLE IF NOT EXISTS comments (
     post_user_name VARCHAR(60),
     text text,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     deleted_at TIME
 );

@@ -16,6 +16,70 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/v1/admin/add/policy": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Add Policy for user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sudo"
+                ],
+                "summary": "Add Policy User",
+                "parameters": [
+                    {
+                        "description": "Policy",
+                        "name": "policy",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Policy"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/admin/remove/policy": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Remove User Policy",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sudo"
+                ],
+                "summary": "Remove Policy User",
+                "parameters": [
+                    {
+                        "description": "Policy",
+                        "name": "policy",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Policy"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/v1/comment": {
             "post": {
                 "security": [
@@ -68,13 +132,13 @@ const docTemplate = `{
             }
         },
         "/v1/comment/{id}": {
-            "get": {
+            "delete": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "This api gets a comment for post",
+                "description": "This api deletes a comment",
                 "consumes": [
                     "application/json"
                 ],
@@ -84,10 +148,10 @@ const docTemplate = `{
                 "tags": [
                     "Comment"
                 ],
-                "summary": "get comments for post",
+                "summary": "delete comment",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "Id",
                         "name": "id",
                         "in": "path",
@@ -114,14 +178,16 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "delete": {
+            }
+        },
+        "/v1/comments/{id}": {
+            "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "This api deletes a comment",
+                "description": "This api gets a comment for post",
                 "consumes": [
                     "application/json"
                 ],
@@ -131,10 +197,10 @@ const docTemplate = `{
                 "tags": [
                     "Comment"
                 ],
-                "summary": "delete comment",
+                "summary": "get comments for post",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Id",
                         "name": "id",
                         "in": "path",
@@ -880,6 +946,20 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Policy": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "domain": {
+                    "type": "string"
+                },
+                "user": {
                     "type": "string"
                 }
             }

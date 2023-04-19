@@ -26,11 +26,8 @@ func NewAuth(enforce *casbin.Enforcer, jwtHandler token.JWTHandler, cfg config.C
 		jwtHandler: jwtHandler,
 	}
 
-	fmt.Println(cfg.SiginKey)
-
 	return func(c *gin.Context) {
 		allow, err := a.CheckPermission(c.Request)
-		fmt.Println(">>>", allow)
 		if err != nil {
 			v, _ := err.(*jwtg.ValidationError)
 			if v.Errors == jwtg.ValidationErrorExpired {
@@ -62,12 +59,10 @@ func (a *JwtRoleAuth) GetRole(r *http.Request) (string, error) {
 	}
 
 	a.jwtHandler.Token = jwtToken
-	fmt.Println(a.jwtHandler.SiginKey)
 	claims, err = a.jwtHandler.ExtractClaims()
 	if err != nil {
 		return "", err
 	}
-	fmt.Println("salom")
 	fmt.Println(claims["role"])
 	if claims["role"].(string) == "authorized" {
 		role = "authorized"
@@ -83,7 +78,6 @@ func (a *JwtRoleAuth) GetRole(r *http.Request) (string, error) {
 
 // CheckPermission checks whether user is allowed to use certain endpoint
 func (a *JwtRoleAuth) CheckPermission(r *http.Request) (bool, error) {
-	fmt.Println(a.jwtHandler.SiginKey, "aaaaaaa")
 	user, err := a.GetRole(r)
 	if err != nil {
 		return false, err

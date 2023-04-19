@@ -12,10 +12,13 @@ service UserService{
     rpc UpdateUser(UpdateUserRequest) returns (UserResponse){}
     rpc DeleteUser(IdRequest) returns (UserResponse){}
     rpc CheckField(CheckFieldReq) returns (CheckFieldRes) {}
-    rpc Login(LoginRequest) returns (LoginResponse) {}
-    rpc UpdateToken(RequestForTokens) returns (LoginResponse) {}
-    rpc GetByEmail(EmailReq) returns (LoginResponse);
+    rpc Login(LoginRequest) returns (UserResponse) {}
+    rpc UpdateToken(RequestForTokens) returns (UserResponse) {}
+    rpc GetByEmail(EmailReq) returns (UserResponse);
+    rpc CreateAdmin(IdRequest) returns(Empty);
 }
+
+message Empty{}
 
 message EmailReq {
     string email = 1;
@@ -26,8 +29,9 @@ message UserRequest{
     string last_name = 2;
     string email = 3;
     string password = 4;
-    string acces_token = 5;
-    string refresh_token = 6;
+    string user_type  = 5;
+    string acces_token = 6;
+    string refresh_token = 7;
 }
 
 message UpdateUserRequest {
@@ -35,7 +39,8 @@ message UpdateUserRequest {
     string last_name = 2;
     string email = 3;
     string password = 4;
-    int64 id = 5;
+    string user_type  = 5;
+    int64 id = 6;
 }
 
 message SearchUsers {
@@ -48,10 +53,11 @@ message UserResponse{
     string last_name = 3;
     string email = 4;
     repeated Post posts = 5;
-    string acces_token = 6;
-    string refresh_token = 7;
-    string created_at = 8;
-    string updated_at = 9;
+    string user_type  = 6;
+    string acces_token = 7;
+    string refresh_token = 8;
+    string created_at = 9;
+    string updated_at = 10;
 }
 
 message Post {
@@ -101,17 +107,6 @@ message LoginRequest {
     string password = 2;
 }
 
-message LoginResponse {
-    string id = 1;
-    string first_name = 2;
-    string last_name = 3;
-    string email = 4;
-    string password = 5;
-    string acces_token = 6;
-    string refresh_token = 7;
-    string created_at = 8;
-    string updated_at = 9;
-}
 
 message RequestForTokens {
     string id = 1;

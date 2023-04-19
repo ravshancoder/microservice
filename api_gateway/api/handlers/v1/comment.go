@@ -70,7 +70,7 @@ func (h *handlerV1) WriteComment(c *gin.Context) {
 // @Success 200 {object} models.Comment
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /v1/comment/{id} [get]
+// @Router /v1/comments/{id} [get]
 func (h *handlerV1) GetCommentsForPost(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

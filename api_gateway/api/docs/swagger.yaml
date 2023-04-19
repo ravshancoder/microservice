@@ -28,6 +28,15 @@ definitions:
       message:
         type: string
     type: object
+  models.Policy:
+    properties:
+      action:
+        type: string
+      domain:
+        type: string
+      user:
+        type: string
+    type: object
   models.Post:
     properties:
       created_at:
@@ -125,6 +134,46 @@ info:
   contact: {}
   title: Swagger for user api
 paths:
+  /v1/admin/add/policy:
+    post:
+      consumes:
+      - application/json
+      description: Add Policy for user
+      parameters:
+      - description: Policy
+        in: body
+        name: policy
+        required: true
+        schema:
+          $ref: '#/definitions/models.Policy'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Add Policy User
+      tags:
+      - Sudo
+  /v1/admin/remove/policy:
+    post:
+      consumes:
+      - application/json
+      description: Remove User Policy
+      parameters:
+      - description: Policy
+        in: body
+        name: policy
+        required: true
+        schema:
+          $ref: '#/definitions/models.Policy'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Remove Policy User
+      tags:
+      - Sudo
   /v1/comment:
     post:
       consumes:
@@ -188,6 +237,7 @@ paths:
       summary: delete comment
       tags:
       - Comment
+  /v1/comments/{id}:
     get:
       consumes:
       - application/json

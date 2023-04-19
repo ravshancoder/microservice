@@ -70,7 +70,6 @@ func GetClaims(h *handlerV1, c *gin.Context) jwt.MapClaims {
 
 	h.jwtHandler.Token = authorization.Token
 
-	fmt.Println(h.jwtHandler.SiginKey, "++++")
 
 	claims, err = h.jwtHandler.ExtractClaims()
 

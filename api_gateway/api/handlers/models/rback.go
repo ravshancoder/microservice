@@ -6,7 +6,7 @@ type Policy struct {
 	Action string `json:"action"`
 }
 
-type UpdateRole struct {
+type UpdatePol struct {
 	NewPolicy Policy  `json:"new"`
 	OldPolicy Policy `json:"old"`
 }
