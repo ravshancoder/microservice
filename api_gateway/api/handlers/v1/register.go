@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 
@@ -217,6 +216,7 @@ func (h *handlerV1) Verify(c *gin.Context) {
 		Password:     string(hashedPassword),
 		FirstName:    body.FirstName,
 		LastName:     body.LastName,
+		
 		RefreshToken: refreshToken,
 	})
 	if err != nil {
@@ -226,7 +226,7 @@ func (h *handlerV1) Verify(c *gin.Context) {
 		h.log.Error("error while creating user to db", l.Error(err))
 		return
 	}
-	h.jwtHandler.Sub = strconv.Itoa(int(user.Id))
+	h.jwtHandler.Sub = user.Id
 	user.AccesToken = accessToken
 	user.RefreshToken = refreshToken
 

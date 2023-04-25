@@ -61,3 +61,31 @@ func (h *handlerV1) RemovePolicyUser(c *gin.Context) {
 	fmt.Println(ok)
 	c.JSON(http.StatusOK, user.Empty{})
 }
+
+
+// @Summary		Add Role User
+// @Description Add User Role
+// @Tags 		Sudo
+// @Security 	ApiKeyAuth
+// @Accept 		json
+// @Produce 	json
+// @Param 		policy body models.Policy true "Policy"
+// @Succes 		200 {object} user.Empty
+// @Router 		/v1/admin/add/role [POST]
+func (h *handlerV1) AddRoleUser(c *gin.Context) {
+
+	body := models.Policy{}
+
+	err := c.ShouldBindJSON(&body)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	ok, err := h.casbinEnforcer.AddRoleForUser(body.User, body.Domain, body.Action)
+	if err != nil {
+		fmt.Println(err)
+	}
+	h.casbinEnforcer.SavePolicy()
+	fmt.Println(ok)
+	c.JSON(http.StatusOK, user.Empty{})
+}

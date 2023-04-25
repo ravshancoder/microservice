@@ -29,7 +29,7 @@ func (r *CommentRepo) GetComments(com *c.GetAllCommentsRequest) (*c.Comments, er
 	var res c.Comments
 	rows, err := r.db.Query(`
 		select 
-			id, post_id, user_id, text, created_at, updated_at
+			id, post_id, user_id, text, created_at
 		from 
 			comments 
 		where 
@@ -49,7 +49,6 @@ func (r *CommentRepo) GetComments(com *c.GetAllCommentsRequest) (*c.Comments, er
 			&comment.UserId,
 			&comment.Text,
 			&comment.CreatedAt,
-
 		)
 
 		if err != nil {

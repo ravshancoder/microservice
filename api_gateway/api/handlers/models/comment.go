@@ -1,13 +1,13 @@
 package models
 
 type CommentRequest struct {
-	PostId int64 `json:"post_id"`
-	UserId  int64 `json:"user_id"`
-	Text     string `json:"text"`
+	PostId string `json:"post_id"`
+	UserId string `json:"user_id"`
+	Text   string `json:"text"`
 }
 
 type Comment struct {
-	Id        int64  `json:"id"`
+	Id        string `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
@@ -16,7 +16,7 @@ type Comment struct {
 }
 
 type IdCommentRequest struct {
-	Id int64 `json:"id"`
+	Id string `json:"id"`
 }
 
 type GetAllCommentsRequest struct {
@@ -25,10 +25,10 @@ type GetAllCommentsRequest struct {
 }
 
 type UpdateCommentRequest struct {
-	Id           int64  `json:"id"`
-	FirstName    string `json:"first_name"`
-	LastName     string `json:"last_name"`
-	Email        string `json:"email"`
+	Id        string  `json:"id"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
 }
 
 type Comments struct {

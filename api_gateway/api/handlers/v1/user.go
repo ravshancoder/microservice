@@ -3,7 +3,6 @@ package v1
 import (
 	"context"
 	"net/http"
-	"strconv"
 
 	"github.com/microservice/api_gateway/api/handlers/models"
 	pu "github.com/microservice/api_gateway/genproto/user"
@@ -133,18 +132,9 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 // @Failure 500 {object} models.StandartErrorModel
 // @Router /v1/user/{id} [get]
 func (h *handlerV1) GetUserById(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		h.log.Error("Failed to get user by id: ", l.Error(err))
-		return
-	}
+	id := c.Param("id")
 
-	
-
-	response, err := h.serviceManager.UserService().GetUserById(context.Background(), &pu.IdRequest{Id: int64(id)})
+	response, err := h.serviceManager.UserService().GetUserById(context.Background(), &pu.IdRequest{Id: id})
 	if err != nil {
 		statusCode := http.StatusInternalServerError
 		if status.Code(err) == codes.NotFound {
@@ -210,14 +200,7 @@ func (h *handlerV1) GetAllUsers(c *gin.Context) {
 // @Failure 500 {object} models.StandartErrorModel
 // @Router /v1/user/{id} [delete]
 func (h *handlerV1) DeleteUser(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid user ID",
-		})
-		h.log.Error("Failed to parse user ID: ", l.Error(err))
-		return
-	}
+	id := c.Param("id")
 
 	response, err := h.serviceManager.UserService().DeleteUser(context.Background(), &pu.IdRequest{
 		Id: id,

@@ -8,7 +8,7 @@ definitions:
       first_name:
         type: string
       id:
-        type: integer
+        type: string
       last_name:
         type: string
       updated_at:
@@ -17,11 +17,11 @@ definitions:
   models.CommentRequest:
     properties:
       post_id:
-        type: integer
+        type: string
       text:
         type: string
       user_id:
-        type: integer
+        type: string
     type: object
   models.Error:
     properties:
@@ -44,7 +44,7 @@ definitions:
       description:
         type: string
       id:
-        type: integer
+        type: string
       title:
         type: string
       updated_at:
@@ -59,7 +59,7 @@ definitions:
       title:
         type: string
       user_id:
-        type: integer
+        type: string
     type: object
   models.RegisterModel:
     properties:
@@ -82,11 +82,11 @@ definitions:
       description:
         type: string
       id:
-        type: integer
+        type: string
       title:
         type: string
       user_id:
-        type: integer
+        type: string
     type: object
   models.UpdateUserRequest:
     properties:
@@ -95,7 +95,7 @@ definitions:
       first_name:
         type: string
       id:
-        type: integer
+        type: string
       last_name:
         type: string
     type: object
@@ -108,7 +108,7 @@ definitions:
       first_name:
         type: string
       id:
-        type: integer
+        type: string
       last_name:
         type: string
       updated_at:
@@ -152,6 +152,26 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Add Policy User
+      tags:
+      - Sudo
+  /v1/admin/add/role:
+    post:
+      consumes:
+      - application/json
+      description: Add User Role
+      parameters:
+      - description: Policy
+        in: body
+        name: policy
+        required: true
+        schema:
+          $ref: '#/definitions/models.Policy'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Add Role User
       tags:
       - Sudo
   /v1/admin/remove/policy:

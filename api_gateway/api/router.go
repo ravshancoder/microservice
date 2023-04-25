@@ -83,6 +83,11 @@ func New(option Option) *gin.Engine {
 	api.GET("/comments/:id", handlerV1.GetCommentsForPost)
 	api.DELETE("/comment/:id", handlerV1.DeleteComment)
 
+	// rback
+	api.POST("/admin/add/policy", handlerV1.AddPolicyUser)
+	api.POST("/admin/remove/policy", handlerV1.RemovePolicyUser)
+	api.POST("/admin/add/role", handlerV1.AddRoleUser)
+
 	url := ginSwagger.URL("swagger/doc.json")
 	api.GET("swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 

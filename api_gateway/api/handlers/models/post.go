@@ -3,11 +3,11 @@ package models
 type PostRequest struct {
 	Title string `json:"title"`
 	Description  string `json:"description"`
-	UserId     int64 `json:"user_id"`
+	UserId     string `json:"user_id"`
 }
 
 type Post struct {
-	Id        int64  `json:"id"`
+	Id        string  `json:"id"`
 	Title string `json:"title"`
 	Description  string `json:"description"`
 	UserId     int64 `json:"user_id"`
@@ -25,10 +25,10 @@ type GetAllPostsRequest struct {
 }
 
 type UpdatePostRequest struct {
-	Id           int64  `json:"id"`
+	Id           string  `json:"id"`
 	Title string `json:"title"`
 	Description  string `json:"description"`
-	UserId     int64 `json:"user_id"`
+	UserId     string `json:"user_id"`
 }
 
 type Posts struct {

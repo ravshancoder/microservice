@@ -7,7 +7,7 @@ type UserRequest struct {
 }
 
 type User struct {
-	Id        int64  `json:"id"`
+	Id        string  `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
@@ -25,7 +25,7 @@ type GetAllUsersRequest struct {
 }
 
 type UpdateUserRequest struct {
-	Id        int64  `json:"id"`
+	Id        string  `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`

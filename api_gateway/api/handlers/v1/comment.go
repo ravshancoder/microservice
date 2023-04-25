@@ -3,7 +3,6 @@ package v1
 import (
 	"context"
 	"net/http"
-	"strconv"
 
 	"github.com/microservice/api_gateway/api/handlers/models"
 	"github.com/microservice/api_gateway/genproto/comment"
@@ -72,16 +71,9 @@ func (h *handlerV1) WriteComment(c *gin.Context) {
 // @Failure 500 {object} models.StandartErrorModel
 // @Router /v1/comments/{id} [get]
 func (h *handlerV1) GetCommentsForPost(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		h.log.Error("Failed to get comment by id: ", l.Error(err))
-		return
-	}
+	id := c.Param("id")
 
-	response, err := h.serviceManager.CommentService().GetCommentsForPost(context.Background(), &comment.GetAllCommentsRequest{PostId: int64(id)})
+	response, err := h.serviceManager.CommentService().GetCommentsForPost(context.Background(), &comment.GetAllCommentsRequest{PostId: id})
 	if err != nil {
 		statusCode := http.StatusInternalServerError
 		if status.Code(err) == codes.NotFound {
@@ -109,14 +101,7 @@ func (h *handlerV1) GetCommentsForPost(c *gin.Context) {
 // @Failure 500 {object} models.StandartErrorModel
 // @Router /v1/comment/{id} [delete]
 func (h *handlerV1) DeleteComment(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid comment ID",
-		})
-		h.log.Error("Failed to parse comment ID: ", l.Error(err))
-		return
-	}
+	id := c.Param("id")
 
 	response, err := h.serviceManager.CommentService().DeleteComment(context.Background(), &comment.IdRequest{Id: id})
 
