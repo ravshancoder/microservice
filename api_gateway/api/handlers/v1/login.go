@@ -2,6 +2,7 @@ package v1
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,6 +10,7 @@ import (
 	"github.com/microservice/api_gateway/api/handlers/models"
 	"github.com/microservice/api_gateway/api/token"
 	pu "github.com/microservice/api_gateway/genproto/user"
+	"github.com/microservice/api_gateway/pkg/etc"
 	l "github.com/microservice/api_gateway/pkg/logger"
 )
 
@@ -31,10 +33,11 @@ func (h *handlerV1) Login(c *gin.Context) {
 		email    = c.Param("email")
 		password = c.Param("password")
 	)
-	res, err := h.serviceManager.UserService().Login(
-		context.Background(), &pu.LoginRequest{
+	fmt.Println("Email: ", password, "/nEmail: ", email)
+
+	res, err := h.serviceManager.UserService().GetByEmail(
+		context.Background(), &pu.EmailReq{
 			Email:    email,
-			Password: password,
 		},
 	)
 	if err != nil {
@@ -45,16 +48,38 @@ func (h *handlerV1) Login(c *gin.Context) {
 		return
 	}
 
-	h.jwtHandler = token.JWTHandler{
-		SiginKey: h.cfg.SiginKey,
-		Sub:      res.Id,
-		Iss:      "user",
-		Role:     "authorized",
-		Aud: []string{
-			"ucook_frontend",
-		},
-		Log: h.log,
+	if !etc.CheckPasswordHash(password, res.Password){
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Passwrod or Email error",
+		})
+		return
 	}
+
+	h.jwtHandler.Iss = "user"
+	h.jwtHandler.Sub = res.Id
+	if res. == "sudo"{
+		h.jwthandler.Role = "sudo"
+	}else if res.UserType == "admin"{
+		h.jwthandler.Role = "admin"
+	} else {
+		h.jwthandler.Role = "unauthorized"
+	}
+
+	// 	h.jwtHandler.: h.cfg.SiginKey,
+	// 	Sub:      res.Id,
+	// 	Iss:      "user",
+	// 	if res.UserType == "sudo"{
+	// 		Role = "sudo"
+	// 	}else if res.UserType == "admin"{
+	// 		Role = "admin"
+	// 	} else {
+	// 		Role = "unauthorized"
+	// 	},
+	// 	Aud: []string{
+	// 		"ucook_frontend",
+	// 	},
+	// 	Log: h.log,
+	// }
 
 	tokens, err := h.jwtHandler.GenerateAuthJWT()
 	accessToken := tokens[0]

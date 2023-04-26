@@ -1,8 +1,15 @@
 package etc
 
+import (
+	"golang.org/x/crypto/bcrypt"
+)
 
-import "golang.org/x/crypto/bcrypt"
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
+}
 
-func GeneratePasswordHash(pass string) ([]byte,error) {
-	return	bcrypt.GenerateFromPassword([]byte(pass),10)
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
