@@ -27,8 +27,8 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type CommentRequest struct {
-	PostId               int64    `protobuf:"varint,1,opt,name=post_id,json=postId,proto3" json:"post_id"`
-	UserId               int64    `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id"`
+	PostId               string   `protobuf:"bytes,1,opt,name=post_id,json=postId,proto3" json:"post_id"`
+	UserId               string   `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id"`
 	Text                 string   `protobuf:"bytes,3,opt,name=text,proto3" json:"text"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -68,18 +68,18 @@ func (m *CommentRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CommentRequest proto.InternalMessageInfo
 
-func (m *CommentRequest) GetPostId() int64 {
+func (m *CommentRequest) GetPostId() string {
 	if m != nil {
 		return m.PostId
 	}
-	return 0
+	return ""
 }
 
-func (m *CommentRequest) GetUserId() int64 {
+func (m *CommentRequest) GetUserId() string {
 	if m != nil {
 		return m.UserId
 	}
-	return 0
+	return ""
 }
 
 func (m *CommentRequest) GetText() string {
@@ -90,10 +90,10 @@ func (m *CommentRequest) GetText() string {
 }
 
 type CommentResponse struct {
-	Id                   int64    `protobuf:"varint,1,opt,name=id,proto3" json:"id"`
-	PostId               int64    `protobuf:"varint,2,opt,name=post_id,json=postId,proto3" json:"post_id"`
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
+	PostId               string   `protobuf:"bytes,2,opt,name=post_id,json=postId,proto3" json:"post_id"`
 	PostTitle            string   `protobuf:"bytes,3,opt,name=post_title,json=postTitle,proto3" json:"post_title"`
-	UserId               int64    `protobuf:"varint,4,opt,name=user_id,json=userId,proto3" json:"user_id"`
+	UserId               string   `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id"`
 	UserName             string   `protobuf:"bytes,5,opt,name=user_name,json=userName,proto3" json:"user_name"`
 	PostUserName         string   `protobuf:"bytes,6,opt,name=post_user_name,json=postUserName,proto3" json:"post_user_name"`
 	Text                 string   `protobuf:"bytes,7,opt,name=text,proto3" json:"text"`
@@ -136,18 +136,18 @@ func (m *CommentResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CommentResponse proto.InternalMessageInfo
 
-func (m *CommentResponse) GetId() int64 {
+func (m *CommentResponse) GetId() string {
 	if m != nil {
 		return m.Id
 	}
-	return 0
+	return ""
 }
 
-func (m *CommentResponse) GetPostId() int64 {
+func (m *CommentResponse) GetPostId() string {
 	if m != nil {
 		return m.PostId
 	}
-	return 0
+	return ""
 }
 
 func (m *CommentResponse) GetPostTitle() string {
@@ -157,11 +157,11 @@ func (m *CommentResponse) GetPostTitle() string {
 	return ""
 }
 
-func (m *CommentResponse) GetUserId() int64 {
+func (m *CommentResponse) GetUserId() string {
 	if m != nil {
 		return m.UserId
 	}
-	return 0
+	return ""
 }
 
 func (m *CommentResponse) GetUserName() string {
@@ -193,7 +193,7 @@ func (m *CommentResponse) GetCreatedAt() string {
 }
 
 type GetAllCommentsRequest struct {
-	PostId               int64    `protobuf:"varint,1,opt,name=post_id,json=postId,proto3" json:"post_id"`
+	PostId               string   `protobuf:"bytes,1,opt,name=post_id,json=postId,proto3" json:"post_id"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -232,11 +232,11 @@ func (m *GetAllCommentsRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GetAllCommentsRequest proto.InternalMessageInfo
 
-func (m *GetAllCommentsRequest) GetPostId() int64 {
+func (m *GetAllCommentsRequest) GetPostId() string {
 	if m != nil {
 		return m.PostId
 	}
-	return 0
+	return ""
 }
 
 type Comments struct {
@@ -287,7 +287,7 @@ func (m *Comments) GetComments() []*CommentResponse {
 }
 
 type IdRequest struct {
-	Id                   int64    `protobuf:"varint,1,opt,name=id,proto3" json:"id"`
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -326,11 +326,11 @@ func (m *IdRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_IdRequest proto.InternalMessageInfo
 
-func (m *IdRequest) GetId() int64 {
+func (m *IdRequest) GetId() string {
 	if m != nil {
 		return m.Id
 	}
-	return 0
+	return ""
 }
 
 func init() {
@@ -344,32 +344,32 @@ func init() {
 func init() { proto.RegisterFile("comment/comment.proto", fileDescriptor_885638bbfd25b68b) }
 
 var fileDescriptor_885638bbfd25b68b = []byte{
-	// 389 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x53, 0xcd, 0x4e, 0xf2, 0x40,
-	0x14, 0x65, 0x0a, 0x1f, 0xb4, 0x17, 0x3e, 0xbe, 0xcf, 0x49, 0x08, 0x0d, 0xc4, 0x86, 0x34, 0x2e,
-	0x58, 0xa1, 0x41, 0xf7, 0x0a, 0x18, 0x49, 0x37, 0xc6, 0xd4, 0xbf, 0x25, 0xa9, 0xf4, 0x2e, 0x9a,
-	0xb4, 0x14, 0x3b, 0x83, 0xf1, 0x51, 0x7c, 0x01, 0xdf, 0xc5, 0xa5, 0x8f, 0x60, 0x70, 0xe3, 0x63,
-	0x98, 0x19, 0xda, 0xe1, 0xc7, 0xbf, 0xc4, 0x15, 0x73, 0xcf, 0x3d, 0x9c, 0x7b, 0xce, 0xbd, 0x29,
-	0xd4, 0xc6, 0x71, 0x14, 0xe1, 0x84, 0xef, 0xa6, 0xbf, 0x9d, 0x69, 0x12, 0xf3, 0x98, 0x96, 0xd2,
-	0xd2, 0xbe, 0x82, 0xea, 0x60, 0xf1, 0x74, 0xf1, 0x76, 0x86, 0x8c, 0xd3, 0x3a, 0x94, 0xa6, 0x31,
-	0xe3, 0xa3, 0xc0, 0x37, 0x49, 0x8b, 0xb4, 0xf3, 0x6e, 0x51, 0x94, 0x8e, 0x2f, 0x1a, 0x33, 0x86,
-	0x89, 0x68, 0x68, 0x8b, 0x86, 0x28, 0x1d, 0x9f, 0x52, 0x28, 0x70, 0xbc, 0xe7, 0x66, 0xbe, 0x45,
-	0xda, 0x86, 0x2b, 0xdf, 0xf6, 0x1b, 0x81, 0x7f, 0x4a, 0x98, 0x4d, 0xe3, 0x09, 0x43, 0x5a, 0x05,
-	0x4d, 0x89, 0x6a, 0x81, 0xbf, 0x3a, 0x49, 0x5b, 0x9b, 0xb4, 0x0d, 0x20, 0x1b, 0x3c, 0xe0, 0x21,
-	0xa6, 0xb2, 0x86, 0x40, 0x2e, 0x04, 0xb0, 0x6a, 0xa4, 0xb0, 0x66, 0xa4, 0x09, 0x86, 0x6c, 0x4c,
-	0xbc, 0x08, 0xcd, 0x3f, 0xf2, 0x6f, 0xba, 0x00, 0x4e, 0xbd, 0x08, 0xe9, 0x0e, 0x54, 0xa5, 0xe8,
-	0x92, 0x51, 0x94, 0x8c, 0x8a, 0x40, 0x2f, 0x33, 0x56, 0x96, 0xa5, 0xb4, 0xcc, 0x22, 0xec, 0x8c,
-	0x13, 0xf4, 0x38, 0xfa, 0x23, 0x8f, 0x9b, 0xfa, 0xc2, 0x4e, 0x8a, 0xf4, 0xb8, 0xbd, 0x07, 0xb5,
-	0x21, 0xf2, 0x5e, 0x18, 0xa6, 0x79, 0xd9, 0x4f, 0x9b, 0xb4, 0x8f, 0x40, 0xcf, 0xb8, 0xf4, 0x00,
-	0xf4, 0xf4, 0x16, 0xcc, 0x24, 0xad, 0x7c, 0xbb, 0xdc, 0x35, 0x3b, 0xd9, 0xad, 0x36, 0x16, 0xe8,
-	0x2a, 0xa6, 0xdd, 0x04, 0xc3, 0xf1, 0xb3, 0x39, 0x1b, 0x7b, 0xed, 0x3e, 0x6a, 0xea, 0xa8, 0xe7,
-	0x98, 0xdc, 0x05, 0x63, 0xa4, 0x03, 0xa8, 0x5c, 0x27, 0x01, 0xc7, 0x14, 0xa6, 0xf5, 0x8f, 0x33,
-	0xa4, 0x56, 0xe3, 0xcb, 0xe1, 0x76, 0x8e, 0xf6, 0xa1, 0x3c, 0x44, 0xae, 0x9c, 0x5b, 0x8a, 0xfa,
-	0x69, 0xfc, 0xc6, 0xd6, 0xa6, 0x14, 0xb3, 0x73, 0xd4, 0x01, 0xba, 0xa2, 0x71, 0x12, 0x27, 0x67,
-	0x31, 0xe3, 0xbf, 0x93, 0x3a, 0x84, 0xbf, 0xc7, 0x18, 0xe2, 0x32, 0x14, 0x55, 0x2c, 0xb5, 0x9b,
-	0xef, 0xf2, 0xf4, 0xff, 0x3f, 0xcd, 0x2d, 0xf2, 0x3c, 0xb7, 0xc8, 0xcb, 0xdc, 0x22, 0x0f, 0xaf,
-	0x56, 0xee, 0xa6, 0x28, 0xbf, 0x8e, 0xfd, 0xf7, 0x00, 0x00, 0x00, 0xff, 0xff, 0x63, 0xb6, 0x86,
-	0x88, 0x36, 0x03, 0x00, 0x00,
+	// 386 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x53, 0x4b, 0x6e, 0xe2, 0x40,
+	0x10, 0xc5, 0x86, 0x01, 0xbb, 0x60, 0x98, 0x99, 0x96, 0x10, 0x16, 0x68, 0x2c, 0x64, 0xcd, 0x82,
+	0x15, 0x13, 0x91, 0xec, 0x13, 0x20, 0x0a, 0xf2, 0x26, 0x8a, 0xc8, 0x6f, 0x89, 0x1c, 0x5c, 0x0b,
+	0x4b, 0x36, 0x26, 0xee, 0x22, 0xca, 0x51, 0x72, 0x81, 0xdc, 0x25, 0xcb, 0x1c, 0x21, 0x22, 0x9b,
+	0x1c, 0x23, 0xea, 0xc6, 0x6e, 0x3e, 0xf9, 0x49, 0x59, 0xb9, 0xeb, 0xbd, 0xa7, 0x57, 0xf5, 0xaa,
+	0x64, 0xa8, 0x4d, 0xe2, 0x28, 0xc2, 0x29, 0xfd, 0x4f, 0xbf, 0x9d, 0x59, 0x12, 0x53, 0xcc, 0x4a,
+	0x69, 0xe9, 0x5c, 0x40, 0x75, 0xb0, 0x7c, 0x8e, 0xf0, 0x7a, 0x8e, 0x9c, 0x58, 0x1d, 0x4a, 0xb3,
+	0x98, 0xd3, 0x38, 0xf0, 0x2d, 0xad, 0xa5, 0xb5, 0xcd, 0x51, 0x51, 0x94, 0xae, 0x2f, 0x88, 0x39,
+	0xc7, 0x44, 0x10, 0xfa, 0x92, 0x10, 0xa5, 0xeb, 0x33, 0x06, 0x05, 0xc2, 0x5b, 0xb2, 0xf2, 0x12,
+	0x95, 0x6f, 0xe7, 0x45, 0x83, 0x5f, 0xca, 0x98, 0xcf, 0xe2, 0x29, 0x47, 0x56, 0x05, 0x5d, 0x99,
+	0xea, 0x81, 0xbf, 0xde, 0x49, 0xdf, 0xe8, 0xf4, 0x17, 0x40, 0x12, 0x14, 0x50, 0x88, 0xa9, 0xad,
+	0x29, 0x90, 0x33, 0x01, 0xac, 0x0f, 0x52, 0xd8, 0x18, 0xa4, 0x09, 0xa6, 0x24, 0xa6, 0x5e, 0x84,
+	0xd6, 0x0f, 0x49, 0x19, 0x02, 0x38, 0xf6, 0x22, 0x64, 0xff, 0xa0, 0x2a, 0x4d, 0x57, 0x8a, 0xa2,
+	0x54, 0x54, 0x04, 0x7a, 0x9e, 0xa9, 0xb2, 0x2c, 0xa5, 0x55, 0x16, 0x31, 0xce, 0x24, 0x41, 0x8f,
+	0xd0, 0x1f, 0x7b, 0x64, 0x19, 0xcb, 0x71, 0x52, 0xa4, 0x47, 0xce, 0x0e, 0xd4, 0x86, 0x48, 0xbd,
+	0x30, 0x4c, 0xf3, 0xf2, 0xaf, 0x36, 0xe9, 0x1c, 0x80, 0x91, 0x69, 0xd9, 0x1e, 0x18, 0xe9, 0x2d,
+	0xb8, 0xa5, 0xb5, 0xf2, 0xed, 0x72, 0xd7, 0xea, 0x64, 0xb7, 0xda, 0x5a, 0xe0, 0x48, 0x29, 0x9d,
+	0x26, 0x98, 0xae, 0x9f, 0xf5, 0xd9, 0xda, 0x6b, 0xf7, 0x5e, 0x57, 0x47, 0x3d, 0xc5, 0xe4, 0x26,
+	0x98, 0x20, 0x1b, 0x40, 0xe5, 0x32, 0x09, 0x08, 0x53, 0x98, 0xd5, 0xdf, 0xf6, 0x90, 0x5e, 0x8d,
+	0x0f, 0x9b, 0x3b, 0x39, 0xd6, 0x87, 0xf2, 0x10, 0x49, 0x4d, 0x6e, 0x2b, 0xe9, 0xbb, 0xf1, 0x1b,
+	0x7f, 0xb6, 0xad, 0xb8, 0x93, 0x63, 0x2e, 0xb0, 0x35, 0x8f, 0xa3, 0x38, 0x39, 0x89, 0x39, 0x7d,
+	0xcf, 0x6a, 0x1f, 0x7e, 0x1e, 0x62, 0x88, 0xab, 0x50, 0x4c, 0xa9, 0xd4, 0x6e, 0x3e, 0xcb, 0xd3,
+	0xff, 0xfd, 0xb0, 0xb0, 0xb5, 0xc7, 0x85, 0xad, 0x3d, 0x2d, 0x6c, 0xed, 0xee, 0xd9, 0xce, 0x5d,
+	0x15, 0xe5, 0xdf, 0xb1, 0xfb, 0x1a, 0x00, 0x00, 0xff, 0xff, 0x1e, 0xd7, 0x50, 0xc1, 0x36, 0x03,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -591,15 +591,19 @@ func (m *CommentRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x1a
 	}
-	if m.UserId != 0 {
-		i = encodeVarintComment(dAtA, i, uint64(m.UserId))
+	if len(m.UserId) > 0 {
+		i -= len(m.UserId)
+		copy(dAtA[i:], m.UserId)
+		i = encodeVarintComment(dAtA, i, uint64(len(m.UserId)))
 		i--
-		dAtA[i] = 0x10
+		dAtA[i] = 0x12
 	}
-	if m.PostId != 0 {
-		i = encodeVarintComment(dAtA, i, uint64(m.PostId))
+	if len(m.PostId) > 0 {
+		i -= len(m.PostId)
+		copy(dAtA[i:], m.PostId)
+		i = encodeVarintComment(dAtA, i, uint64(len(m.PostId)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -656,10 +660,12 @@ func (m *CommentResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x2a
 	}
-	if m.UserId != 0 {
-		i = encodeVarintComment(dAtA, i, uint64(m.UserId))
+	if len(m.UserId) > 0 {
+		i -= len(m.UserId)
+		copy(dAtA[i:], m.UserId)
+		i = encodeVarintComment(dAtA, i, uint64(len(m.UserId)))
 		i--
-		dAtA[i] = 0x20
+		dAtA[i] = 0x22
 	}
 	if len(m.PostTitle) > 0 {
 		i -= len(m.PostTitle)
@@ -668,15 +674,19 @@ func (m *CommentResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x1a
 	}
-	if m.PostId != 0 {
-		i = encodeVarintComment(dAtA, i, uint64(m.PostId))
+	if len(m.PostId) > 0 {
+		i -= len(m.PostId)
+		copy(dAtA[i:], m.PostId)
+		i = encodeVarintComment(dAtA, i, uint64(len(m.PostId)))
 		i--
-		dAtA[i] = 0x10
+		dAtA[i] = 0x12
 	}
-	if m.Id != 0 {
-		i = encodeVarintComment(dAtA, i, uint64(m.Id))
+	if len(m.Id) > 0 {
+		i -= len(m.Id)
+		copy(dAtA[i:], m.Id)
+		i = encodeVarintComment(dAtA, i, uint64(len(m.Id)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -705,10 +715,12 @@ func (m *GetAllCommentsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
-	if m.PostId != 0 {
-		i = encodeVarintComment(dAtA, i, uint64(m.PostId))
+	if len(m.PostId) > 0 {
+		i -= len(m.PostId)
+		copy(dAtA[i:], m.PostId)
+		i = encodeVarintComment(dAtA, i, uint64(len(m.PostId)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -778,10 +790,12 @@ func (m *IdRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
-	if m.Id != 0 {
-		i = encodeVarintComment(dAtA, i, uint64(m.Id))
+	if len(m.Id) > 0 {
+		i -= len(m.Id)
+		copy(dAtA[i:], m.Id)
+		i = encodeVarintComment(dAtA, i, uint64(len(m.Id)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -803,11 +817,13 @@ func (m *CommentRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.PostId != 0 {
-		n += 1 + sovComment(uint64(m.PostId))
+	l = len(m.PostId)
+	if l > 0 {
+		n += 1 + l + sovComment(uint64(l))
 	}
-	if m.UserId != 0 {
-		n += 1 + sovComment(uint64(m.UserId))
+	l = len(m.UserId)
+	if l > 0 {
+		n += 1 + l + sovComment(uint64(l))
 	}
 	l = len(m.Text)
 	if l > 0 {
@@ -825,18 +841,21 @@ func (m *CommentResponse) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.Id != 0 {
-		n += 1 + sovComment(uint64(m.Id))
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovComment(uint64(l))
 	}
-	if m.PostId != 0 {
-		n += 1 + sovComment(uint64(m.PostId))
+	l = len(m.PostId)
+	if l > 0 {
+		n += 1 + l + sovComment(uint64(l))
 	}
 	l = len(m.PostTitle)
 	if l > 0 {
 		n += 1 + l + sovComment(uint64(l))
 	}
-	if m.UserId != 0 {
-		n += 1 + sovComment(uint64(m.UserId))
+	l = len(m.UserId)
+	if l > 0 {
+		n += 1 + l + sovComment(uint64(l))
 	}
 	l = len(m.UserName)
 	if l > 0 {
@@ -866,8 +885,9 @@ func (m *GetAllCommentsRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.PostId != 0 {
-		n += 1 + sovComment(uint64(m.PostId))
+	l = len(m.PostId)
+	if l > 0 {
+		n += 1 + l + sovComment(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -899,8 +919,9 @@ func (m *IdRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.Id != 0 {
-		n += 1 + sovComment(uint64(m.Id))
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovComment(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -944,10 +965,10 @@ func (m *CommentRequest) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field PostId", wireType)
 			}
-			m.PostId = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowComment
@@ -957,16 +978,29 @@ func (m *CommentRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.PostId |= int64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthComment
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthComment
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PostId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 2:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field UserId", wireType)
 			}
-			m.UserId = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowComment
@@ -976,11 +1010,24 @@ func (m *CommentRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.UserId |= int64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthComment
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthComment
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.UserId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Text", wireType)
@@ -1065,10 +1112,10 @@ func (m *CommentResponse) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
 			}
-			m.Id = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowComment
@@ -1078,16 +1125,29 @@ func (m *CommentResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= int64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthComment
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthComment
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 2:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field PostId", wireType)
 			}
-			m.PostId = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowComment
@@ -1097,11 +1157,24 @@ func (m *CommentResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.PostId |= int64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthComment
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthComment
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PostId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field PostTitle", wireType)
@@ -1135,10 +1208,10 @@ func (m *CommentResponse) Unmarshal(dAtA []byte) error {
 			m.PostTitle = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field UserId", wireType)
 			}
-			m.UserId = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowComment
@@ -1148,11 +1221,24 @@ func (m *CommentResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.UserId |= int64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthComment
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthComment
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.UserId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field UserName", wireType)
@@ -1333,10 +1419,10 @@ func (m *GetAllCommentsRequest) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field PostId", wireType)
 			}
-			m.PostId = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowComment
@@ -1346,11 +1432,24 @@ func (m *GetAllCommentsRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.PostId |= int64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthComment
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthComment
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PostId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipComment(dAtA[iNdEx:])
@@ -1488,10 +1587,10 @@ func (m *IdRequest) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
 			}
-			m.Id = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowComment
@@ -1501,11 +1600,24 @@ func (m *IdRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= int64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthComment
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthComment
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipComment(dAtA[iNdEx:])
