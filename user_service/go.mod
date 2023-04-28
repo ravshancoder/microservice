@@ -8,7 +8,6 @@ require (
 	github.com/lib/pq v1.10.7
 	github.com/spf13/cast v1.5.0
 	go.uber.org/zap v1.24.0
-	golang.org/x/crypto v0.8.0
 	google.golang.org/grpc v1.54.0
 )
 

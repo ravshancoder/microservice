@@ -12,16 +12,17 @@ func (r *UserRepo) CreateUser(user *u.UserRequest) (*u.UserResponse, error) {
 	var res u.UserResponse
 	err := r.db.QueryRow(`
 		insert into 
-			users(first_name, last_name, email, password, acces_token, refresh_token) 
+			users(first_name, last_name, email, password, user_type, acces_token, refresh_token) 
 		values
-			($1, $2, $3, $4, $5, $6) 
+			($1, $2, $3, $4, $5, $6, $7) 
 		returning 
-			id, first_name, last_name, email, acces_token, refresh_token, created_at, updated_at`, user.FirstName, user.LastName, user.Email, user.Password, user.AccesToken, user.RefreshToken).
+			id, first_name, last_name, email, user_type, acces_token, refresh_token, created_at, updated_at`, user.FirstName, user.LastName, user.Email, user.Password,user.UserType, user.AccesToken, user.RefreshToken).
 		Scan(
 			&res.Id,
 			&res.FirstName,
 			&res.LastName,
 			&res.Email,
+			&res.UserType,
 			&res.AccesToken,
 			&res.RefreshToken,
 			&res.CreatedAt,
@@ -205,8 +206,8 @@ func (r *UserRepo) CheckFiedld(req *u.CheckFieldReq) (*u.CheckFieldRes, error) {
 	return res, nil
 }
 
-func (r *UserRepo) GetByEmail(req *u.EmailReq) (*u.LoginResponse, error) {
-	res := u.LoginResponse{}
+func (r *UserRepo) GetByEmail(req *u.EmailReq) (*u.UserResponse, error) {
+	res := u.UserResponse{}
 	err := r.db.QueryRow(`
 	SELECT 
 		id, 
@@ -214,6 +215,7 @@ func (r *UserRepo) GetByEmail(req *u.EmailReq) (*u.LoginResponse, error) {
 		last_name,
 		email, 
 		password,
+		user_type, 
 		refresh_token,
 		created_at, 
 		updated_at 
@@ -227,20 +229,21 @@ func (r *UserRepo) GetByEmail(req *u.EmailReq) (*u.LoginResponse, error) {
 			&res.LastName,
 			&res.Email,
 			&res.Password,
+			&res.UserType,
 			&res.RefreshToken,
 			&res.CreatedAt,
 			&res.UpdatedAt,
 		)
 	if err != nil {
 		fmt.Println("error while getting user login")
-		return &u.LoginResponse{}, err
+		return &u.UserResponse{}, err
 	}
 
 	return &res, nil
 }
 
-func (r *UserRepo) UpdateToken(user *u.RequestForTokens) (*u.LoginResponse, error) {
-	res := u.LoginResponse{}
+func (r *UserRepo) UpdateToken(user *u.RequestForTokens) (*u.UserResponse, error) {
+	res := u.UserResponse{}
 	err := r.db.QueryRow(`
 		update
 			users
@@ -261,7 +264,7 @@ func (r *UserRepo) UpdateToken(user *u.RequestForTokens) (*u.LoginResponse, erro
 
 	if err != nil {
 		log.Println("failed to update user")
-		return &u.LoginResponse{}, err
+		return &u.UserResponse{}, err
 	}
 
 	return &res, err
