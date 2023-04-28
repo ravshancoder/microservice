@@ -3,12 +3,12 @@ package v1
 import (
 	"context"
 	"fmt"
+	// "fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/microservice/api_gateway/api/docs"
 	"github.com/microservice/api_gateway/api/handlers/models"
-	"github.com/microservice/api_gateway/api/token"
 	pu "github.com/microservice/api_gateway/genproto/user"
 	"github.com/microservice/api_gateway/pkg/etc"
 	l "github.com/microservice/api_gateway/pkg/logger"
@@ -33,22 +33,23 @@ func (h *handlerV1) Login(c *gin.Context) {
 		email    = c.Param("email")
 		password = c.Param("password")
 	)
-	fmt.Println("Email: ", password, "/nEmail: ", email)
+	// fmt.Println("Password: ", password, "	Email: ", email)
 
 	res, err := h.serviceManager.UserService().GetByEmail(
 		context.Background(), &pu.EmailReq{
-			Email:    email,
+			Email: email,
 		},
 	)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		h.log.Error("error login token", l.Error(err))
+		h.log.Error("error GetByEmail login func", l.Error(err))
 		return
 	}
+	
 
-	if !etc.CheckPasswordHash(password, res.Password){
+	if !etc.CheckPasswordHash(password, res.Password) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "Passwrod or Email error",
 		})
@@ -57,33 +58,23 @@ func (h *handlerV1) Login(c *gin.Context) {
 
 	h.jwtHandler.Iss = "user"
 	h.jwtHandler.Sub = res.Id
-	if res. == "sudo"{
-		h.jwthandler.Role = "sudo"
-	}else if res.UserType == "admin"{
-		h.jwthandler.Role = "admin"
+	fmt.Println(res.UserType)
+	if res.UserType == "owner" {
+		h.jwtHandler.Role = "owner"
+	} else if res.UserType == "admin" {
+		h.jwtHandler.Role = "admin"
+	} else if res.UserType == "user"{
+		h.jwtHandler.Role = "user"
 	} else {
-		h.jwthandler.Role = "unauthorized"
+		h.jwtHandler.Role = "unauthorized"
 	}
-
-	// 	h.jwtHandler.: h.cfg.SiginKey,
-	// 	Sub:      res.Id,
-	// 	Iss:      "user",
-	// 	if res.UserType == "sudo"{
-	// 		Role = "sudo"
-	// 	}else if res.UserType == "admin"{
-	// 		Role = "admin"
-	// 	} else {
-	// 		Role = "unauthorized"
-	// 	},
-	// 	Aud: []string{
-	// 		"ucook_frontend",
-	// 	},
-	// 	Log: h.log,
-	// }
-
+	h.jwtHandler.Aud = []string{"microservice"}
+	h.jwtHandler.SiginKey = h.cfg.SiginKey
+	h.jwtHandler.Log = h.log
 	tokens, err := h.jwtHandler.GenerateAuthJWT()
 	accessToken := tokens[0]
 	refreshToken := tokens[1]
+	
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),

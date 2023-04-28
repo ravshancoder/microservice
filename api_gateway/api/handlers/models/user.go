@@ -7,7 +7,7 @@ type UserRequest struct {
 }
 
 type User struct {
-	Id        string  `json:"id"`
+	Id        string `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
@@ -25,7 +25,7 @@ type GetAllUsersRequest struct {
 }
 
 type UpdateUserRequest struct {
-	Id        string  `json:"id"`
+	Id        string `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
@@ -46,6 +46,7 @@ type UserRegister struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
+	UserType  string `json:"user_type"`
 	Password  string `json:"password"`
 	Code      string `json:"code"`
 }
@@ -58,4 +59,13 @@ type LoginUser struct {
 	Password     string `json:"password"`
 	AccesToken   string `json:"acces_token"`
 	Refreshtoken string `json:"refresh_token"`
+}
+
+type UserRedis struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	UserType string `json:"user_type"`
+	Password  string `json:"password"`
+	Code      string `json:"code"`
 }

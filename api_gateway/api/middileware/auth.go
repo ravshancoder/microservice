@@ -66,10 +66,12 @@ func (a *JwtRoleAuth) GetRole(r *http.Request) (string, error) {
 	fmt.Println(claims["role"])
 	if claims["role"].(string) == "authorized" {
 		role = "authorized"
-	} else if claims["role"].(string) == "sudo" {
-		role = "sudo"
+	} else if claims["role"].(string) == "owner" {
+		role = "owner"
 	} else if claims["role"].(string) == "admin" {
 		role = "admin"
+	} else if claims["role"].(string) == "user" {
+		role = "user"
 	} else {
 		role = "unknown"
 	}

@@ -10,11 +10,10 @@ import (
 	r "github.com/gomodule/redigo/redis"
 
 	"github.com/gin-gonic/gin"
-	
+
 	"github.com/google/uuid"
 	"github.com/microservice/api_gateway/api/handlers/models"
 	pu "github.com/microservice/api_gateway/genproto/user"
-	"github.com/microservice/api_gateway/pkg/etc"
 	l "github.com/microservice/api_gateway/pkg/logger"
 )
 
@@ -64,9 +63,7 @@ func (h *handlerV1) Verify(c *gin.Context) {
 	}
 
 	if body.Code != code {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		c.JSON(http.StatusBadRequest, "Incorrect verification code, Please Check code!")
 		h.log.Error("error while checking code ", l.Error(err))
 		return
 	}
@@ -83,7 +80,7 @@ func (h *handlerV1) Verify(c *gin.Context) {
 	h.jwtHandler.Sub = id.String()
 	h.jwtHandler.Iss = "user"
 	h.jwtHandler.Role = "authorized"
-	h.jwtHandler.Aud = []string{"ucook-frontend"}
+	h.jwtHandler.Aud = []string{"microservice"}
 	h.jwtHandler.Log = h.log
 	tokens, err := h.jwtHandler.GenerateAuthJWT()
 	accessToken := tokens[0]
@@ -96,14 +93,16 @@ func (h *handlerV1) Verify(c *gin.Context) {
 		return
 	}
 
-	hashedPassword, err := etc.HashPassword(body.Password)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		h.log.Error("error while generating hash for password", l.Error(err))
-		return
-	}
+	fmt.Println(body.Password)
+
+	// hashedPassword, err := etc.HashPassword(body.Password)
+	// if err != nil {
+	// 	c.JSON(http.StatusInternalServerError, gin.H{
+	// 		"error": err.Error(),
+	// 	})
+	// 	h.log.Error("error while generating hash for password", l.Error(err))
+	// 	return
+	// }
 	checkEmail, err := h.serviceManager.UserService().CheckField(context.Background(), &pu.CheckFieldReq{
 		Field: "email",
 		Value: body.Email,
@@ -129,11 +128,11 @@ func (h *handlerV1) Verify(c *gin.Context) {
 	defer cancel()
 	fmt.Println(body)
 	user, err := h.serviceManager.UserService().CreateUser(ctx, &pu.UserRequest{
-		Email:     body.Email,
-		Password:  hashedPassword,
-		FirstName: body.FirstName,
-		LastName:  body.LastName,
-
+		Email:        body.Email,
+		Password:     body.Password,
+		FirstName:    body.FirstName,
+		LastName:     body.LastName,
+		UserType:     "user",
 		RefreshToken: refreshToken,
 	})
 	if err != nil {

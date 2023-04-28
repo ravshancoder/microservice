@@ -66,20 +66,38 @@ func (h *handlerV1) Register(c *gin.Context) {
 		return
 	}
 
+	hashPassword, err := etc.HashPassword(body.Password)
+	if err != nil {
+		h.log.Error("error while hashing password", l.Error(err))
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "something went wrong",
+		})
+		return
+	}
+
 	code := etc.GenerateCode(6)
+
+	ref := &models.UserRedis{
+		FirstName: body.FirstName,
+		LastName:  body.LastName,
+		Email:     body.Email,
+		Password:  hashPassword,
+		UserType:  "user",
+		Code:      code,
+	}
 
 	msg := "Subject: User email verification\n Your verification code: " + code
 	err = email.SendEmail([]string{body.Email}, []byte(msg))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"eroor": err.Error(),
+			"error": err.Error(),
 		})
 		return
 	}
 
 	body.Code = code
 
-	userBodyBte, err := json.Marshal(body)
+	userBodyBte, err := json.Marshal(ref)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -95,5 +113,6 @@ func (h *handlerV1) Register(c *gin.Context) {
 		h.log.Error("error while redis user body", l.Error(err))
 	}
 
+	c.JSON(http.StatusAccepted, "Send code your email")
 	c.JSON(http.StatusAccepted, code)
 }
