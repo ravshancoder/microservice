@@ -140,9 +140,9 @@ func (r *PostRepo) GetPostForComment(post *p.IdRequest) (*p.PostResponse, error)
 	return &res, nil
 }
 
-func (r *PostRepo) SearchByTitle(title *p.Title) (*p.Posts, error) {
+func (r *PostRepo) SearchByTitle(title *p.Search) (*p.Posts, error) {
 	res := p.Posts{}
-	query := fmt.Sprint("select id, title, description, likes, user_id, created_at, updated_at from posts where title ilike '%" + title.Title + "%' and deleted_at is null")
+	query := fmt.Sprint("select id, title, description, likes, user_id, created_at, updated_at from posts where title ilike '%" + title.Search + "%' and deleted_at is null")
 
 	rows, err := r.db.Query(query)
 	if err != nil {

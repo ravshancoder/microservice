@@ -157,7 +157,7 @@ func (s *PostService) GetPostForComment(ctx context.Context, req *p.IdRequest) (
 	return res, nil
 }
 
-func (s *PostService) SearchByTitle(ctx context.Context, req *p.Title) (*p.Posts, error) {
+func (s *PostService) SearchByTitle(ctx context.Context, req *p.Search) (*p.Posts, error) {
 	res, err := s.storage.Post().SearchByTitle(req)
 	if err != nil {
 		log.Println("failed to get post by search title: ", err)

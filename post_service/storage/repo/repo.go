@@ -10,7 +10,7 @@ type PostStorageI interface {
 	GetPostByUserId(*p.IdRequest) (*p.Posts, error)
 	GetPostForUser(*p.IdRequest) (*p.Posts, error)
 	GetPostForComment(*p.IdRequest) (*p.PostResponse, error)
-	SearchByTitle(*p.Title) (*p.Posts, error)
+	SearchByTitle(*p.Search) (*p.Posts, error)
 	LikePost(*p.LikeRequest) (*p.PostResponse, error)
 	UpdatePost(*p.UpdatePostRequest) error
 	DeletePost(*p.IdRequest) (*p.PostResponse, error)
