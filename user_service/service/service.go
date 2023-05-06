@@ -303,3 +303,13 @@ func (s *UserService) UpdateToken(ctx context.Context, req *u.RequestForTokens) 
 
 	return res, err
 }
+
+func (s *UserService) GetUserIdByToken(ctx context.Context, req *u.Token) (*u.IdResp, error) {
+	res, err := s.storage.User().GetUserIdByToken(req)
+	if err != nil {
+		log.Println("failed to getting user token: ", err)
+		return &u.IdResp{}, err
+	}
+
+	return res, nil
+}

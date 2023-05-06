@@ -364,7 +364,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Post"
                 ],
                 "summary": "search users by name",
                 "parameters": [
@@ -784,7 +784,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UserRequest"
+                            "$ref": "#/definitions/models.UserRegister"
                         }
                     }
                 ],
@@ -1115,9 +1115,12 @@ const docTemplate = `{
                 }
             }
         },
-        "models.UserRequest": {
+        "models.UserRegister": {
             "type": "object",
             "properties": {
+                "code": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },
@@ -1125,6 +1128,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "last_name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "user_type": {
                     "type": "string"
                 }
             }

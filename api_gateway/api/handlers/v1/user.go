@@ -21,7 +21,7 @@ import (
 // @Security ApiKeyAuth
 // @Accept json
 // @Produce json
-// @Param body body models.UserRequest true "Create User"
+// @Param body body models.UserRegister true "Create User"
 // @Success 200 {object} models.User
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
@@ -43,10 +43,25 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 		return
 	}
 
+	tokens, err := h.jwtHandler.GenerateAuthJWT()
+	accessToken := tokens[0]
+	refreshToken := tokens[1]
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("error while generating tokens", l.Error(err))
+		return
+	}
+
 	response, err := h.serviceManager.UserService().CreateUser(context.Background(), &pu.UserRequest{
-		FirstName: body.FirstName,
-		LastName:  body.LastName,
-		Email:     body.Email,
+		FirstName:    body.FirstName,
+		LastName:     body.LastName,
+		Email:        body.Email,
+		UserType:     body.UserType,
+		Password:     body.Password,
+		AccesToken:   accessToken,
+		RefreshToken: refreshToken,
 	})
 
 	if err != nil {
@@ -262,3 +277,5 @@ func (h *handlerV1) SearchUsers(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+

@@ -114,13 +114,19 @@ definitions:
       updated_at:
         type: string
     type: object
-  models.UserRequest:
+  models.UserRegister:
     properties:
+      code:
+        type: string
       email:
         type: string
       first_name:
         type: string
       last_name:
+        type: string
+      password:
+        type: string
+      user_type:
         type: string
     type: object
   models.Users:
@@ -435,7 +441,7 @@ paths:
       - ApiKeyAuth: []
       summary: search users by name
       tags:
-      - User
+      - Post
   /v1/posts/{id}:
     put:
       consumes:
@@ -616,7 +622,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/models.UserRequest'
+          $ref: '#/definitions/models.UserRegister'
       produces:
       - application/json
       responses:

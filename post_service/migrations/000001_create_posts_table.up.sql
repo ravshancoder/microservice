@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS posts (
     title VARCHAR(60),
     description VARCHAR(60),
     likes INTEGER DEFAULT 0,
-    user_id INTEGER,
+    user_id TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     deleted_at TIME

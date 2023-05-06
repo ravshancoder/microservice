@@ -133,6 +133,7 @@ func (h *handlerV1) Verify(c *gin.Context) {
 		FirstName:    body.FirstName,
 		LastName:     body.LastName,
 		UserType:     "user",
+		AccesToken:   accessToken,
 		RefreshToken: refreshToken,
 	})
 	if err != nil {

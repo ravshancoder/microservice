@@ -4,6 +4,8 @@ type UserRequest struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
+	UserType  string `json:"user_type"`
+	Password  string `json:"password"`
 }
 
 type User struct {
@@ -65,7 +67,7 @@ type UserRedis struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
-	UserType string `json:"user_type"`
+	UserType  string `json:"user_type"`
 	Password  string `json:"password"`
 	Code      string `json:"code"`
 }

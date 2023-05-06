@@ -94,7 +94,7 @@ func (r *PostRepo) GetPostForUser(id *p.IdRequest) (*p.Posts, error) {
 			user_id = $1`, id.Id)
 
 	if err != nil {
-		log.Println("failed to get post")
+		log.Println("failed to get post for user")
 		return &p.Posts{}, err
 	}
 

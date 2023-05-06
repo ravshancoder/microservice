@@ -41,7 +41,7 @@ func (r *UserRepo) GetUserById(user *u.IdRequest) (*u.UserResponse, error) {
 	var res u.UserResponse
 	err := r.db.QueryRow(`
 		select 
-			id, first_name, last_name, email, created_at, updated_at
+			id, first_name, last_name, email, user_type, created_at, updated_at
 		from 
 			users 
 		where id = $1 and deleted_at is null`, user.Id).
@@ -50,6 +50,7 @@ func (r *UserRepo) GetUserById(user *u.IdRequest) (*u.UserResponse, error) {
 			&res.FirstName,
 			&res.LastName,
 			&res.Email,
+			&res.UserType,
 			&res.CreatedAt,
 			&res.UpdatedAt,
 		)
@@ -66,10 +67,19 @@ func (r *UserRepo) GetUserForClient(user_id *u.IdRequest) (*u.UserResponse, erro
 	var res u.UserResponse
 	err := r.db.QueryRow(`
 		select 
-			id, first_name, last_name, email, created_at, updated_at 
+			id, first_name, last_name, email, user_type, created_at, updated_at 
 		from 
 			users 
-		where id = $1`, user_id.Id).Scan(&res.Id, &res.FirstName, &res.LastName, &res.Email, &res.CreatedAt, &res.UpdatedAt)
+		where id = $1`, user_id.Id).
+		Scan(
+			&res.Id, 
+			&res.FirstName, 
+			&res.LastName, 
+			&res.Email, 
+			&res.UserType,
+			&res.CreatedAt, 
+			&res.UpdatedAt,
+		)
 
 	if err != nil {
 		log.Println("failed to get user for client")
@@ -84,7 +94,7 @@ func (r *UserRepo) GetAllUsers(req *u.AllUsersRequest) (*u.Users, error) {
 	offset := (req.Page - 1) * req.Limit
 	rows, err := r.db.Query(`
 		select 
-			id, first_name, last_name, email, refresh_token, created_at, updated_at 
+			id, first_name, last_name, email, user_type, refresh_token, created_at, updated_at 
 		from 
 			users 
 		where 
@@ -104,6 +114,7 @@ func (r *UserRepo) GetAllUsers(req *u.AllUsersRequest) (*u.Users, error) {
 			&temp.FirstName,
 			&temp.LastName,
 			&temp.Email,
+			&temp.UserType,
 			&temp.RefreshToken,
 			&temp.CreatedAt,
 			&temp.UpdatedAt,
@@ -121,7 +132,7 @@ func (r *UserRepo) GetAllUsers(req *u.AllUsersRequest) (*u.Users, error) {
 
 func (r *UserRepo) SearchUsersByName(req *u.SearchUsers) (*u.Users, error) {
 	var res u.Users
-	query := fmt.Sprint("select id, first_name, last_name, email, created_at, updated_at from users where first_name ilike '%" + req.Search + "%' and deleted_at is null")
+	query := fmt.Sprint("select id, first_name, last_name, email, user_type, created_at, updated_at from users where first_name ilike '%" + req.Search + "%' and deleted_at is null")
 
 	rows, err := r.db.Query(query)
 	if err != nil {
@@ -137,6 +148,7 @@ func (r *UserRepo) SearchUsersByName(req *u.SearchUsers) (*u.Users, error) {
 			&temp.FirstName,
 			&temp.LastName,
 			&temp.Email,
+			&temp.UserType,
 			&temp.CreatedAt,
 			&temp.UpdatedAt,
 		)
@@ -156,9 +168,9 @@ func (r *UserRepo) UpdateUser(user *u.UpdateUserRequest) error {
 		update
 			users
 		set
-			first_name = $1, last_name = $2, email = $3, password = $4,  updated_at = $5
+			first_name = $1, last_name = $2, email = $3, user_type = $4, password = $5,  updated_at = $6
 		where 
-			id = $6`, user.FirstName, user.LastName, user.Email, user.Password, time.Now(), user.Id)
+			id = $7`, user.FirstName, user.LastName, user.Email, user.UserType, user.Password, time.Now(), user.Id)
 
 	if err != nil {
 		log.Println("failed to update user")
@@ -252,12 +264,13 @@ func (r *UserRepo) UpdateToken(user *u.RequestForTokens) (*u.UserResponse, error
 		where 
 			id = $2
 		returning 
-			id, first_name, last_name, email, refresh_token, updated_at`, user.RefreshToken, user.Id).
+			id, first_name, last_name, email, user_type, refresh_token, updated_at`, user.RefreshToken, user.Id).
 		Scan(
 			&res.Id,
 			&res.FirstName,
 			&res.LastName,
 			&res.Email,
+			&res.UserType,
 			&res.RefreshToken,
 			&res.UpdatedAt,
 		)
@@ -268,4 +281,24 @@ func (r *UserRepo) UpdateToken(user *u.RequestForTokens) (*u.UserResponse, error
 	}
 
 	return &res, err
+}
+
+func (r *UserRepo) GetUserIdByToken(token *u.Token)(*u.IdResp, error){
+	var res u.IdResp
+	err := r.db.QueryRow(`
+		select 
+			id
+		from 
+			users 
+		where refresh_token = $1 and deleted_at is null`, token.RefreshToken).
+		Scan(
+			&res.Id,
+		)
+
+	if err != nil {
+		log.Println("failed to get user id by token")
+		return &u.IdResp{}, err
+	}
+
+	return &res, nil
 }

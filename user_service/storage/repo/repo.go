@@ -15,4 +15,5 @@ type UserStoreI interface {
 	CheckFiedld(*u.CheckFieldReq)(*u.CheckFieldRes, error)
 	GetByEmail(*u.EmailReq) (*u.UserResponse, error)
 	UpdateToken(*u.RequestForTokens)(*u.UserResponse, error)
+	GetUserIdByToken(*u.Token)(*u.IdResp, error)
 }

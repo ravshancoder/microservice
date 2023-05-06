@@ -40,7 +40,9 @@ func main() {
 		log.Error("new  adapter error", logger.Error(err))
 		return
 	}
-
+	
+	fmt.Println(a, cfg.AuthConfigPath)
+	
 	casbinEnforcer, err := casbin.NewEnforcer(cfg.AuthConfigPath, a)
 	if err != nil {
 		log.Error("new enforcer error", logger.Error(err))

@@ -217,7 +217,7 @@ func (h *handlerV1) DeletePost(c *gin.Context) {
 
 // @Summary search users by name
 // @Description This api searches for users by first name
-// @Tags User
+// @Tags Post
 // @Security ApiKeyAuth
 // @Accept json
 // @Produce json
