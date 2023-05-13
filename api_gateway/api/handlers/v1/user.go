@@ -25,7 +25,7 @@ import (
 // @Success 200 {object} models.User
 // @Failure 400 {object} models.StandartErrorModel
 // @Failure 500 {object} models.StandartErrorModel
-// @Router /v1/users [post]
+// @Router /v1/user [post]
 func (h *handlerV1) CreateUser(c *gin.Context) {
 	var (
 		body        models.UserRequest

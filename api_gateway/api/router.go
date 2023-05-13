@@ -12,7 +12,7 @@ import (
 	"github.com/microservice/api_gateway/storage/repo"
 
 	//"github.com/gin-contrib/cors"
-	_ "github.com/microservice/api_gateway/api/docs"
+	_ "github.com/microservice/api_gateway/api/docs" 		
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
@@ -29,7 +29,7 @@ type Option struct {
 }
 
 // New ...
-// @title           			Swagger for user api
+// @title           			Create by Ravshan
 // @securityDefinitions.apikey 	ApiKeyAuth
 // @in header
 // @name Authorization
@@ -59,7 +59,7 @@ func New(option Option) *gin.Engine {
 
 	api := router.Group("/v1")
 	// users
-	api.POST("/users", handlerV1.CreateUser)
+	api.POST("/user", handlerV1.CreateUser)
 	api.GET("/user/:id", handlerV1.GetUserById)
 	api.GET("/users", handlerV1.GetAllUsers)
 	api.GET("/users/:search", handlerV1.SearchUsers)

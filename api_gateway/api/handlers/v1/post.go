@@ -151,6 +151,75 @@ func (h *handlerV1) GetPostById(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+
+// @Summary delete post
+// @Description This api deletes a post
+// @Tags Post
+// @Security ApiKeyAuth
+// @Accept json
+// @Produce json
+// @Param id path int true "Id"
+// @Success 200 {object} models.Post
+// @Failure 400 {object} models.StandartErrorModel
+// @Failure 500 {object} models.StandartErrorModel
+// @Router /v1/post/{id} [delete]
+func (h *handlerV1) DeletePost(c *gin.Context) {
+	id := c.Param("id")
+	
+	response, err := h.serviceManager.PostService().DeletePost(context.Background(), &pu.IdRequest{
+		Id: id,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to delete post", l.Error(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+// @Summary search users by name
+// @Description This api searches for users by first name
+// @Tags Post
+// @Security ApiKeyAuth
+// @Accept json
+// @Produce json
+// @Param search query string true "search"
+// @Success 200 {object}  models.Users
+// @Failure 400 {object} models.StandartErrorModel
+// @Failure 500 {object} models.StandartErrorModel
+// @Router /v1/post/search [get]
+func (h *handlerV1) SearchPost(c *gin.Context) {
+
+	queryParams := c.Request.URL.Query()
+	params, strerr := utils.ParseQueryParams(queryParams)
+	
+	if strerr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": strerr[0],
+		})
+		h.log.Error("Failed to get all users: " + strerr[0])
+		return
+	}
+
+	response, err := h.serviceManager.PostService().SearchByTitle(context.Background(), &pu.Search{
+		Search: params.Search,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("Failed to search users: ", l.Error(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
 // // @Summary get all posts
 // // @Description This api gets all users
 // // @Tags User
@@ -185,71 +254,3 @@ func (h *handlerV1) GetPostById(c *gin.Context) {
 // 	}
 // 	c.JSON(http.StatusOK, response)
 // }
-
-// @Summary delete post
-// @Description This api deletes a post
-// @Tags Post
-// @Security ApiKeyAuth
-// @Accept json
-// @Produce json
-// @Param id path int true "Id"
-// @Success 200 {object} models.Post
-// @Failure 400 {object} models.StandartErrorModel
-// @Failure 500 {object} models.StandartErrorModel
-// @Router /v1/post/{id} [delete]
-func (h *handlerV1) DeletePost(c *gin.Context) {
-	id := c.Param("id")
-
-	response, err := h.serviceManager.PostService().DeletePost(context.Background(), &pu.IdRequest{
-		Id: id,
-	})
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		h.log.Error("failed to delete post", l.Error(err))
-		return
-	}
-
-	c.JSON(http.StatusOK, response)
-}
-
-// @Summary search users by name
-// @Description This api searches for users by first name
-// @Tags Post
-// @Security ApiKeyAuth
-// @Accept json
-// @Produce json
-// @Param search query string true "search"
-// @Success 200 {object}  models.Users
-// @Failure 400 {object} models.StandartErrorModel
-// @Failure 500 {object} models.StandartErrorModel
-// @Router /v1/post/search [get]
-func (h *handlerV1) SearchPost(c *gin.Context) {
-
-	queryParams := c.Request.URL.Query()
-	params, strerr := utils.ParseQueryParams(queryParams)
-
-	if strerr != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": strerr[0],
-		})
-		h.log.Error("Failed to get all users: " + strerr[0])
-		return
-	}
-
-	response, err := h.serviceManager.PostService().SearchByTitle(context.Background(), &pu.Search{
-		Search: params.Search,
-	})
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		h.log.Error("Failed to search users: ", l.Error(err))
-		return
-	}
-
-	c.JSON(http.StatusOK, response)
-}
