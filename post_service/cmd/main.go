@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/project/post_service/config"
-	p "github.com/project/post_service/genproto/post"
-	"github.com/project/post_service/pkg/db"
-	"github.com/project/post_service/pkg/logger"
-	"github.com/project/post_service/service"
-	grpcclient "github.com/project/post_service/service/grpc_client"
+	"github.com/microservice/post_service/config"
+	p "github.com/microservice/post_service/genproto/post"
+	"github.com/microservice/post_service/kafka"
+	"github.com/microservice/post_service/pkg/db"
+	"github.com/microservice/post_service/pkg/logger"
+	"github.com/microservice/post_service/service"
+	grpcclient "github.com/microservice/post_service/service/grpc_client"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -24,6 +25,9 @@ func main() {
 	if err != nil {
 		fmt.Println("failed connect database", err)
 	}
+
+	UserCreateTopic := kafka.NewKafkaConsumer(connDb, &cfg, log, "user")
+	go UserCreateTopic.Start()
 
 	grpcClient, err := grpcclient.New(cfg)
 	if err != nil {

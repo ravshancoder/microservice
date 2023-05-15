@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	p "github.com/project/post_service/genproto/post"
+	p "github.com/microservice/post_service/genproto/post"
 )
 
 func (r *PostRepo) CreatePost(post *p.PostRequest) (*p.PostResponse, error) {

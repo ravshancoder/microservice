@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 
-	"github.com/project/post_service/config"
+	"github.com/microservice/post_service/config"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" //postgres drivers

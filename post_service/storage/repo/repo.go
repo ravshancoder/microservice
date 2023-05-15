@@ -1,7 +1,7 @@
 package repo
 
 import (
-	p "github.com/project/post_service/genproto/post"
+	p "github.com/microservice/post_service/genproto/post"
 )
 
 type PostStorageI interface {

@@ -1,8 +1,8 @@
 package storage
 
 import (
-	"github.com/project/post_service/storage/postgres"
-	"github.com/project/post_service/storage/repo"
+	"github.com/microservice/post_service/storage/postgres"
+	"github.com/microservice/post_service/storage/repo"
 
 	"github.com/jmoiron/sqlx"
 )

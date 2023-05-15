@@ -6,12 +6,12 @@ import (
 
 	"github.com/jmoiron/sqlx"
 
-	c "github.com/project/post_service/genproto/comment"
-	p "github.com/project/post_service/genproto/post"
-	u "github.com/project/post_service/genproto/user"
-	"github.com/project/post_service/pkg/logger"
-	grpcclient "github.com/project/post_service/service/grpc_client"
-	"github.com/project/post_service/storage"
+	c "github.com/microservice/post_service/genproto/comment"
+	p "github.com/microservice/post_service/genproto/post"
+	u "github.com/microservice/post_service/genproto/user"
+	"github.com/microservice/post_service/pkg/logger"
+	grpcclient "github.com/microservice/post_service/service/grpc_client"
+	"github.com/microservice/post_service/storage"
 )
 
 type PostService struct {
