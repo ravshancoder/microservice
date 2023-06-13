@@ -1,7 +1,7 @@
 package repo
 
 import (
-	c "github.com/project/comment_service/genproto/comment"
+	c "github.com/microservice/comment_service/genproto/comment"
 )
 
 type CommentStorageI interface {

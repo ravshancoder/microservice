@@ -138,7 +138,7 @@ definitions:
     type: object
 info:
   contact: {}
-  title: Swagger for user api
+  title: Create by Ravshan
 paths:
   /v1/admin/add/policy:
     post:
@@ -478,6 +478,38 @@ paths:
       summary: update post
       tags:
       - Post
+  /v1/user:
+    post:
+      consumes:
+      - application/json
+      description: This api creates a user
+      parameters:
+      - description: Create User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRegister'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandartErrorModel'
+      security:
+      - ApiKeyAuth: []
+      summary: create user
+      tags:
+      - User
   /v1/user/{id}:
     delete:
       consumes:
@@ -610,37 +642,6 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: get all users
-      tags:
-      - User
-    post:
-      consumes:
-      - application/json
-      description: This api creates a user
-      parameters:
-      - description: Create User
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/models.UserRegister'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.User'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.StandartErrorModel'
-      security:
-      - ApiKeyAuth: []
-      summary: create user
       tags:
       - User
   /v1/users/{search}:

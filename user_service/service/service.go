@@ -4,16 +4,16 @@ import (
 	"context"
 	"log"
 
+	"github.com/microservice/user_service/storage"
 	"github.com/jmoiron/sqlx"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	c "github.com/project/user_service/genproto/comment"
-	p "github.com/project/user_service/genproto/post"
-	u "github.com/project/user_service/genproto/user"
-	"github.com/project/user_service/pkg/logger"
-	grpcclient "github.com/project/user_service/service/grpc_client"
-	"github.com/project/user_service/storage"
+	c "github.com/microservice/user_service/genproto/comment"
+	p "github.com/microservice/user_service/genproto/post"
+	u "github.com/microservice/user_service/genproto/user"
+	"github.com/microservice/user_service/pkg/logger"
+	grpcclient "github.com/microservice/user_service/service/grpc_client"
 )
 
 type UserService struct {
@@ -31,7 +31,7 @@ func NewUserService(db *sqlx.DB, log logger.Logger, client grpcclient.Clients) *
 }
 
 func (s *UserService) CreateUser(ctx context.Context, req *u.UserRequest) (*u.UserResponse, error) {
-	res, err := s.storage.User().CreateUser(req)
+	res, err := s.storage.User().CreateUser(ctx, req)
 	if err != nil {
 		log.Println("failed to creating user: ", err)
 		return &u.UserResponse{}, err
@@ -41,7 +41,7 @@ func (s *UserService) CreateUser(ctx context.Context, req *u.UserRequest) (*u.Us
 }
 
 func (s *UserService) GetUserById(ctx context.Context, req *u.IdRequest) (*u.UserResponse, error) {
-	res, err := s.storage.User().GetUserById(req)
+	res, err := s.storage.User().GetUserById(ctx, req)
 	if err != nil {
 		log.Println("failed to getting user: ", err)
 		return &u.UserResponse{}, err
@@ -63,7 +63,7 @@ func (s *UserService) GetUserById(ctx context.Context, req *u.IdRequest) (*u.Use
 		pst := u.Post{}
 
 		for _, comment := range comments.Comments {
-			comUser, err := s.storage.User().GetUserById(&u.IdRequest{Id: comment.UserId})
+			comUser, err := s.storage.User().GetUserById(ctx, &u.IdRequest{Id: comment.UserId})
 			if err != nil {
 				log.Println("failed to get comment user: ", err)
 				return &u.UserResponse{}, err
@@ -94,7 +94,7 @@ func (s *UserService) GetUserById(ctx context.Context, req *u.IdRequest) (*u.Use
 }
 
 func (s *UserService) GetUserForClient(ctx context.Context, req *u.IdRequest) (*u.UserResponse, error) {
-	res, err := s.storage.User().GetUserById(req)
+	res, err := s.storage.User().GetUserById(ctx, req)
 	if err != nil {
 		log.Println("failed to getting user for clients: ", err)
 		return &u.UserResponse{}, err
@@ -127,7 +127,7 @@ func (s *UserService) GetAllUsers(ctx context.Context, req *u.AllUsersRequest) (
 			pst := u.Post{}
 
 			for _, comment := range comments.Comments {
-				comUser, err := s.storage.User().GetUserById(&u.IdRequest{Id: comment.UserId})
+				comUser, err := s.storage.User().GetUserById(ctx, &u.IdRequest{Id: comment.UserId})
 				if err != nil {
 					log.Println("failed to get user comment: ", err)
 					return &u.Users{}, err
@@ -182,7 +182,7 @@ func (s *UserService) SearchUsersByName(ctx context.Context, req *u.SearchUsers)
 			pst := u.Post{}
 
 			for _, comment := range comments.Comments {
-				comUser, err := s.storage.User().GetUserById(&u.IdRequest{Id: comment.UserId})
+				comUser, err := s.storage.User().GetUserById(ctx, &u.IdRequest{Id: comment.UserId})
 				if err != nil {
 					log.Println("failed to get user comment: ", err)
 					return &u.Users{}, err
@@ -246,7 +246,7 @@ func (s *UserService) DeleteUser(ctx context.Context, req *u.IdRequest) (*u.User
 		pst := u.Post{}
 
 		for _, comment := range comments.Comments {
-			comUser, err := s.storage.User().GetUserById(&u.IdRequest{Id: comment.UserId})
+			comUser, err := s.storage.User().GetUserById(ctx, &u.IdRequest{Id: comment.UserId})
 			if err != nil {
 				log.Println("failed to get user comment: ", err)
 				return &u.UserResponse{}, err

@@ -35,7 +35,7 @@ type Option struct {
 // @name Authorization
 // @version        				1.0
 // @description     			This is a user service api.
-// @Host localhost:8080
+// @Host api_gateway:8030
 func New(option Option) *gin.Engine {
 	router := gin.New()
 

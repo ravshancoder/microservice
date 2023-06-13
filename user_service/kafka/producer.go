@@ -4,13 +4,12 @@ import (
 	"context"
 	"time"
 
+	"github.com/microservice/user_service/config"
 	kafka "github.com/segmentio/kafka-go"
 
-	"github.com/project/user_service/config"
-
 	// "github.com/casbin/casbin/v2/config"
-	"github.com/project/user_service/pkg/logger"
-	"github.com/project/user_service/pkg/messagebroker"
+	"github.com/microservice/user_service/pkg/logger"
+	"github.com/microservice/user_service/pkg/messagebroker"
 )
 
 type KafkaProduce struct {
@@ -19,7 +18,7 @@ type KafkaProduce struct {
 }
 
 func NewKafkaProducer(conf config.Config, log logger.Logger, topic string) messagebroker.Producer {
-	connString := "localhost:9092"
+	connString := "kafka:9092"
 
 	return &KafkaProduce{
 		kafkaWriter: &kafka.Writer{
@@ -54,5 +53,5 @@ func (p *KafkaProduce) Produce(key, body []byte, logBody string) error {
 		return err
 	}
 	return nil
-	
-}	
+
+}

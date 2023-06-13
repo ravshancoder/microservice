@@ -21,7 +21,7 @@ type KafkaConsumer struct {
 }
 
 func NewKafkaConsumer(db *sqlx.DB, conf *config.Config, log logger.Logger, topic string) messagebroker.Consumer {
-	connString := "localhost:9092"
+	connString := "post_service:8030"
 	return &KafkaConsumer{
 		KafkaConsumer: kafka.NewReader(kafka.ReaderConfig{
 			Brokers:  []string{connString},

@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"log"
 	"time"
-
-	u "github.com/project/user_service/genproto/user"
+	"context"
+	u "github.com/microservice/user_service/genproto/user"
+	"github.com/opentracing/opentracing-go"
 )
 
-func (r *UserRepo) CreateUser(user *u.UserRequest) (*u.UserResponse, error) {
+func (r *UserRepo) CreateUser(ctx context.Context, user *u.UserRequest) (*u.UserResponse, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	var res u.UserResponse
 	err := r.db.QueryRow(`
 		insert into 
@@ -16,7 +19,7 @@ func (r *UserRepo) CreateUser(user *u.UserRequest) (*u.UserResponse, error) {
 		values
 			($1, $2, $3, $4, $5, $6, $7) 
 		returning 
-			id, first_name, last_name, email, user_type, acces_token, refresh_token, created_at, updated_at`, user.FirstName, user.LastName, user.Email, user.Password,user.UserType, user.AccesToken, user.RefreshToken).
+			id, first_name, last_name, email, user_type, acces_token, refresh_token, created_at, updated_at`, user.FirstName, user.LastName, user.Email, user.Password, user.UserType, user.AccesToken, user.RefreshToken).
 		Scan(
 			&res.Id,
 			&res.FirstName,
@@ -37,7 +40,9 @@ func (r *UserRepo) CreateUser(user *u.UserRequest) (*u.UserResponse, error) {
 	return &res, nil
 }
 
-func (r *UserRepo) GetUserById(user *u.IdRequest) (*u.UserResponse, error) {
+func (r *UserRepo) GetUserById(ctx context.Context, user *u.IdRequest) (*u.UserResponse, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	var res u.UserResponse
 	err := r.db.QueryRow(`
 		select 
@@ -72,12 +77,12 @@ func (r *UserRepo) GetUserForClient(user_id *u.IdRequest) (*u.UserResponse, erro
 			users 
 		where id = $1`, user_id.Id).
 		Scan(
-			&res.Id, 
-			&res.FirstName, 
-			&res.LastName, 
-			&res.Email, 
+			&res.Id,
+			&res.FirstName,
+			&res.LastName,
+			&res.Email,
 			&res.UserType,
-			&res.CreatedAt, 
+			&res.CreatedAt,
 			&res.UpdatedAt,
 		)
 
@@ -283,7 +288,7 @@ func (r *UserRepo) UpdateToken(user *u.RequestForTokens) (*u.UserResponse, error
 	return &res, err
 }
 
-func (r *UserRepo) GetUserIdByToken(token *u.Token)(*u.IdResp, error){
+func (r *UserRepo) GetUserIdByToken(token *u.Token) (*u.IdResp, error) {
 	var res u.IdResp
 	err := r.db.QueryRow(`
 		select 

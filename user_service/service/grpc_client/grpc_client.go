@@ -3,9 +3,9 @@ package grpcclient
 import (
 	"fmt"
 
-	"github.com/project/user_service/config"
-	cc "github.com/project/user_service/genproto/comment"
-	cu "github.com/project/user_service/genproto/post"
+	"github.com/microservice/user_service/config"
+	cc "github.com/microservice/user_service/genproto/comment"
+	cu "github.com/microservice/user_service/genproto/post"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

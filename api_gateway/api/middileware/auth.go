@@ -30,7 +30,7 @@ func NewAuth(enforce *casbin.Enforcer, jwtHandler token.JWTHandler, cfg config.C
 		allow, err := a.CheckPermission(c.Request)
 		if err != nil {
 			v, _ := err.(*jwtg.ValidationError)
-			if v.Errors == jwtg.ValidationErrorExpired {
+			if v.Errors == jwtg.ValidationErrorExpired { 
 				a.RequireRefresh(c)
 			} else {
 				a.RequirePermission(c)
