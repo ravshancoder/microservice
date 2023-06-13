@@ -50,7 +50,7 @@ func Load() Config {
 
 	c.Environment = cast.ToString(getOrReturnDefault("ENVIRONMENT", "develop"))
 
-	c.SiginKey = cast.ToString(getOrReturnDefault("SIGNING_KEY", "ravshanSignIn"))
+	c.SiginKey = cast.ToString(getOrReturnDefault("SIGNING_KEY", "ravshanSignIn"))    995611060
 
 	c.AuthConfigPath = cast.ToString(getOrReturnDefault("CASBIN_CONFIG_PATH", "./config/rback_model.conf"))
 

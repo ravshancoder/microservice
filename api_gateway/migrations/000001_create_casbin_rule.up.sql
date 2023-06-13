@@ -32,8 +32,8 @@ INSERT INTO casbin_rule(p_type, v0, v1, v2)VALUES('p', 'owner', '/v1/admin/remov
 INSERT INTO casbin_rule(p_type, v0, v1, v2)VALUES('p', 'owner', '/v1/admin/add/role', 'POST');
 INSERT INTO casbin_rule(p_type, v0, v1, v2)VALUES('p', 'owner', '/v1/post', 'POST');
 INSERT INTO casbin_rule(p_type, v0, v1, v2)VALUES('p', 'owner', '/v1/posts/{id}', 'PUT');
-INSERT INTO casbin_rule(p_type, v0, v1, v2)VALUES('p', 'owner', '/v1/posts/{id}', 'GET');
-INSERT INTO casbin_rule(p_type, v0, v1, v2)VALUES('p', 'owner', '/v1/posts/{id}', 'DELETE');
+INSERT INTO casbin_rule(p_type, v0, v1, v2)VALUES('p', 'owner', '/v1/post/{id}', 'GET');
+INSERT INTO casbin_rule(p_type, v0, v1, v2)VALUES('p', 'owner', '/v1/post/{id}', 'DELETE');
 INSERT INTO casbin_rule(p_type, v0, v1, v2)VALUES('p', 'owner', '/v1/post/search', 'GET');
 INSERT INTO casbin_rule(p_type, v0, v1, v2)VALUES('p', 'owner', '/v1/comment', 'POST');
 INSERT INTO casbin_rule(p_type, v0, v1, v2)VALUES('p', 'owner', '/v1/comments/{id}', 'GET');
