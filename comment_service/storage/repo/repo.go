@@ -1,12 +1,14 @@
 package repo
 
 import (
+	"context"
+
 	c "github.com/microservice/comment_service/genproto/comment"
 )
 
 type CommentStorageI interface {
-	WriteComment(*c.CommentRequest) (*c.CommentResponse, error)
-	GetComments(*c.GetAllCommentsRequest) (*c.Comments, error)
-	GetCommentsForPost(*c.GetAllCommentsRequest) (*c.Comments, error)
-	DeleteComment(*c.IdRequest) (*c.CommentResponse, error)
+	WriteComment(context.Context, *c.CommentRequest) (*c.CommentResponse, error)
+	GetComments(context.Context, *c.GetAllCommentsRequest) (*c.Comments, error)
+	GetCommentsForPost(context.Context, *c.GetAllCommentsRequest) (*c.Comments, error)
+	DeleteComment(context.Context, *c.IdRequest) (*c.CommentResponse, error)
 }

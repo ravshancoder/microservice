@@ -1,14 +1,18 @@
 package postgres
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"time"
 
 	p "github.com/microservice/post_service/genproto/post"
+	"github.com/opentracing/opentracing-go"
 )
 
-func (r *PostRepo) CreatePost(post *p.PostRequest) (*p.PostResponse, error) {
+func (r *PostRepo) CreatePost(ctx context.Context, post *p.PostRequest) (*p.PostResponse, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	var res p.PostResponse
 	err := r.db.QueryRow(`
 		insert into 
@@ -26,7 +30,9 @@ func (r *PostRepo) CreatePost(post *p.PostRequest) (*p.PostResponse, error) {
 	return &res, nil
 }
 
-func (r *PostRepo) GetPostById(post *p.IdRequest) (*p.PostResponse, error) {
+func (r *PostRepo) GetPostById(ctx context.Context, post *p.IdRequest) (*p.PostResponse, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	res := p.PostResponse{}
 	err := r.db.QueryRow(`
 		select 
@@ -44,7 +50,9 @@ func (r *PostRepo) GetPostById(post *p.IdRequest) (*p.PostResponse, error) {
 	return &res, nil
 }
 
-func (r *PostRepo) GetPostByUserId(id *p.IdRequest) (*p.Posts, error) {
+func (r *PostRepo) GetPostByUserId(ctx context.Context, id *p.IdRequest) (*p.Posts, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	res := p.Posts{}
 	rows, err := r.db.Query(`
 		select 
@@ -83,7 +91,9 @@ func (r *PostRepo) GetPostByUserId(id *p.IdRequest) (*p.Posts, error) {
 	return &res, nil
 }
 
-func (r *PostRepo) GetPostForUser(id *p.IdRequest) (*p.Posts, error) {
+func (r *PostRepo) GetPostForUser(ctx context.Context, id *p.IdRequest) (*p.Posts, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	res := p.Posts{}
 	rows, err := r.db.Query(`
 		select 
@@ -122,7 +132,9 @@ func (r *PostRepo) GetPostForUser(id *p.IdRequest) (*p.Posts, error) {
 	return &res, nil
 }
 
-func (r *PostRepo) GetPostForComment(post *p.IdRequest) (*p.PostResponse, error) {
+func (r *PostRepo) GetPostForComment(ctx context.Context, post *p.IdRequest) (*p.PostResponse, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	res := p.PostResponse{}
 	err := r.db.QueryRow(`
 		select 
@@ -140,7 +152,9 @@ func (r *PostRepo) GetPostForComment(post *p.IdRequest) (*p.PostResponse, error)
 	return &res, nil
 }
 
-func (r *PostRepo) SearchByTitle(title *p.Search) (*p.Posts, error) {
+func (r *PostRepo) SearchByTitle(ctx context.Context, title *p.Search) (*p.Posts, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	res := p.Posts{}
 	query := fmt.Sprint("select id, title, description, likes, user_id, created_at, updated_at from posts where title ilike '%" + title.Search + "%' and deleted_at is null")
 
@@ -173,7 +187,9 @@ func (r *PostRepo) SearchByTitle(title *p.Search) (*p.Posts, error) {
 	return &res, nil
 }
 
-func (r *PostRepo) LikePost(l *p.LikeRequest) (*p.PostResponse, error) {
+func (r *PostRepo) LikePost(ctx context.Context, l *p.LikeRequest) (*p.PostResponse, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	res := p.PostResponse{}
 	if l.IsLiked {
 		err := r.db.QueryRow(`
@@ -207,7 +223,9 @@ func (r *PostRepo) LikePost(l *p.LikeRequest) (*p.PostResponse, error) {
 	return &res, nil
 }
 
-func (r *PostRepo) UpdatePost(post *p.UpdatePostRequest) error {
+func (r *PostRepo) UpdatePost(ctx context.Context, post *p.UpdatePostRequest) error {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	res, err := r.db.Exec(`
 		update
 			posts 
@@ -225,7 +243,9 @@ func (r *PostRepo) UpdatePost(post *p.UpdatePostRequest) error {
 	return nil
 }
 
-func (r *PostRepo) DeletePost(id *p.IdRequest) (*p.PostResponse, error) {
+func (r *PostRepo) DeletePost(ctx context.Context, id *p.IdRequest) (*p.PostResponse, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	post := p.PostResponse{}
 	err := r.db.QueryRow(`
 		update 

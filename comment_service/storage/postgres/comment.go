@@ -1,13 +1,17 @@
 package postgres
 
 import (
+	"context"
 	"log"
 	"time"
 
 	c "github.com/microservice/comment_service/genproto/comment"
+	"github.com/opentracing/opentracing-go"
 )
 
-func (r *CommentRepo) WriteComment(comment *c.CommentRequest) (*c.CommentResponse, error) {
+func (r *CommentRepo) WriteComment(ctx context.Context, comment *c.CommentRequest) (*c.CommentResponse, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	var res c.CommentResponse
 	err := r.db.QueryRow(`
 		insert into 
@@ -25,7 +29,9 @@ func (r *CommentRepo) WriteComment(comment *c.CommentRequest) (*c.CommentRespons
 	return &res, nil
 }
 
-func (r *CommentRepo) GetComments(com *c.GetAllCommentsRequest) (*c.Comments, error) {
+func (r *CommentRepo) GetComments(ctx context.Context, com *c.GetAllCommentsRequest) (*c.Comments, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	var res c.Comments
 	rows, err := r.db.Query(`
 		select 
@@ -62,7 +68,9 @@ func (r *CommentRepo) GetComments(com *c.GetAllCommentsRequest) (*c.Comments, er
 	return &res, nil
 }
 
-func (r *CommentRepo) GetCommentsForPost(com *c.GetAllCommentsRequest) (*c.Comments, error) {
+func (r *CommentRepo) GetCommentsForPost(ctx context.Context, com *c.GetAllCommentsRequest) (*c.Comments, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	var res c.Comments
 	rows, err := r.db.Query(`
 		select 
@@ -99,7 +107,9 @@ func (r *CommentRepo) GetCommentsForPost(com *c.GetAllCommentsRequest) (*c.Comme
 	return &res, nil
 }
 
-func (r *CommentRepo) DeleteComment(id *c.IdRequest) (*c.CommentResponse, error) {
+func (r *CommentRepo) DeleteComment(ctx context.Context, id *c.IdRequest) (*c.CommentResponse, error) {
+	trace, ctx := opentracing.StartSpanFromContext(ctx, "UpdateAddress")
+	defer trace.Finish()
 	var res c.CommentResponse
 	err := r.db.QueryRow(`
 		update 

@@ -29,7 +29,7 @@ func NewCommentService(db *sqlx.DB, log logger.Logger, client grpcclient.Clients
 }
 
 func (s *CommentService) WriteComment(ctx context.Context, req *c.CommentRequest) (*c.CommentResponse, error) {
-	res, err := s.storage.Comment().WriteComment(req)
+	res, err := s.storage.Comment().WriteComment(ctx, req)
 	if err != nil {
 		log.Println("failed to write comment: ", err)
 		return &c.CommentResponse{}, err
@@ -60,7 +60,7 @@ func (s *CommentService) WriteComment(ctx context.Context, req *c.CommentRequest
 }
 
 func (s *CommentService) GetComments(ctx context.Context, req *c.GetAllCommentsRequest) (*c.Comments, error) {
-	res, err := s.storage.Comment().GetComments(req)
+	res, err := s.storage.Comment().GetComments(ctx, req)
 	if err != nil {
 		log.Println("failed to get comments: ", err)
 		return &c.Comments{}, err
@@ -96,7 +96,7 @@ func (s *CommentService) GetComments(ctx context.Context, req *c.GetAllCommentsR
 }
 
 func (s *CommentService) GetCommentsForPost(ctx context.Context, req *c.GetAllCommentsRequest) (*c.Comments, error) {
-	res, err := s.storage.Comment().GetComments(req)
+	res, err := s.storage.Comment().GetComments(ctx, req)
 	if err != nil {
 		log.Println("failed to get comments for client: ", err)
 		return &c.Comments{}, err
@@ -106,7 +106,7 @@ func (s *CommentService) GetCommentsForPost(ctx context.Context, req *c.GetAllCo
 }
 
 func (s *CommentService) DeleteComment(ctx context.Context, id *c.IdRequest) (*c.CommentResponse, error) {
-	res, err := s.storage.Comment().DeleteComment(id)
+	res, err := s.storage.Comment().DeleteComment(ctx, id)
 	if err != nil {
 		log.Println("failed to delete comment: ", err)
 		return &c.CommentResponse{}, err

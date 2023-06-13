@@ -29,7 +29,7 @@ func NewPostService(db *sqlx.DB, log logger.Logger, client grpcclient.Clients) *
 }
 
 func (s *PostService) CreatePost(ctx context.Context, req *p.PostRequest) (*p.PostResponse, error) {
-	res, err := s.storage.Post().CreatePost(req)
+	res, err := s.storage.Post().CreatePost(ctx, req)
 	if err != nil {
 		log.Println("failed to create post: ", err)
 		return &p.PostResponse{}, err
@@ -47,7 +47,7 @@ func (s *PostService) CreatePost(ctx context.Context, req *p.PostRequest) (*p.Po
 }
 
 func (s *PostService) GetPostById(ctx context.Context, req *p.IdRequest) (*p.PostResponse, error) {
-	res, err := s.storage.Post().GetPostById(req)
+	res, err := s.storage.Post().GetPostById(ctx, req)
 	if err != nil {
 		log.Println("failed to get post by id: ", err)
 		return &p.PostResponse{}, err
@@ -90,7 +90,7 @@ func (s *PostService) GetPostById(ctx context.Context, req *p.IdRequest) (*p.Pos
 }
 
 func (s *PostService) GetPostByUserId(ctx context.Context, req *p.IdRequest) (*p.Posts, error) {
-	res, err := s.storage.Post().GetPostByUserId(req)
+	res, err := s.storage.Post().GetPostByUserId(ctx, req)
 	if err != nil {
 		log.Println("failed to get post by user id: ", err)
 		return &p.Posts{}, err
@@ -138,7 +138,7 @@ func (s *PostService) GetPostByUserId(ctx context.Context, req *p.IdRequest) (*p
 }
 
 func (s *PostService) GetPostForUser(ctx context.Context, req *p.IdRequest) (*p.Posts, error) {
-	res, err := s.storage.Post().GetPostForUser(req)
+	res, err := s.storage.Post().GetPostForUser(ctx, req)
 	if err != nil {
 		log.Println("failed to get post for user: ", err)
 		return &p.Posts{}, err
@@ -148,7 +148,7 @@ func (s *PostService) GetPostForUser(ctx context.Context, req *p.IdRequest) (*p.
 }
 
 func (s *PostService) GetPostForComment(ctx context.Context, req *p.IdRequest) (*p.PostResponse, error) {
-	res, err := s.storage.Post().GetPostForComment(req)
+	res, err := s.storage.Post().GetPostForComment(ctx, req)
 	if err != nil {
 		log.Println("failed to get post for comment: ", err)
 		return &p.PostResponse{}, err
@@ -158,7 +158,7 @@ func (s *PostService) GetPostForComment(ctx context.Context, req *p.IdRequest) (
 }
 
 func (s *PostService) SearchByTitle(ctx context.Context, req *p.Search) (*p.Posts, error) {
-	res, err := s.storage.Post().SearchByTitle(req)
+	res, err := s.storage.Post().SearchByTitle(ctx, req)
 	if err != nil {
 		log.Println("failed to get post by search title: ", err)
 		return &p.Posts{}, err
@@ -204,7 +204,7 @@ func (s *PostService) SearchByTitle(ctx context.Context, req *p.Search) (*p.Post
 }
 
 func (s *PostService) LikePost(ctx context.Context, req *p.LikeRequest) (*p.PostResponse, error) {
-	res, err := s.storage.Post().LikePost(req)
+	res, err := s.storage.Post().LikePost(ctx, req)
 	if err != nil {
 		log.Println("failed to like post: ", err)
 		return &p.PostResponse{}, err
@@ -250,7 +250,7 @@ func (s *PostService) LikePost(ctx context.Context, req *p.LikeRequest) (*p.Post
 }
 
 func (s *PostService) UpdatePost(ctx context.Context, req *p.UpdatePostRequest) (*p.PostResponse, error) {
-	err := s.storage.Post().UpdatePost(req)
+	err := s.storage.Post().UpdatePost(ctx, req)
 	if err != nil {
 		log.Println("failed to update post: ", err)
 		return &p.PostResponse{}, err
@@ -260,7 +260,7 @@ func (s *PostService) UpdatePost(ctx context.Context, req *p.UpdatePostRequest) 
 }
 
 func (s *PostService) DeletePost(ctx context.Context, req *p.IdRequest) (*p.PostResponse, error) {
-	res, err := s.storage.Post().DeletePost(req)
+	res, err := s.storage.Post().DeletePost(ctx, req)
 	if err != nil {
 		log.Println("failed to delete post: ", err)
 		return &p.PostResponse{}, err
